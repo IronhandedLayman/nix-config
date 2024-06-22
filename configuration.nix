@@ -132,22 +132,22 @@
     ];
   };
 
-  programs.sway = {
-    enable = true;
-    wrapperFeatures.gtk = true;
-    extraOptions = [
-      "--unsupported-gpu"
-    ];
-    extraPackages = with pkgs; [
-      swaylock
-      swayidle
-    ];
-    extraSessionCommands = ''
-      export MOZ_ENABLE_WAYLAND=1;
-      export WLR_DRM_NO_MODIFIERS=1;
-      export WLR_DRM_DEVICES=/dev/dri/card1;
-   '';
-  }; 
+  # programs.sway = {
+    # enable = true;
+    # wrapperFeatures.gtk = true;
+    # extraOptions = [
+      # "--unsupported-gpu"
+    # ];
+    # extraPackages = with pkgs; [
+      # swaylock
+      # swayidle
+    # ];
+    # extraSessionCommands = ''
+      # export MOZ_ENABLE_WAYLAND=1;
+      # export WLR_DRM_NO_MODIFIERS=1;
+      # export WLR_DRM_DEVICES=/dev/dri/card1;
+   # '';
+  # }; 
   
   programs.hyprland.enable = true;
 
