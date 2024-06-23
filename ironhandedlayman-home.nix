@@ -1,14 +1,5 @@
-{ config, pkgs, ... }:
-let
-  nixvim = import (builtins.fetchGit {
-    url = "https://github.com/nix-community/nixvim";
-  });
-in
+{ config, pkgs, nixvim, ... }:
 {
-  imports = [
-    nixvim.homeManagerModules.nixvim
-  ];
-
   home.username = "ironhandedlayman";
   home.homeDirectory = "/home/ironhandedlayman";
 
@@ -20,6 +11,7 @@ in
     joplin
     joplin-desktop 
     love
+    tmux
   ];
 
   home.file = {
