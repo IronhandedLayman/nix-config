@@ -136,7 +136,7 @@
     extraGroups = [ "networkmanager" "wheel" "video" "audio" "input" "kvm" "render" "polkituser"];
     packages = with pkgs; [
       firefox
-    #  thunderbird
+      yazi
     ];
   };
 
