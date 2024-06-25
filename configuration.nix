@@ -137,6 +137,7 @@
     packages = with pkgs; [
       firefox
       yazi
+      libnotify
     ];
   };
 
