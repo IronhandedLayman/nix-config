@@ -11,6 +11,7 @@
     joplin
     joplin-desktop 
     love
+    bat
     tmux
   ];
 
