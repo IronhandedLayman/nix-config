@@ -74,6 +74,15 @@
     LC_TIME = "en_US.UTF-8";
   };
 
+  # turn off sleep suspend
+  systemd.sleep.extraConfig = ''
+    AllowSuspend=no
+    AllowHibernation=no
+    AllowHybridSleep=no
+    AllowSuspendThenHibernate=no
+  '';
+
+
   services.avahi = {
     enable = true;
     nssmdns4 = true;
