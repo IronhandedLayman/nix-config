@@ -33,7 +33,7 @@
 
   # Bootloader.
   boot = {
-    kernelPackages = pkgs.linuxPackages_6_8;
+    kernelPackages = pkgs.linuxPackages_latest;
     kernelParams = [
       "nvidia-drm.modeset=1"
       "nvidia-drm.fbdev=1"
