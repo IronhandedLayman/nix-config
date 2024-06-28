@@ -82,6 +82,9 @@
     AllowSuspendThenHibernate=no
   '';
 
+  # turn off power management
+  powerManagement.enable = false;
+
 
   services.avahi = {
     enable = true;
