@@ -12,6 +12,7 @@
     joplin-desktop 
     love
     bat
+    imhex
     tmux
   ];
 
