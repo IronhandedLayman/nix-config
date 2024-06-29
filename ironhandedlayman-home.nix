@@ -13,6 +13,9 @@
     love
     bat
     imhex
+    hexyl
+    hexedit
+    xxd
     tmux
   ];
 
