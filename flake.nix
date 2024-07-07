@@ -13,14 +13,19 @@
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    vivepro2Driver = {
+      url = "github:CertainLach/VivePro2-Linux-Driver";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, nixvim, ...}: {
+  outputs = inputs@{ self, nixpkgs, home-manager, nixvim, vivepro2Driver, ...}: {
     nixosConfigurations = {
       hokusai = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
           ./configuration.nix
+          vivepro2Driver.driver-proxy-release
           home-manager.nixosModules.home-manager {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;

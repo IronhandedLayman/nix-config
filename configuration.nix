@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, vivepro2Driver, ... }:
 {
   ## Nix global settings
 
@@ -38,6 +38,7 @@
       "nvidia-drm.modeset=1"
       "nvidia-drm.fbdev=1"
     ];
+    kernelPatches = vivepro2Driver.kernelPatches;
     loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
