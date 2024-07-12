@@ -25,7 +25,7 @@
         system = "x86_64-linux";
         modules = [
           ./configuration.nix
-          vivepro2Driver.driver-proxy-release
+#          vivepro2Driver.driver-proxy-release
           home-manager.nixosModules.home-manager {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
