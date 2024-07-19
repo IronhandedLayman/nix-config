@@ -125,7 +125,7 @@
   };
 
   # Enable sound with pipewire.
-  sound.enable = true;
+  # sound.enable = true; # nixos considers this deprecated 19 Jun 2024
   hardware.pulseaudio.enable = false;
   services.blueman.enable = true;
   security.rtkit.enable = true;

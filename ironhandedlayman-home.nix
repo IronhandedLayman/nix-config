@@ -8,8 +8,8 @@
   home.packages = with pkgs; [
     fastfetch
     protonup
-    joplin
-    joplin-desktop 
+#    joplin
+#    joplin-desktop 
     love
     bat
     imhex
@@ -42,7 +42,7 @@
       gitgutter.enable = true;
       treesitter = {
         enable = true;
-        ensureInstalled = "all";
+        # ensureInstalled = "all"; # what actually goes in here now???
       };
     };
   };
