@@ -1,5 +1,8 @@
 { config, pkgs, nixvim, ... }:
 {
+  imports = [
+    ./neovim.nix # imports nixvim settings
+  ]; 
   home.username = "ironhandedlayman";
   home.homeDirectory = "/home/ironhandedlayman";
 
@@ -23,28 +26,6 @@
   };
 
   home.sessionVariables = {
-  };
-
-  programs.nixvim = {
-    enable = true;
-    clipboard.providers.wl-copy.enable = true;
-    colorschemes.base16 = {
-      enable = true;
-      colorscheme = "atelier-dune";
-    };
-    plugins = {
-      sleuth.enable = true;
-      bufferline.enable = true;
-      comment.enable = true;
-      telescope.enable = true;
-      lightline.enable = true;
-      fugitive.enable = true;
-      gitgutter.enable = true;
-      treesitter = {
-        enable = true;
-        # ensureInstalled = "all"; # what actually goes in here now???
-      };
-    };
   };
 
   programs.git = {
