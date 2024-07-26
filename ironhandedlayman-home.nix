@@ -28,6 +28,21 @@
   home.sessionVariables = {
   };
 
+  programs.foot = {
+    enable = true;
+    settings = {
+      main = {
+        term = "xterm-256color";
+        font = "Hack:size=12";
+        dpi-aware = "yes";
+      };
+      mouse = {
+        hide-while-typing = "yes";
+      };
+    };
+  };
+
+
   programs.git = {
     enable = true;
     userName = "ironhandedlayman";
