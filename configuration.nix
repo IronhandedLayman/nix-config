@@ -192,7 +192,6 @@
       avahi
       brightnessctl
       btop
-      foot
       glxinfo
       grim
       hyprpaper
@@ -249,6 +248,19 @@
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
+  programs.foot = {
+    enable = true;
+    settings = {
+      main = {
+        term = "xterm-256color";
+        font = "Hack:size=12";
+        dpi-aware = "yes";
+      };
+      mouse = {
+        hide-while-typing = "yes";
+      };
+    };
+  };
 
   # Gaming settings
   programs.steam = {
