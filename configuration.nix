@@ -249,6 +249,9 @@
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
+  # shells
+  programs.zsh.enable = true;
+
   # Gaming settings
   programs.steam = {
     enable = true;
