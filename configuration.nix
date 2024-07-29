@@ -252,6 +252,8 @@
   # shells
   programs.zsh.enable = true;
 
+  users.defaultUserShell = pkgs.zsh;
+
   # Gaming settings
   programs.steam = {
     enable = true;

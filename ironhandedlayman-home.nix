@@ -11,6 +11,13 @@
     sessionVariables = {
       EDITOR = "nvim";
     };
+    oh-my-zsh = {
+      enable = true;
+      plugins = [
+        "git"[
+      ];
+      theme = "agnoster";
+    };
   };
 
   home.stateVersion = "23.11"; 
