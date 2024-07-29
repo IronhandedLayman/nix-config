@@ -6,6 +6,13 @@
   home.username = "ironhandedlayman";
   home.homeDirectory = "/home/ironhandedlayman";
 
+  programs.zsh = {
+    enable = true;
+    sessionVariables = {
+      EDITOR = "nvim";
+    };
+  };
+
   home.stateVersion = "23.11"; 
 
   home.packages = with pkgs; [
