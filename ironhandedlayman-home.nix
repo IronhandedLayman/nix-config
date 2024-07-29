@@ -33,12 +33,15 @@
     settings = {
       main = {
         term = "xterm-256color";
-        font = "Hack:size=12";
+        font = "Hack Nerd Font Mono:size=8";
         dpi-aware = "yes";
       };
       mouse = {
-        hide-while-typing = "yes";
+        hide-when-typing = "yes";
       };
+      colors = {
+        alpha="0.8";
+      }; 
     };
   };
 
