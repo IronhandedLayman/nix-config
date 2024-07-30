@@ -18,6 +18,14 @@
       ];
       theme = "agnoster";
     };
+    initExtra = ''
+      today () {
+        nvim +Neorg\ journal\ today
+      }
+      wiki () {
+        nvim +Neorg\ index
+      }
+    ''
   };
 
   home.stateVersion = "23.11"; 
