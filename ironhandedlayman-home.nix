@@ -25,7 +25,7 @@
       wiki () {
         nvim +Neorg\ index
       }
-    ''
+    '';
   };
 
   home.stateVersion = "23.11"; 
