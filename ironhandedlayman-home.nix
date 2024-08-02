@@ -33,6 +33,7 @@
   home.packages = with pkgs; [
     fastfetch
     protonup
+    wlr-randr
 #    joplin
 #    joplin-desktop 
     love
