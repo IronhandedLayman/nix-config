@@ -25,6 +25,10 @@
       wiki () {
         nvim +Neorg\ index
       }
+      wp () {
+        mon=`hyprctl monitors | awk '/^Monitor/{print $2}' | fzf --height=6`
+        echo "will change monitor $mon"
+      }
     '';
   };
 
@@ -34,8 +38,10 @@
     fastfetch
     protonup
     wlr-randr
-#    joplin
-#    joplin-desktop 
+    joplin
+    joplin-desktop 
+    fzf
+    lsix
     love
     bat
     imhex
