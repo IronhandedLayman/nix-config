@@ -36,7 +36,7 @@
     kernelPackages = pkgs.linuxPackages_latest;
     kernelParams = [
       "nvidia-drm.modeset=1"
-      "nvidia-drm.fbdev=1"
+      # "nvidia-drm.fbdev=1"
     ];
   #  kernelPatches = vivepro2Driver.kernelPatches;
     loader = {
