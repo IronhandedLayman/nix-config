@@ -193,6 +193,7 @@
       brightnessctl
       btop
       foot
+      egl-wayland
       glxinfo
       grim
       hyprpaper
