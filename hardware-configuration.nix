@@ -44,7 +44,7 @@
     extraPackages = with pkgs; [
       vaapiVdpau
       nvidia-vaapi-driver
-      vulkan-validation-layers
+#      vulkan-validation-layers
     ];
   };
 
