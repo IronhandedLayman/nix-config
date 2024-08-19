@@ -42,9 +42,9 @@
     enable = true;
     enable32Bit = true;
     extraPackages = with pkgs; [
-      #vaapiVdpau
-      #nvidia-vaapi-driver
-      #vulkan-validation-layers
+      vaapiVdpau
+      nvidia-vaapi-driver
+      vulkan-validation-layers
     ];
   };
 
