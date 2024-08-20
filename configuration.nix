@@ -203,7 +203,8 @@
       linux-firmware
       lshw
       mako
-      cinnamon.nemo-with-extensions
+      mesa
+      nemo-with-extensions
       nvtopPackages.full
       nsncd
       pavucontrol
