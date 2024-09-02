@@ -5,6 +5,9 @@
     nixpkgs = {
       url = "github:NixOS/nixpkgs/nixos-unstable";
     };
+    nixpkgs-stable = {
+      url = "github:NixOS/nixpkgs/nixos-24.05";
+    };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -17,25 +20,46 @@
       url = "github:CertainLach/VivePro2-Linux-Driver";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, nixvim, vivepro2Driver, ...}: {
-    nixosConfigurations = {
-      hokusai = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          ./configuration.nix
+  outputs = inputs@{ self, hyprland, nixpkgs, nixpkgs-stable, home-manager, nixvim, vivepro2Driver, ...}: 
+    let 
+      system = "x86_64-linux";
+      lib = nixpkgs.lib;
+      pkgs = nixpkgs.legacyPackages.${system};
+      pkgs-stable = nixpkgs-stable.legacyPackages.${system};
+      username = "ironhandedlayman";
+      hostname = "hokusai";
+    in {
+      nixosConfigurations = {
+        ${hostname} = nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules = [
+            ./configuration.nix
 #          vivepro2Driver.driver-proxy-release
-          home-manager.nixosModules.home-manager {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.sharedModules = [
-              nixvim.homeManagerModules.nixvim
-            ];
-            home-manager.users.ironhandedlayman = import ./ironhandedlayman-home.nix;
-          }
-        ];
+              home-manager.nixosModules.home-manager {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.sharedModules = [
+                  nixvim.homeManagerModules.nixvim
+                ];
+                home-manager.extraSpecialArgs = {
+                  inherit username;
+                  inherit hostname;
+                  inherit pkgs-stable;
+                  inherit hyprland;
+                };
+                home-manager.users.${username} = import ./ironhandedlayman-home.nix;
+              }
+          ];
+          specialArgs = {
+            inherit username;
+            inherit hostname;
+            inherit pkgs-stable;
+            inherit hyprland;
+          };
+        };
       };
     };
-  };
 }

@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, vivepro2Driver, ... }:
+{ config, pkgs, pkgs-stable, vivepro2Driver, hyprland, ... }:
 {
   ## Nix global settings
 
@@ -171,8 +171,11 @@
    # '';
   # }; 
   
-  programs.hyprland.enable = true;
-
+  programs.hyprland = {
+    enable = true;
+    package = hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+    portalPackage = hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+  };
 
   fonts.packages = with pkgs; [
     noto-fonts
@@ -188,16 +191,16 @@
   ];
 
   environment = {
-    systemPackages = with pkgs; [
+    systemPackages = 
+    (with pkgs; [
       avahi
       brightnessctl
       btop
       foot
+      dbus
       egl-wayland
       glxinfo
       grim
-      hyprpaper
-      hyprpicker
       inetutils
       lf
       linux-firmware
@@ -212,13 +215,21 @@
       slurp
       socat
       unscd
-      vim 
       waybar
       wayland
+      wayland-scanner
       wget
       wl-clipboard
       wofi
-    ];
+    ]) ++ 
+    (with pkgs-stable; [
+      # xdg-desktop-portal-hyprland
+      hyprpaper
+      # hyprland
+      hyprpicker
+      # hyprwayland-scanner
+      vim 
+    ]);
     sessionVariables = rec {
       GBM_BACKEND = "nvidia-drm";
       LIBVA_DRIVER_NAME = "nvidia";

@@ -26,7 +26,7 @@
       telescope.enable = true;
       fugitive.enable = true;
       lightline.enable = true;
-      gitgutter.enable = true;
+#      gitgutter.enable = true;
       neorg = {
       	enable = true;
 	modules = {
