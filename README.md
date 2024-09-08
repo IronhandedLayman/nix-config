@@ -33,3 +33,11 @@ another name, as nix-config by itself will no longer make sense.
 * `configuration.nix` -- should be the set definition for all systems, with variations set in specific `<hostname>-configuration.nix` files as needed. 
 * `<username>-home.nix` -- home-manager configuration for that particular user.
 * `neovim.nix` -- neovim configuration based on the `nixvim` module.
+
+# Troubleshooting
+
+## MacOS notes (nix-darwin)
+
+* Are you getting an error such as: `Could not find service "org.nixos.nix-daemon" in domain for system`
+  * Maybe the nix daemon is not running, try `sudo launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist`
+
