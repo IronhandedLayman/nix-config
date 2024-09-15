@@ -30,13 +30,6 @@
       options = [ "fmask=0022" "dmask=0022" ];
     };
 
-  fileSystems."/windata" =
-    { device = "/dev/disk/by-uuid/5DF0CC8525D8C3DF";
-      fsType = "vfat";
-      options = [ "fmask=0022" "dmask=0022" ];
-    };
-
-
   swapDevices = [ ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
