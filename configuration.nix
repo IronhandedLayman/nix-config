@@ -30,6 +30,34 @@
   imports = [
       ./hardware-configuration.nix
   ];
+  
+  # Additional hokusai configurations TODO: move to separate file
+
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+    extraPackages = with pkgs; [
+      vaapiVdpau
+      nvidia-vaapi-driver
+#      vulkan-validation-layers
+    ];
+  };
+
+  services.xserver.videoDrivers = ["nvidia"];
+
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+  };
+
+  hardware.nvidia = {
+    modesetting.enable = true;
+    powerManagement.enable = false;
+    powerManagement.finegrained = false;
+    open = false;
+    nvidiaSettings = true;
+    package = config.boot.kernelPackages.nvidiaPackages.latest;
+  };
 
   # Bootloader.
   boot = {
