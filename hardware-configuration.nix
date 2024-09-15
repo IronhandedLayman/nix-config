@@ -27,7 +27,6 @@
   fileSystems."/data" =
     { device = "/dev/disk/by-uuid/7fb8b9da-be25-4e6d-ab24-785fa713bbd1";
       fsType = "btrfs";
-      options = [ "fmask=0022" "dmask=0022" ];
     };
 
   swapDevices = [ ];
