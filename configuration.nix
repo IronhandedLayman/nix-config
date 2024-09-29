@@ -291,6 +291,13 @@
   # networking.firewall.enable = false;
 
   # shells
+  environment.shells = with pkgs; [
+    bash
+    zsh
+    fish
+    oil
+  ];
+  
   programs.zsh.enable = true;
 
   users.defaultUserShell = pkgs.zsh;
