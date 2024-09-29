@@ -1,10 +1,10 @@
 { config, pkgs, nixvim, ... }:
-{
+rec {
   imports = [
     ./neovim.nix # imports nixvim settings
   ]; 
   home.username = "ironhandedlayman";
-  home.homeDirectory = "/home/ironhandedlayman";
+  home.homeDirectory = "/home/${home.username}";
 
   programs.zsh = {
     enable = true;
@@ -15,10 +15,12 @@
       enable = true;
       plugins = [
         "git"
+        "fzf"
       ];
       theme = "agnoster";
     };
     initExtra = ''
+      source <(nh completions --shell zsh) 
       today () {
         nvim +Neorg\ journal\ today
       }
@@ -50,9 +52,17 @@
     xxd
     tmux
     nvme-cli
-    nvd
     nh
+    nvd
   ];
+
+  # TODO: reenable when flakes are finally brought current
+  # programs.nh = {
+    # enable = true;
+    # clean.enable = true;
+    # clean.extraArgs = "--keep-since 14d --keep 3";
+    # flake = "${home.homeDirectory}/Projects/nix-config#hokusai";
+  # };
 
   home.file = {
   };
