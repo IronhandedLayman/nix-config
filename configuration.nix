@@ -201,6 +201,7 @@
   
   programs.hyprland = {
     enable = true;
+    xwayland.enable = true;
     package = hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
     portalPackage = hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
   };
@@ -251,12 +252,11 @@
       wofi
     ]) ++ 
     (with pkgs-stable; [
-      # xdg-desktop-portal-hyprland
-      hyprpaper
-      # hyprland
-      hyprpicker
-      # hyprwayland-scanner
       vim 
+    ]) ++
+    (with hyprland.inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system}; [
+      hyprpaper
+      hyprpicker
     ]);
     sessionVariables = rec {
       GBM_BACKEND = "nvidia-drm";
