@@ -14,7 +14,16 @@
   programs.nixvim = {
     enable=true;
 
-    globals.mapleader="\\";
+    globals = {
+      mapleader = " ";
+      maplocalleader = " ";
+    };
+    globalOpts = {
+      number = true;
+      tabstop = 4;
+      shiftwidth = 4;
+      softtabstop = 0;
+    };
     colorschemes.base16 = {
       enable = true;
       colorscheme = "atelier-dune";
