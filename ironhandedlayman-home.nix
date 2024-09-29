@@ -50,6 +50,8 @@
     xxd
     tmux
     nvme-cli
+    nvd
+    nh
   ];
 
   home.file = {
