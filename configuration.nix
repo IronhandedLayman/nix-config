@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, pkgs-stable, vivepro2Driver, hyprland, ... }:
+{ config, pkgs, pkgs-stable, vivepro2Driver, ... }:
 {
   ## Nix global settings
 
@@ -134,7 +134,7 @@
     # Enable the GNOME Desktop Environment.
     displayManager.gdm.enable = true;
     displayManager.gdm.wayland = true;
-    desktopManager.gnome.enable = true;
+    #desktopManager.gnome.enable = true;
 
   # Configure keymap in X11
     xkb.layout = "us";
@@ -202,8 +202,8 @@
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
-    package = hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-    portalPackage = hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+    # package = hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+    # portalPackage = hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
   };
 
   fonts.packages = with pkgs; [
@@ -250,14 +250,15 @@
       wget
       wl-clipboard
       wofi
+      hyprpaper
+      hyprpicker
     ]) ++ 
     (with pkgs-stable; [
       vim 
-    ]) ++
-    (with hyprland.inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system}; [
-      hyprpaper
-      hyprpicker
     ]);
+   # ++
+   # (with hyprland.inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system}; [
+   # ]);
     sessionVariables = rec {
       GBM_BACKEND = "nvidia-drm";
       LIBVA_DRIVER_NAME = "nvidia";

@@ -3,23 +3,23 @@
   home.packages = with pkgs; [
     (lua5_1.withPackages(
 			 ps: with ps; [
-			 busted
+#			 busted
 			 luafilesystem
 			 luarocks
 			 lua-utils-nvim
 			 pathlib-nvim
 			 ]))
   ];
-
+  
   programs.nixvim = {
     enable=true;
 
     globals = {
+      number = true;
       mapleader = " ";
       maplocalleader = " ";
     };
     globalOpts = {
-      number = true;
       tabstop = 4;
       shiftwidth = 4;
       softtabstop = 0;
@@ -30,12 +30,28 @@
     };
 
     plugins = {
+      web-devicons.enable = true;
       sleuth.enable = true;
       bufferline.enable = true;
-      telescope.enable = true;
+      telescope = {
+        enable = true;
+	keymaps = {
+	  "<leader>fg" = "live_grep";
+	  "<C-p>" = {
+	    action = "git-files";
+	    options = {
+	      desc = "Telescope git_files";
+	    };
+	  };
+	  "<leader>fb" = "buffers";
+	  "<leader>fh" = "help_tags";
+	};
+	extensions.fzf-native.enable = true;
+      };
       fugitive.enable = true;
-      lightline.enable = true;
-#      gitgutter.enable = true;
+      neogit.enable = true;
+      lualine.enable = true;
+      gitsigns.enable = true;
       neorg = {
       	enable = true;
 	modules = {
@@ -56,7 +72,7 @@
       };
     };
     extraLuaPackages = pkgs: with pkgs.luaPackages; [
-      busted
+#      busted
       luarocks
       lua-utils-nvim
       nvim-nio
