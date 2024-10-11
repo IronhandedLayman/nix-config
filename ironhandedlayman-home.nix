@@ -37,24 +37,25 @@ rec {
   home.stateVersion = "23.11"; 
 
   home.packages = with pkgs; [
+    bat
     fastfetch
-    protonup
-    wlr-randr
-    ripgrep
+    fzf
+    hexedit
+    hexyl
+    imhex
     joplin
     joplin-desktop 
-    fzf
-    lsix
     love
-    bat
-    imhex
-    hexyl
-    hexedit
-    xxd
-    tmux
-    nvme-cli
+    lsix
+    prismlauncher
     nvd
+    nvme-cli
+    protonup
     python313
+    ripgrep
+    tmux
+    wlr-randr
+    xxd
   ];
 
   home.file = {
