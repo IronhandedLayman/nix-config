@@ -40,6 +40,7 @@ rec {
     fastfetch
     protonup
     wlr-randr
+    ripgrep
     joplin
     joplin-desktop 
     fzf
@@ -52,17 +53,9 @@ rec {
     xxd
     tmux
     nvme-cli
-    nh
     nvd
+    python313
   ];
-
-  # TODO: reenable when flakes are finally brought current
-  # programs.nh = {
-    # enable = true;
-    # clean.enable = true;
-    # clean.extraArgs = "--keep-since 14d --keep 3";
-    # flake = "${home.homeDirectory}/Projects/nix-config#hokusai";
-  # };
 
   home.file = {
   };

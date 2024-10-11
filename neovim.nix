@@ -15,11 +15,12 @@
     enable=true;
 
     globals = {
-      number = true;
-      mapleader = " ";
-      maplocalleader = " ";
+      mapleader = "\ ";
+      maplocalleader = "\ ";
     };
+
     globalOpts = {
+      number = true;
       tabstop = 4;
       shiftwidth = 4;
       softtabstop = 0;
@@ -46,7 +47,9 @@
 	  "<leader>fb" = "buffers";
 	  "<leader>fh" = "help_tags";
 	};
-	extensions.fzf-native.enable = true;
+	extensions = {
+	  fzf-native.enable = true;
+	};
       };
       fugitive.enable = true;
       neogit.enable = true;
