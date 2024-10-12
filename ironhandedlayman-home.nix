@@ -47,7 +47,6 @@ rec {
     joplin-desktop 
     love
     lsix
-    prismlauncher
     nvd
     nvme-cli
     protonup
@@ -62,6 +61,7 @@ rec {
   };
 
   home.sessionVariables = {
+    test = "foo";
   };
 
   programs.foot = {
