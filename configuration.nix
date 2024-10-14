@@ -44,6 +44,7 @@
   };
 
   services.xserver.videoDrivers = ["nvidia"];
+  hardware.opengl.enable = true;
 
   hardware.bluetooth = {
     enable = true;
@@ -127,19 +128,21 @@
     };    
   };
 
-  # Enable the X11 windowing system.
+  # Enable Wayland (enabling xserver is a canard, does not actually enable X11)
   services.xserver = {
     enable = true;
 
-    # Enable the GNOME Desktop Environment.
+    ## Enable the GNOME Desktop Environment.
     displayManager.gdm.enable = true;
     displayManager.gdm.wayland = true;
-    #desktopManager.gnome.enable = true;
+    desktopManager.gnome.enable = true;
 
-  # Configure keymap in X11
+    ## Configure keymap in X11
     xkb.layout = "us";
     xkb.variant = "";
   };
+
+  security.polkit.enable = true;
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -248,6 +251,7 @@
       nsncd
       pavucontrol
       pciutils
+      podman
       slurp
       socat
       unscd
@@ -276,6 +280,7 @@
       LD_LIBRARY_PATH="/run/opengl-driver/lib:/run/opengl-driver-32/lib";          
       XDG_SESSION_TYPE = "wayland";
 #      __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+      NIXOS_OZONE_WL = "1";
     };
   };
 
