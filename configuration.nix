@@ -74,6 +74,14 @@
     };
   };
 
+  virtualisation.containers.enable = true;
+  virtualisation = {
+    podman = {
+      enable = true;
+      dockerCompat = true;
+      defaultNetwork.settings.dns_enabled = true;
+    };
+  };
 
 
   networking.hostName = "hokusai"; # Define your hostname.
@@ -251,7 +259,8 @@
       nsncd
       pavucontrol
       pciutils
-      podman
+      podman-tui
+      dive
       slurp
       socat
       unscd
