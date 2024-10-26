@@ -200,8 +200,6 @@
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
-    # package = hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-    # portalPackage = hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
   };
 
   fonts.packages = with pkgs; [
@@ -232,6 +230,7 @@
       lf
       linux-firmware
       lshw
+      kitty
       mako
       mesa
       nemo-with-extensions
@@ -262,15 +261,10 @@
    # (with hyprland.inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system}; [
    # ]);
     sessionVariables = rec {
-      GBM_BACKEND = "nvidia-drm";
-      LIBVA_DRIVER_NAME = "nvidia";
       MOZ_ENABLE_WAYLAND="1";
-#     WLR_DRM_DEVICES="/dev/dri/card1";
-#      WLR_DRM_NO_MODIFIERS="1";
       WLR_NO_HARDWARE_CURSORS = "1";
       LD_LIBRARY_PATH="/run/opengl-driver/lib:/run/opengl-driver-32/lib";          
       XDG_SESSION_TYPE = "wayland";
-#      __GLX_VENDOR_LIBRARY_NAME = "nvidia";
       NIXOS_OZONE_WL = "1";
     };
   };
@@ -284,9 +278,6 @@
   # };
 
   # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
