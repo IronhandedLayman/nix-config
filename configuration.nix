@@ -36,14 +36,8 @@
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
-    extraPackages = with pkgs; [
-      vaapiVdpau
-      nvidia-vaapi-driver
-#      vulkan-validation-layers
-    ];
   };
 
-  services.xserver.videoDrivers = ["nvidia"];
   hardware.opengl.enable = true;
 
   hardware.bluetooth = {
@@ -51,23 +45,9 @@
     powerOnBoot = true;
   };
 
-  hardware.nvidia = {
-    modesetting.enable = true;
-    powerManagement.enable = false;
-    powerManagement.finegrained = false;
-    open = false;
-    nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
-  };
-
   # Bootloader.
   boot = {
     kernelPackages = pkgs.linuxPackages_6_10;
-    kernelParams = [
-      "nvidia-drm.modeset=1"
-      "nvidia-drm.fbdev=1"
-    ];
-  #  kernelPatches = vivepro2Driver.kernelPatches;
     loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
@@ -84,7 +64,7 @@
   };
 
 
-  networking.hostName = "hokusai"; # Define your hostname.
+  networking.hostName = "eigakan"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary

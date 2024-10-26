@@ -16,11 +16,6 @@
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    vivepro2Driver = {
-      url = "github:CertainLach/VivePro2-Linux-Driver";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-#    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
   };
 
   outputs = inputs@{ self, nixpkgs, nixpkgs-stable, home-manager, nixvim, vivepro2Driver, ...}: 
@@ -30,14 +25,13 @@
       pkgs = nixpkgs.legacyPackages.${system};
       pkgs-stable = nixpkgs-stable.legacyPackages.${system};
       username = "ironhandedlayman";
-      hostname = "hokusai";
+      hostname = "eigakan";
     in {
       nixosConfigurations = {
         ${hostname} = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
             ./configuration.nix
-#          vivepro2Driver.driver-proxy-release
               home-manager.nixosModules.home-manager {
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
@@ -48,7 +42,6 @@
                   inherit username;
                   inherit hostname;
                   inherit pkgs-stable;
-#                  inherit hyprland;
                 };
                 home-manager.users.${username} = import ./ironhandedlayman-home.nix;
               }
@@ -57,7 +50,6 @@
             inherit username;
             inherit hostname;
             inherit pkgs-stable;
-#            inherit hyprland;
           };
         };
       };
