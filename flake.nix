@@ -18,7 +18,7 @@
     };
   };
 
-  outputs = inputs@{ self, nixpkgs, nixpkgs-stable, home-manager, nixvim, vivepro2Driver, ...}: 
+  outputs = inputs@{ self, nixpkgs, nixpkgs-stable, home-manager, nixvim, ...}: 
     let 
       system = "x86_64-linux";
       lib = nixpkgs.lib;
