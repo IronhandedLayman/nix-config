@@ -62,10 +62,11 @@
 
   # Bootloader.
   boot = {
-    kernelPackages = pkgs.linuxPackages_xanmod;
+    kernelPackages = pkgs.linuxPackages_latest;
     kernelParams = [
       "nvidia-drm.modeset=1"
       "nvidia-drm.fbdev=1"
+      "initcall_blacklist=simpledrm_platform_driver_init"
     ];
   #  kernelPatches = vivepro2Driver.kernelPatches;
     loader = {
@@ -186,11 +187,12 @@
     isNormalUser = true;
     description = "Ironhandedlayman";
     extraGroups = [ "networkmanager" "wheel" "video" "audio" "input" "kvm" "render" "polkituser"];
-    packages = with pkgs; [
+    packages = (with pkgs; [
       firefox
-      yazi
       libnotify
-    ];
+    ]) ++ (with pkgs-stable; [
+      yazi
+    ]);
   };
 
   programs.nh = {
@@ -224,7 +226,7 @@
     # portalPackage = hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
   };
 
-  fonts.packages = with pkgs; [
+  fonts.packages = with pkgs-stable; [
     noto-fonts
     noto-fonts-cjk-sans
     noto-fonts-emoji
