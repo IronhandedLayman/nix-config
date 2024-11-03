@@ -251,6 +251,7 @@
       wget
       wl-clipboard
       wofi
+      hyprlock
       hyprpaper
       hyprpicker
     ]) ++ 

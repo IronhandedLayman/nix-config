@@ -197,7 +197,6 @@ rec {
 # Applications
           "$mod ALT, f, exec, ${pkgs.firefox}/bin/firefox"
           "$mod ALT, e, exec, $terminal --hold -e ${pkgs.yazi}/bin/yazi"
-          "$mod ALT, o, exec, ${pkgs.obsidian}/bin/obsidian"
           "$mod, r, exec, pkill fuzzel || ${pkgs.fuzzel}/bin/fuzzel"
           "$mod ALT, r, exec, pkill anyrun || ${pkgs.anyrun}/bin/anyrun"
           "$mod ALT, n, exec, swaync-client -t -sw"
@@ -263,6 +262,7 @@ rec {
     python313
     ripgrep
     tmux
+    wl-clipboard
     wlr-randr
     xxd
   ];
