@@ -196,7 +196,7 @@ rec {
 
 # Applications
           "$mod ALT, f, exec, ${pkgs.firefox}/bin/firefox"
-          "$mod ALT, e, exec, $terminal --hold -e ${pkgs.yazi}/bin/yazi"
+          #"$mod ALT, e, exec, $terminal --hold -e ${pkgs.yazi}/bin/yazi"
           "$mod, r, exec, pkill fuzzel || ${pkgs.fuzzel}/bin/fuzzel"
           "$mod ALT, r, exec, pkill anyrun || ${pkgs.anyrun}/bin/anyrun"
           "$mod ALT, n, exec, swaync-client -t -sw"

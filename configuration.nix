@@ -47,7 +47,7 @@
 
   # Bootloader.
   boot = {
-    kernelPackages = pkgs.linuxPackages_6_10;
+    kernelPackages = pkgs.linuxPackages_latest;
     loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
@@ -166,11 +166,12 @@
     isNormalUser = true;
     description = "Ironhandedlayman";
     extraGroups = [ "networkmanager" "wheel" "video" "audio" "input" "kvm" "render" "polkituser"];
-    packages = with pkgs; [
+    packages = (with pkgs; [
       firefox
-      yazi
       libnotify
-    ];
+    ]) ++ (with pkgs-stable; [
+      #yazi
+    ]);
   };
 
   programs.nh = {
