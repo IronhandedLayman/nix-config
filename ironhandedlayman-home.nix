@@ -21,15 +21,22 @@ rec {
     };
     initExtra = ''
       source <(nh completions --shell zsh) 
+      # routes to Neorg's journal system
       today () {
         nvim +Neorg\ journal\ today
       }
+      # routes to Neorg's wiki
       wiki () {
         nvim +Neorg\ index
       }
+      # selecting monitor information in hyprland
       wp () {
         mon=`hyprctl monitors | awk '/^Monitor/{print $2}' | fzf --height=6`
         echo "will change monitor $mon"
+      }
+      # nix search
+      nsearch () {
+        nix search nixpkgs $1 2>/dev/null
       }
     '';
   };
