@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 {
   home.packages = with pkgs; [
     (lua5_1.withPackages(
@@ -13,7 +13,6 @@
   
   programs.nixvim = {
     enable=true;
-
     globals = {
       mapleader = " ";
       maplocalleader = " ";
