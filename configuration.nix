@@ -135,6 +135,7 @@
     nssmdns4 = true;
     ipv4 = true;
     ipv6 = true;
+    openFirewall = true;
     publish = {
       enable = true;
       addresses = true;
@@ -250,6 +251,8 @@
       avahi
       brightnessctl
       btop
+      cups
+      canon-cups-ufr2
       foot
       dbus
       egl-wayland
@@ -273,6 +276,8 @@
       unscd
       usbimager
       usbutils
+      vkmark
+      vulkan-tools
       waybar
       wayland
       wayland-scanner
