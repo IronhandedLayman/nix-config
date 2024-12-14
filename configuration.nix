@@ -6,8 +6,6 @@
 {
   ## Nix global settings
 
-  nix.gc.automatic = true;
-
   nix.settings = {
     experimental-features = [ "nix-command" "flakes"];
     auto-optimise-store = true;
@@ -44,7 +42,6 @@
   };
 
   services.xserver.videoDrivers = ["nvidia"];
-  hardware.opengl.enable = true;
 
   hardware.bluetooth = {
     enable = true;
@@ -284,6 +281,7 @@
       wget
       wl-clipboard
       wofi
+      hyprlandPlugins.hy3
       hyprpaper
       hyprpicker
     ]) ++ 
@@ -331,7 +329,8 @@
     bash
     zsh
     fish
-    oil
+    oils-for-unix
+    nushell
   ];
   
   programs.zsh.enable = true;
