@@ -24,47 +24,16 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.11"; # Did you read the comment?
 
+  # TODO: move additional hokusai configurations to separate file
+
   # Hardware configurations
   imports = [
       ./hardware-configuration.nix
   ];
-  
-  # Additional hokusai configurations TODO: move to separate file
-
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
-    extraPackages = with pkgs; [
-      vaapiVdpau
-      nvidia-vaapi-driver
-#      vulkan-validation-layers
-    ];
-  };
-
-  services.xserver.videoDrivers = ["nvidia"];
-
-  hardware.bluetooth = {
-    enable = true;
-    powerOnBoot = true;
-  };
-
-  hardware.nvidia = {
-    modesetting.enable = true;
-    powerManagement.enable = false;
-    powerManagement.finegrained = false;
-    open = false;
-    nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
-  };
-
-  # Extra rules for 8BitDo IDLE 2dc8:3109
-  services.udev.extraRules = ''
-     ACTION=="add", ATTRS{idVendor}=="2dc8", ATTRS{idProduct}=="3109", MODE="0666"
-  '';
 
   # Bootloader.
   boot = {
-    kernelPackages = pkgs.linuxPackages_6_11;
+    kernelPackages = pkgs.linuxPackages_latest;
     kernelParams = [
       "nvidia-drm.modeset=1"
       "nvidia-drm.fbdev=1"
@@ -86,16 +55,98 @@
     };
   };
 
+  networking = {
+    hostName = "hokusai"; 
+    networkmanager.enable = true;
+  };
+  
+  hardware = {
+    pulseaudio.enable = false;
 
-  networking.hostName = "hokusai"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+      extraPackages = with pkgs; [
+        vaapiVdpau
+        nvidia-vaapi-driver
+        #vulkan-validation-layers
+      ];
+    };
+    bluetooth = {
+      enable = true;
+      powerOnBoot = true;
+    };
+    nvidia = {
+      modesetting.enable = true;
+      powerManagement.enable = false;
+      powerManagement.finegrained = false;
+      open = false;
+      nvidiaSettings = true;
+      package = config.boot.kernelPackages.nvidiaPackages.stable;
+    };
+  };
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+  services = {
+    xserver.videoDrivers = ["nvidia"];
 
-  # Enable networking
-  networking.networkmanager.enable = true;
+    blueman.enable = true;
+
+  # Extra rules for 8BitDo IDLE 2dc8:3109
+  udev.extraRules = ''
+      ACTION=="add", ATTRS{idVendor}=="2dc8", ATTRS{idProduct}=="3109", MODE="0666"
+  '';
+
+  avahi = {
+    enable = true;
+    nssmdns4 = true;
+    ipv4 = true;
+    ipv6 = true;
+    openFirewall = true;
+    publish = {
+      enable = true;
+      addresses = true;
+      workstation = true;
+    };    
+  };
+
+  # Enable Wayland (enabling xserver is a canard, does not actually enable X11)
+  xserver = {
+    enable = true;
+
+    ## Enable the GNOME Desktop Environment.
+    displayManager.gdm.enable = true;
+    displayManager.gdm.wayland = true;
+    desktopManager.gnome.enable = true;
+
+    ## Configure keymap in X11
+    xkb.layout = "us";
+    xkb.variant = "";
+  };
+
+  # Enable CUPS to print documents.
+  printing.enable = true;
+
+  openssh = {
+    enable = true;
+    settings = {
+      PermitRootLogin = "no";
+      PasswordAuthentication = true;
+    };
+  };
+
+  pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    # If you want to use JACK applications, uncomment this
+    #jack.enable = true;
+
+    # use the example session manager (no others are packaged yet so this is enabled by default,
+    # no need to redefine it in your config for now)
+    #media-session.enable = true;
+  };
+};
 
   # Set your time zone.
   time.timeZone = "America/New_York";
@@ -115,7 +166,6 @@
     LC_TIME = "en_US.UTF-8";
   };
 
-  # turn off sleep suspend
   systemd.sleep.extraConfig = ''
     AllowSuspend=no
     AllowHibernation=no
@@ -123,69 +173,12 @@
     AllowSuspendThenHibernate=no
   '';
 
-  # turn off power management
   powerManagement.enable = false;
 
-
-  services.avahi = {
-    enable = true;
-    nssmdns4 = true;
-    ipv4 = true;
-    ipv6 = true;
-    openFirewall = true;
-    publish = {
-      enable = true;
-      addresses = true;
-      workstation = true;
-    };    
-  };
-
-  # Enable Wayland (enabling xserver is a canard, does not actually enable X11)
-  services.xserver = {
-    enable = true;
-
-    ## Enable the GNOME Desktop Environment.
-    displayManager.gdm.enable = true;
-    displayManager.gdm.wayland = true;
-    desktopManager.gnome.enable = true;
-
-    ## Configure keymap in X11
-    xkb.layout = "us";
-    xkb.variant = "";
-  };
-
   security.polkit.enable = true;
-
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-
-  services.openssh = {
-    enable = true;
-    settings = {
-      PermitRootLogin = "no";
-      PasswordAuthentication = true;
-    };
-  };
-
-  # Enable sound with pipewire.
-  # sound.enable = true; # nixos considers this deprecated 19 Jun 2024
-  hardware.pulseaudio.enable = false;
-  services.blueman.enable = true;
   security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
 
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
-  };
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.defaultUserShell = pkgs.zsh;
   users.users.ironhandedlayman = {
     isNormalUser = true;
     description = "Ironhandedlayman";
@@ -196,37 +189,6 @@
     ]) ++ (with pkgs-stable; [
       yazi
     ]);
-  };
-
-  programs.nh = {
-    enable = true;
-    clean.enable = true;
-    clean.extraArgs = "--keep-since 14d --keep 3";
-    flake = "/home/ironhandedlayman/Projects/nix-config#hokusai";
-  };
-
-  # programs.sway = {
-    # enable = true;
-    # wrapperFeatures.gtk = true;
-    # extraOptions = [
-      # "--unsupported-gpu"
-    # ];
-    # extraPackages = with pkgs; [
-      # swaylock
-      # swayidle
-    # ];
-    # extraSessionCommands = ''
-      # export MOZ_ENABLE_WAYLAND=1;
-      # export WLR_DRM_NO_MODIFIERS=1;
-      # export WLR_DRM_DEVICES=/dev/dri/card1;
-   # '';
-  # }; 
-  
-  programs.hyprland = {
-    enable = true;
-    xwayland.enable = true;
-    # package = hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-    # portalPackage = hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
   };
 
   fonts.packages = with pkgs-stable; [
@@ -242,7 +204,43 @@
     proggyfonts 
   ];
 
+  programs = {
+    nh = {
+      enable = true;
+      clean.enable = true;
+      clean.extraArgs = "--keep-since 14d --keep 3";
+      flake = "/home/ironhandedlayman/Projects/nix-config#hokusai";
+    };
+
+    hyprland = {
+      enable = true;
+      xwayland.enable = true;
+    # package = hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+    # portalPackage = hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+  };
+
+  zsh.enable = true;
+
+  # Gaming settings
+  steam = {
+    enable = true;
+    gamescopeSession.enable = true;
+    remotePlay.openFirewall = true;
+    dedicatedServer.openFirewall = true;
+  };
+
+  gamemode.enable = true;
+};
+
   environment = {
+    shells = with pkgs; [
+      bash
+      zsh
+      fish
+      oils-for-unix
+      nushell
+    ];
+
     systemPackages = 
     (with pkgs; [
       avahi
@@ -253,6 +251,7 @@
       foot
       dbus
       egl-wayland
+      freecad-wayland
       glxinfo
       grim
       inetutils
@@ -261,12 +260,15 @@
       lshw
       mako
       mesa
+      openscad
       nemo-with-extensions
+      ngspice
       nvtopPackages.full
       nsncd
       pavucontrol
       pciutils
       podman-tui
+      prusa-slicer
       dive
       slurp
       socat
@@ -291,7 +293,7 @@
    # ++
    # (with hyprland.inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system}; [
    # ]);
-    sessionVariables = rec {
+    sessionVariables = {
       GBM_BACKEND = "nvidia-drm";
       LIBVA_DRIVER_NAME = "nvidia";
       MOZ_ENABLE_WAYLAND="1";
@@ -304,47 +306,4 @@
       NIXOS_OZONE_WL = "1";
     };
   };
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
-
-  # shells
-  environment.shells = with pkgs; [
-    bash
-    zsh
-    fish
-    oils-for-unix
-    nushell
-  ];
-  
-  programs.zsh.enable = true;
-
-  users.defaultUserShell = pkgs.zsh;
-
-  # Gaming settings
-  programs.steam = {
-    enable = true;
-    gamescopeSession.enable = true;
-    remotePlay.openFirewall = true;
-    dedicatedServer.openFirewall = true;
-  };
-
-  programs.gamemode.enable = true;
-
 }
