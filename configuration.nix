@@ -252,15 +252,18 @@
       dbus
       egl-wayland
       freecad-wayland
+      gcc
       glxinfo
+      glfw-wayland
+      go
       grim
       inetutils
       lf
       linux-firmware
       lshw
+      xorg.libX11
       mako
       mesa
-      openscad
       nemo-with-extensions
       ngspice
       nvtopPackages.full
@@ -270,6 +273,10 @@
       podman-tui
       prusa-slicer
       dive
+      SDL2
+      SDL2_gfx
+      SDL2_image
+      SDL2_sound
       slurp
       socat
       unscd
@@ -283,11 +290,12 @@
       wget
       wl-clipboard
       wofi
-      hyprlandPlugins.hy3
       hyprpaper
       hyprpicker
+      uv
     ]) ++ 
     (with pkgs-stable; [
+      openscad
       vim 
     ]);
    # ++
