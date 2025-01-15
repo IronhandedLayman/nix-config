@@ -230,6 +230,7 @@
   };
 
   gamemode.enable = true;
+  nix-ld.enable = true;
 };
 
   environment = {
