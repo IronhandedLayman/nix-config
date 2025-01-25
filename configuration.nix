@@ -28,7 +28,7 @@
 
   # Hardware configurations
   imports = [
-      ./hardware-configuration.nix
+    ./hardware-configuration.nix
   ];
 
   # Bootloader.
@@ -40,35 +40,42 @@
       "initcall_blacklist=simpledrm_platform_driver_init"
     ];
   #  kernelPatches = vivepro2Driver.kernelPatches;
-    loader = {
-      systemd-boot.enable = true;
-      efi.canTouchEfiVariables = true;
-    };
+  loader = {
+    systemd-boot.enable = true;
+    efi.canTouchEfiVariables = true;
   };
+};
 
-  virtualisation.containers.enable = true;
-  virtualisation = {
-    podman = {
-      enable = true;
-      dockerCompat = true;
-      defaultNetwork.settings.dns_enabled = true;
-    };
+virtualisation.containers.enable = true;
+virtualisation = {
+  podman = {
+    enable = true;
+    dockerCompat = true;
+    defaultNetwork.settings.dns_enabled = true;
   };
+};
 
-  networking = {
-    hostName = "hokusai"; 
-    networkmanager.enable = true;
+networking = {
+  hostName = "hokusai"; 
+  networkmanager.enable = true;
+  firewall = {
+    enable = true;
+    allowedTCPPorts = [ 80 443 5353 11434 ];
+    allowedUDPPortRanges = [
+      {from = 4000; to=12000;}
+    ];
   };
-  
-  hardware = {
-    pulseaudio.enable = false;
+};
 
-    graphics = {
-      enable = true;
-      enable32Bit = true;
-      extraPackages = with pkgs; [
-        vaapiVdpau
-        nvidia-vaapi-driver
+hardware = {
+  pulseaudio.enable = false;
+
+  graphics = {
+    enable = true;
+    enable32Bit = true;
+    extraPackages = with pkgs; [
+      vaapiVdpau
+      nvidia-vaapi-driver
         #vulkan-validation-layers
       ];
     };
@@ -90,6 +97,12 @@
     xserver.videoDrivers = ["nvidia"];
 
     blueman.enable = true;
+
+    ollama = {
+      enable = true;
+      acceleration = "cuda";
+      host = "0.0.0.0";
+    };
 
   # Extra rules for 8BitDo IDLE 2dc8:3109
   udev.extraRules = ''
@@ -233,86 +246,87 @@
   nix-ld.enable = true;
 };
 
-  environment = {
-    shells = with pkgs; [
-      bash
-      zsh
-      fish
-      oils-for-unix
-      nushell
-    ];
+environment = {
+  shells = with pkgs; [
+    bash
+    zsh
+    fish
+    oils-for-unix
+    nushell
+  ];
 
-    systemPackages = 
-    (with pkgs; [
-      avahi
-      brightnessctl
-      btop
-      cups
-      canon-cups-ufr2
-      foot
-      dbus
-      egl-wayland
-      freecad-wayland
-      gcc
-      glxinfo
-      glfw-wayland
-      go
-      grim
-      inetutils
-      lf
-      linux-firmware
-      lshw
-      xorg.libX11
-      mako
-      mesa
-      nemo-with-extensions
-      ngspice
-      nvtopPackages.full
-      nsncd
-      pavucontrol
-      pciutils
-      podman-tui
-      prusa-slicer
-      dive
-      SDL2
-      SDL2_gfx
-      SDL2_image
-      SDL2_sound
-      slurp
-      socat
-      unscd
-      usbimager
-      usbutils
-      vkmark
-      vulkan-tools
-      waybar
-      wayland
-      wayland-scanner
-      wget
-      wl-clipboard
-      wofi
-      hyprpaper
-      hyprpicker
-      uv
-    ]) ++ 
-    (with pkgs-stable; [
-      openscad
-      vim 
-    ]);
+  systemPackages = 
+  (with pkgs; [
+    avahi
+    brightnessctl
+    btop
+    canon-cups-ufr2
+    cups
+    dbus
+    dive
+    egl-wayland
+    foot
+    freecad-wayland
+    gcc
+    glfw-wayland
+    glxinfo
+    go
+    grim
+    hyprpaper
+    hyprpicker
+    inetutils
+    kicad
+    lf
+    linux-firmware
+    lshw
+    mako
+    mesa
+    nemo-with-extensions
+    ngspice
+    nsncd
+    nvtopPackages.full
+    pavucontrol
+    pciutils
+    podman-tui
+    prusa-slicer
+    SDL2
+    SDL2_gfx
+    SDL2_image
+    SDL2_sound
+    slurp
+    socat
+    unscd
+    usbimager
+    usbutils
+    uv
+    vkmark
+    vulkan-tools
+    waybar
+    wayland
+    wayland-scanner
+    wget
+    wl-clipboard
+    wofi
+    xorg.libX11
+  ]) ++ 
+  (with pkgs-stable; [
+    openscad
+    vim 
+  ]);
    # ++
    # (with hyprland.inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system}; [
    # ]);
-    sessionVariables = {
-      GBM_BACKEND = "nvidia-drm";
-      LIBVA_DRIVER_NAME = "nvidia";
-      MOZ_ENABLE_WAYLAND="1";
+   sessionVariables = {
+     GBM_BACKEND = "nvidia-drm";
+     LIBVA_DRIVER_NAME = "nvidia";
+     MOZ_ENABLE_WAYLAND="1";
 #     WLR_DRM_DEVICES="/dev/dri/card1";
 #      WLR_DRM_NO_MODIFIERS="1";
-      WLR_NO_HARDWARE_CURSORS = "1";
-      LD_LIBRARY_PATH="/run/opengl-driver/lib:/run/opengl-driver-32/lib";          
-      XDG_SESSION_TYPE = "wayland";
+WLR_NO_HARDWARE_CURSORS = "1";
+LD_LIBRARY_PATH="/run/opengl-driver/lib:/run/opengl-driver-32/lib";          
+XDG_SESSION_TYPE = "wayland";
 #      __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-      NIXOS_OZONE_WL = "1";
+NIXOS_OZONE_WL = "1";
     };
   };
 }
