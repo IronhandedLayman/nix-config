@@ -9,16 +9,24 @@ in {
     ./windowmanager.nix   # preferred window manager settings, terminal, and keyboard bindings
   ]; 
 
+  xdg.dataFile."fonts" = {
+    enable = true;
+    source = config.lib.file.mkOutOfStoreSymlink "/run/current-system/sw/share/X11/fonts";
+  };
+
   home = {
     stateVersion = "23.11"; 
 
     username = "${username}";
     homeDirectory = "/home/${username}";
 
+
     packages = with pkgs; [
       nvd
       protonup
       wlr-randr
+      pyradio
+      vlc
     ];
 
     file = {

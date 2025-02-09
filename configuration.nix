@@ -68,7 +68,6 @@ networking = {
 };
 
 hardware = {
-  pulseaudio.enable = false;
 
   graphics = {
     enable = true;
@@ -94,7 +93,11 @@ hardware = {
   };
 
   services = {
-    xserver.videoDrivers = ["nvidia"];
+    pulseaudio.enable = false;
+    playerctld.enable = true;
+    xserver = {
+      videoDrivers = ["nvidia"];
+    };
 
     blueman.enable = true;
 
@@ -204,7 +207,8 @@ hardware = {
     ]);
   };
 
-  fonts.packages = with pkgs-stable; [
+  fonts = {
+    packages = with pkgs-stable; [
     noto-fonts
     noto-fonts-cjk-sans
     noto-fonts-emoji
@@ -215,7 +219,9 @@ hardware = {
     mplus-outline-fonts.githubRelease
     dina-font
     proggyfonts 
-  ];
+    ];
+    fontDir.enable = true;
+  };
 
   programs = {
     nh = {
@@ -260,7 +266,6 @@ environment = {
     avahi
     brightnessctl
     btop
-    canon-cups-ufr2
     cups
     dbus
     dive
@@ -306,7 +311,9 @@ environment = {
     wayland-scanner
     wget
     wl-clipboard
+    wlr-randr
     wofi
+    xclip
     xorg.libX11
   ]) ++ 
   (with pkgs-stable; [
