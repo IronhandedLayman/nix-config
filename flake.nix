@@ -16,18 +16,12 @@
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    vivepro2Driver = {
-      url = "github:CertainLach/VivePro2-Linux-Driver";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 #    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
   };
 
-  outputs = inputs@{ self, nixpkgs, nixpkgs-stable, home-manager, nixvim, vivepro2Driver, ...}: 
+  outputs = inputs@{ nixpkgs, nixpkgs-stable, home-manager, nixvim, ...}: 
     let 
       system = "x86_64-linux";
-      lib = nixpkgs.lib;
-      pkgs = import nixpkgs;
       pkgs-stable = import nixpkgs-stable { inherit system; config.allowUnfree = true; };
       username = "ironhandedlayman";
       hostname = "hokusai";
@@ -37,7 +31,6 @@
           inherit system;
           modules = [
             ./configuration.nix
-#          vivepro2Driver.driver-proxy-release
               home-manager.nixosModules.home-manager {
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;

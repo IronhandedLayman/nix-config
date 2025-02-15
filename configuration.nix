@@ -106,6 +106,11 @@ hardware = {
       host = "0.0.0.0";
     };
 
+    monado = {
+      enable = true;
+      defaultRuntime = true;
+    };
+
   # Extra rules for 8BitDo IDLE 2dc8:3109
   udev.extraRules = ''
       ACTION=="add", ATTRS{idVendor}=="2dc8", ATTRS{idProduct}=="3109", MODE="0666"
@@ -187,12 +192,19 @@ hardware = {
     LC_TIME = "en_US.UTF-8";
   };
 
-  systemd.sleep.extraConfig = ''
-    AllowSuspend=no
-    AllowHibernation=no
-    AllowHybridSleep=no
-    AllowSuspendThenHibernate=no
-  '';
+  systemd = {
+    sleep.extraConfig = ''
+      AllowSuspend=no
+      AllowHibernation=no
+      AllowHybridSleep=no
+      AllowSuspendThenHibernate=no
+    '';
+    user.services.monado.environment = {
+      STEAMVR_LH_ENABLE = "1";
+      XRT_COMPOSITOR_COMPUTE = "1";
+      WMR_HANDTRACKING = "0";
+    };
+  };
 
   powerManagement.enable = false;
 
@@ -255,6 +267,11 @@ hardware = {
 
   gamemode.enable = true;
   nix-ld.enable = true;
+
+  git = {
+    enable = true;
+    lfs.enable = true;
+  };
 };
 
 environment = {
