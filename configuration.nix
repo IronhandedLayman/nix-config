@@ -68,7 +68,6 @@ networking = {
 };
 
 hardware = {
-
   graphics = {
     enable = true;
     enable32Bit = true;
@@ -88,7 +87,7 @@ hardware = {
       powerManagement.finegrained = false;
       open = false;
       nvidiaSettings = true;
-      package = config.boot.kernelPackages.nvidiaPackages.stable;
+      package = config.boot.kernelPackages.nvidiaPackages.beta;
     };
   };
 
@@ -140,7 +139,13 @@ hardware = {
   };
 
   # Enable CUPS to print documents.
-  printing.enable = true;
+  printing = {
+    enable = true;
+    drivers = [
+      pkgs-stable.canon-cups-ufr2
+      pkgs.canon-capt
+    ];
+  };
 
   openssh = {
     enable = true;
@@ -277,11 +282,14 @@ environment = {
     glxinfo
     go
     grim
+    gutenprint
+    gutenprintBin
     hyprpaper
     hyprpicker
     inetutils
     kicad
     lf
+    libreoffice
     linux-firmware
     lshw
     mako
@@ -317,6 +325,7 @@ environment = {
     xorg.libX11
   ]) ++ 
   (with pkgs-stable; [
+    canon-cups-ufr2
     openscad
     vim 
   ]);

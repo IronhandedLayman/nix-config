@@ -27,8 +27,8 @@
     let 
       system = "x86_64-linux";
       lib = nixpkgs.lib;
-      pkgs = nixpkgs.legacyPackages.${system};
-      pkgs-stable = nixpkgs-stable.legacyPackages.${system};
+      pkgs = import nixpkgs;
+      pkgs-stable = import nixpkgs-stable { inherit system; config.allowUnfree = true; };
       username = "ironhandedlayman";
       hostname = "hokusai";
     in {
