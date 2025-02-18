@@ -14,8 +14,8 @@
   boot.kernelPatches = [
     { name = "drm-edid-Add-Vive-pro-2";
       patch = ./vivepatches/0001-drm-edid-Add-Vive-Cosmos-Vive-Pro-2-to-non-desktop-l.patch;} 
-    { name = "drm-edid-parse-DRM-VESA";
-    patch = ./vivepatches/0002-drm-edid-parse-DRM-VESA-dsc-bpp-target_fixw.patch;}
+#    { name = "drm-edid-parse-DRM-VESA";
+#      patch = ./vivepatches/0002-drm-edid-parse-DRM-VESA-dsc-bpp-target_fixw.patch;}
 #    { name = "drm-amd-use-fixed-dsc";
 #    patch = ./vivepatches/0003-drm-amd-use-fixed-dsc-bits-per-pixel-from-edid.patch;} 
   ];
