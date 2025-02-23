@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, pkgs-stable, vivepro2Driver, ... }:
+{ config, pkgs, pkgs-stable, ... }:
 {
   ## Nix global settings
 
@@ -37,7 +37,7 @@
     kernelParams = [
       "nvidia-drm.modeset=1"
       "nvidia-drm.fbdev=1"
-      "initcall_blacklist=simpledrm_platform_driver_init"
+      "initcall_blacklist=simpledrm_platform_driver_init" # TODO: 2025-02-23 is this still needed?
     ];
   #  kernelPatches = vivepro2Driver.kernelPatches;
   loader = {
@@ -282,6 +282,7 @@ hardware = {
     hyprland = {
       enable = true;
       xwayland.enable = true;
+    # if you want to pull from another hyprland version (like from the dev version)
     # package = hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
     # portalPackage = hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
   };
@@ -377,6 +378,7 @@ environment = {
     openscad
     vim 
   ]);
+   # This section below also allows you to add packages from hyprland's package selection
    # ++
    # (with hyprland.inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system}; [
    # ]);
