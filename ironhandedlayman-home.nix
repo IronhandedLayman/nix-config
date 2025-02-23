@@ -27,6 +27,7 @@ in {
       wlr-randr
       pyradio
       vlc
+      poppler_utils
     ];
 
     file = {
