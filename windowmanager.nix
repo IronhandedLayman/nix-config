@@ -33,14 +33,25 @@ home.packages = with pkgs; [
       "$menu" = "${pkgs.wofi}/bin/wofi --show drun";
       "$terminal" = "${pkgs.foot}/bin/foot";
       "$mod" = "MOD4";
+      "$rightMon" = "HDMI-A-1";
+      "$leftMon" = "HDMI-A-2";
       
       monitor = [
-        "HDMI-A-1, 3840x2160@120, 0x0, 1,vrr,1"
-        "HDMI-A-2, 3840x2160, -3840x0, 1"
+        "$rightMon, 3840x2160@120, 0x0, 1,vrr,1"
+        "$leftMon, 3840x2160, -3840x0, 1"
       ];
-      
+
+      workspace = builtins.concatLists (builtins.genList (i:
+      let 
+        ls = toString (2*i+2); 
+        rs = toString (2*i+1); 
+      in [
+        "${ls}, monitor:$leftMon"
+        "${rs}, monitor:$rightMon"
+      ]) 5 );
+
       exec-once = [
-        "${pkgs.waybar}/bin/waybar &"
+        #"${pkgs.waybar}/bin/waybar &" # evidently this loads automatically? let's find out.
         "${pkgs.hyprpaper}/bin/hyprpaper &"
         "${pkgs.waybar}/bin/waybar"
       ];
@@ -61,8 +72,8 @@ home.packages = with pkgs; [
         gaps_in = 5;
         gaps_out = 5;
         border_size = 2;
-        col.active_border = "rgba(33ccffee) rgba(00ff99ee) 45deg";
-        col.inactive_border = "rgba(595959aa)";
+        "col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
+        "col.inactive_border" = "rgba(595959aa)";
 
         layout = "dwindle";
 
@@ -127,12 +138,12 @@ home.packages = with pkgs; [
       windowrulev2 = "suppressevent maximize, class:.*"; # You'll probably like this.
 
 
-      "$mainMod" = "MOD4"
+      "$mainMod" = "MOD4";
       bind = [
         "$mainMod, Return, exec, $terminal"
         "$mainMod, Q, killactive, "
         "$mainMod, E, exit, "
-        "$mainMod, F, exec, $fileManager"
+        "$mainMod, F, exec, $terminal $fileManager"
         "$mainMod, V, togglefloating, "
         "$mainMod, D, exec, $menu"
         "$mainMod, P, pseudo, " # dwindle
@@ -151,7 +162,7 @@ home.packages = with pkgs; [
       let ws = toString (i+1); in [
         "$mainMod, ${ws}, workspace, ${ws}"
         "$mainMod SHIFT, ${ws}, movetoworkspace, ${ws}"
-      ]) 8 ));
+      ]) 9 ));
 
       bindm = [
         "$mainMod, mouse:272, movewindow"
