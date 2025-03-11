@@ -329,6 +329,7 @@ environment = {
     gcc
     glfw-wayland
     glxinfo
+    godot_4
     go
     grim
     gutenprint
