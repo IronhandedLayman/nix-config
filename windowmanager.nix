@@ -1,8 +1,9 @@
 { pkgs, ... }:
 {
-home.packages = with pkgs; [
+  home.packages = with pkgs; [
     waybar-mpris
   ];
+
   programs.foot = {
     enable = true;
     settings = {
@@ -19,6 +20,33 @@ home.packages = with pkgs; [
       }; 
     };
   };
+
+  programs.rofi = {
+    enable = true;
+    package = pkgs.rofi-wayland;
+    cycle = true;
+    font = "Hack Nerd Font Mono:size=8";
+    terminal = "${pkgs.foot}/bin/foot";
+    theme = "arthur";
+    plugins = with pkgs; [
+      rofi-calc
+      rofi-file-browser
+      rofi-emoji-wayland
+      rofi-screenshot
+      rofi-top
+    ];
+    extraConfig = {
+      modes = [
+        "combi"
+      ];
+      combi-modes = [
+        "window"
+        "drun"
+        "run"
+      ];
+    };
+  };
+
   wayland.windowManager.hyprland = {
     enable = true;
 
@@ -30,12 +58,14 @@ home.packages = with pkgs; [
     settings = {
       # internal Hyprland vars
       "$fileManager" = "${pkgs.yazi}/bin/yazi";
-      "$menu" = "${pkgs.wofi}/bin/wofi --show drun";
+      # "$menu" = "${pkgs.wofi}/bin/wofi --show drun";
+      "$menu" = "${pkgs.rofi-wayland}/bin/rofi -show combi";
+      "$altmenu" = "${pkgs.rofi-wayland}/bin/rofi -plugin-path ${pkgs.rofi-wayland}/lib/rofi -mode calc -show calc";
       "$terminal" = "${pkgs.foot}/bin/foot";
       "$mod" = "MOD4";
       "$rightMon" = "HDMI-A-1";
       "$leftMon" = "HDMI-A-2";
-      
+
       monitor = [
         "$rightMon, 3840x2160@120, 0x0, 1,vrr,1"
         "$leftMon, 3840x2160, -3840x0, 1"
@@ -63,9 +93,9 @@ home.packages = with pkgs; [
 
       # For all categories, see https://wiki.hyprland.org/Configuring/Variables/
       input = {
-          kb_layout = "us";
-          follow_mouse = 1;
-          sensitivity = 0; # -1.0 to 1.0, 0 means no modification.
+        kb_layout = "us";
+        follow_mouse = 1;
+        sensitivity = 0; # -1.0 to 1.0, 0 means no modification.
       };
 
       general = {
@@ -79,7 +109,7 @@ home.packages = with pkgs; [
 
         allow_tearing = false; # not ready for it yet TODO 2025-02-23 try this again?
       };
-      
+
       # once tearing works, test with the below
       # windowrulev2 = immediate, class:^(factorio)$
       # windowrulev2 = immediate, class:^(steam)$
@@ -88,26 +118,26 @@ home.packages = with pkgs; [
           # See https://wiki.hyprland.org/Configuring/Variables/ for more
 
           rounding = 10;
-          
+
           blur = {
-              enabled = true;
-              size = 3;
-              passes = 1;
+            enabled = true;
+            size = 3;
+            passes = 1;
           };
-      
+
       #    drop_shadow = yes
       #    shadow_range = 4
       ##    shadow_render_power = 3
       #       col.shadow = rgba(1a1a1aee)
-      };
-      
-      animations = {
-          enabled = true;
-      
+    };
+
+    animations = {
+      enabled = true;
+
           # Some default animations, see https://wiki.hyprland.org/Configuring/Animations/ for more
-      
+
           bezier = "myBezier, 0.05, 0.9, 0.1, 1.05";
-      
+
           animation = [
             "windows, 1, 7, myBezier"
             "windowsOut, 1, 7, default, popin 80%"
@@ -116,116 +146,136 @@ home.packages = with pkgs; [
             "fade, 1, 7, default"
             "workspaces, 1, 6, default"
           ];
-      };
-      
-      dwindle = {
+        };
+
+        dwindle = {
           # See https://wiki.hyprland.org/Configuring/Dwindle-Layout/ for more
           pseudotile = true; # master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds section below
           "preserve_split" = true; # you probably want this;
-      };
-      
-      gestures = {
+        };
+
+        gestures = {
           # See https://wiki.hyprland.org/Configuring/Variables/ for more
           workspace_swipe = "off";
-      };
-      
-      misc = {
+        };
+
+        misc = {
           # See https://wiki.hyprland.org/Configuring/Variables/ for more
           force_default_wallpaper = 0; # Set to 0 or 1 to disable the anime mascot wallpapers
           # vrr = 1
-      };
-      
-      windowrulev2 = "suppressevent maximize, class:.*"; # You'll probably like this.
-
-
-      "$mainMod" = "MOD4";
-      bind = [
-        "$mainMod, Return, exec, $terminal"
-        "$mainMod, Q, killactive, "
-        "$mainMod, E, exit, "
-        "$mainMod, F, exec, $terminal $fileManager"
-        "$mainMod, V, togglefloating, "
-        "$mainMod, D, exec, $menu"
-        "$mainMod, P, pseudo, " # dwindle
-        "$mainMod, C, togglesplit, " # dwindle
-
-        "$mainMod, H, movefocus, l"
-        "$mainMod, L, movefocus, r"
-        "$mainMod, J, movefocus, u"
-        "$mainMod, K, movefocus, d"
-        "$mainMod, S, togglespecialworkspace, magic"
-        "$mainMod SHIFT, S, movetoworkspace, special:magic"
-        "$mainMod, mouse_down, workspace, e+1"
-        "$mainMod, mouse_up, workspace, e-1"
-      ]
-      ++ ( builtins.concatLists (builtins.genList (i:
-      let ws = toString (i+1); in [
-        "$mainMod, ${ws}, workspace, ${ws}"
-        "$mainMod SHIFT, ${ws}, movetoworkspace, ${ws}"
-      ]) 9 ));
-
-      bindm = [
-        "$mainMod, mouse:272, movewindow"
-        "$mainMod, mouse:273, resizewindow"
-      ];
-
-    };
-  };
-
-  programs.waybar = {
-    enable = true;
-    settings = {
-      mainBar = {
-        layer = "top";
-        position = "top";
-        height = 30;
-        spacing = 4;
-        output = [
-          "*"
-        ];
-        modules-left = [
-          "hyprland/workspaces"
-          "hyprland/submap"
-          "mpris"
-        ];
-        modules-center = [
-          "hyprland/window"
-        ];
-        modules-right = [
-          "idle-inhibitor"
-          "pulseaudio"
-          "network"
-          "cpu"
-          "memory"
-          "temperature"
-          "clock"
-          "tray"
-        ];
-
-        "idle_inhibitor"= {
-          "format"="{icon}";
-          "format-icons"= {
-            "activated"= "";
-            "deactivated"= "";
-          };
         };
-        "tray"= {
-        # "icon-size"= 21;
-        "spacing"= 10;
+
+        windowrulev2 = "suppressevent maximize, class:.*"; # You'll probably like this.
+
+
+        "$mainMod" = "MOD4";
+        bind = [
+          "$mainMod, Return, exec, $terminal"
+          "$mainMod, Q, killactive, "
+          "$mainMod, E, exit, "
+          "$mainMod, F, exec, $terminal $fileManager"
+          "$mainMod, V, togglefloating, "
+          "$mainMod, D, exec, $menu"
+          "$mainMod, B, exec, $altmenu"
+          "$mainMod, P, pseudo, " # dwindle
+          "$mainMod, C, togglesplit, " # dwindle
+
+          "$mainMod, H, movefocus, l"
+          "$mainMod, L, movefocus, r"
+          "$mainMod, J, movefocus, u"
+          "$mainMod, K, movefocus, d"
+          "$mainMod, S, togglespecialworkspace, magic"
+          "$mainMod SHIFT, S, movetoworkspace, special:magic"
+          "$mainMod, mouse_down, workspace, e+1"
+          "$mainMod, mouse_up, workspace, e-1"
+        ]
+        ++ ( builtins.concatLists (builtins.genList (i:
+        let ws = toString (i+1); in [
+          "$mainMod, ${ws}, workspace, ${ws}"
+          "$mainMod SHIFT, ${ws}, movetoworkspace, ${ws}"
+        ]) 9 ));
+
+        bindm = [
+          "$mainMod, mouse:272, movewindow"
+          "$mainMod, mouse:273, resizewindow"
+        ];
+
       };
-      "clock"= {
-        # "timezone"= "America/New_York";
-        "tooltip-format"= "<big>{=%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
-        "format-alt"= "{=%Y-%m-%d}";
-      };
-      "cpu"= {
-        "format"= "{usage}% ";
-        "tooltip"= false;
-      };
-      "memory"= {
-        "format"= "{}% ";
-      };
-      "temperature"= {
+    };
+
+    programs.waybar = {
+      enable = true;
+      settings = {
+        mainBar = {
+          layer = "top";
+          position = "top";
+          height = 30;
+          spacing = 4;
+          output = [
+            "*"
+          ];
+          modules-left = [
+            "hyprland/workspaces"
+            "hyprland/submap"
+            "mpris"
+          ];
+          modules-center = [
+            "hyprland/window"
+          ];
+          modules-right = [
+            "idle-inhibitor"
+            "pulseaudio"
+            "network"
+            "cpu"
+            "memory"
+            "temperature"
+            "clock"
+            "tray"
+          ];
+
+          "idle_inhibitor"= {
+            "format"="{icon}";
+            "format-icons"= {
+              "activated"= "";
+              "deactivated"= "";
+            };
+          };
+          "tray"= {
+            "spacing"= 10;
+          };
+          "clock"= {
+            "tooltip-format"= "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
+            "format-alt"= "{:%Y-%m-%d}";
+            "calendar"= {
+              "mode"          = "year";
+              "mode-mon-col"  = 3;
+              "weeks-pos"     = "right";
+              "on-scroll"     = 1;
+              "on-click-right"= "mode";
+              "format"= {
+                "months"=     "<span color='#ffead3'><b>{}</b></span>";
+                "days"=       "<span color='#ecc6d9'><b>{}</b></span>";
+                "weeks"=      "<span color='#99ffdd'><b>W{}</b></span>";
+                "weekdays"=   "<span color='#ffcc66'><b>{}</b></span>";
+                "today"=      "<span color='#ff6699'><b><u>{}</u></b></span>";
+              };
+            };
+            "actions"= {
+              "on-click-right"= "mode";
+              "on-click-forward"= "tz_up";
+              "on-click-backward"= "tz_down";
+              "on-scroll-up"= "shift_up";
+              "on-scroll-down"= "shift_down";
+            };
+          };
+          "cpu"= {
+          "format"= "{usage}% ";
+          "tooltip"= false;
+          };
+          "memory"= {
+          "format"= "{}% ";
+          };
+          "temperature"= {
         # "thermal-zone"= 2;
         # "hwmon-path"= "/sys/class/hwmon/hwmon2/temp1_input";
         "critical-threshold"= 80;
@@ -282,12 +332,12 @@ home.packages = with pkgs; [
         "format" = "{player_icon} {dynamic}";
         "format-paused"="{player_icon} <i>{dynamic}</i>";
         "player-icons"= {
-		  "default"= "▶";
-		  "mpv"= "🎵";
-	    };
-	    "status-icons"= {
-		  "paused"= "⏸";
-	    };
+          "default"= "▶";
+          "mpv"= "🎵";
+        };
+        "status-icons"= {
+          "paused"= "⏸";
+        };
       };
     };
   };

@@ -1,16 +1,5 @@
 { pkgs, ... }:
 {
-  home.packages = with pkgs; [
-    (lua5_1.withPackages(
-			 ps: with ps; [
-#			 busted
-			 luafilesystem
-			 luarocks
-			 lua-utils-nvim
-			 pathlib-nvim
-			 ]))
-  ];
-  
   programs.nixvim = {
     enable=true;
     globals = {
@@ -64,6 +53,7 @@
 	  fzf-native.enable = true;
 	};
       };
+
       neorg = {
       	enable = true;
 	settings.load = {
@@ -102,9 +92,7 @@
 	    "<C-f>" = "cmp.mapping.scroll_docs(-4)";
 	    "<C-Space>" = "cmp.mapping.complete()";
 	    "<S-Tab>" = "cmp.mapping.close()";
-	    "<Tab>" = 
-	      # lua
-	      ''
+	    "<Tab>" = ''
 		function(fallback)
 		  local line = vim.api.nvim_get_current_line()
 		  if line:match("^%s*$") then
@@ -116,9 +104,7 @@
 		  end
 		end
 	      '';
-	    "<Down>" = 
-	      # lua
-	      ''
+	    "<Down>" = ''
 		function(fallback)
 		  if cmp.visible() then
 		    cmp.select_next_item()
@@ -129,9 +115,7 @@
 		  end
 		end
 	      '';
-	    "<Up>" = 
-	      # lua
-	      ''
+	    "<Up>" = ''
 		function(fallback)
 		  if cmp.visible() then
 		    cmp.select_next_item()
@@ -145,6 +129,7 @@
 	    };
 	  };
 	};
+
 	lsp = {
 	  enable = true;
 
@@ -181,34 +166,6 @@
 	    dockerls.enable = true;
 	  };
 	};
-
-	none-ls = {
-	  enable = true;
-	  sources = {
-	    diagnostics = {
-	      statix.enable = true;
-	      deadnix.enable = true;
-	      pylint.enable = true;
-	    };
-	    formatting = {
-	      alejandra.enable = true;
-	      black.enable = true;
-	      stylua.enable = true;
-              nixpkgs_fmt.enable = true;
-	    };
-	    completion = {
-	      luasnip.enable = true;
-	      spell.enable = true;
-	    };
-	  };
-	};
       };
-      extraLuaPackages = pkgs: with pkgs.luaPackages; [
-#       busted
-        luarocks
-        lua-utils-nvim
-        nvim-nio
-        pathlib-nvim
-      ];
     };
 }

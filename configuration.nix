@@ -352,6 +352,13 @@ environment = {
     pciutils
     podman-tui
     prusa-slicer
+    (rofi-wayland.override { plugins = with pkgs; [
+      rofi-calc
+      rofi-file-browser
+      rofi-emoji-wayland
+      rofi-screenshot
+      rofi-top
+    ];})
     SDL2
     SDL2_gfx
     SDL2_image
