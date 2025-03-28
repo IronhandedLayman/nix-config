@@ -246,7 +246,7 @@ hardware = {
   users.users.ironhandedlayman = {
     isNormalUser = true;
     description = "Ironhandedlayman";
-    extraGroups = [ "networkmanager" "wheel" "video" "audio" "input" "kvm" "render" "polkituser"];
+    extraGroups = [ "networkmanager" "wheel" "video" "audio" "dialout" "input" "kvm" "render" "polkituser"];
     packages = (with pkgs; [
       firefox
       libnotify
@@ -322,6 +322,7 @@ environment = {
     btop
     cups
     dbus
+    devenv
     dive
     egl-wayland
     foot
@@ -337,6 +338,7 @@ environment = {
     hyprpaper
     hyprpicker
     inetutils
+    jq
     kicad
     lf
     libreoffice
@@ -365,6 +367,7 @@ environment = {
     SDL2_sound
     slurp
     socat
+    tree
     unscd
     usbimager
     usbutils
@@ -380,6 +383,7 @@ environment = {
     wofi
     xclip
     xorg.libX11
+    yq
   ]) ++ 
   (with pkgs-stable; [
     canon-cups-ufr2

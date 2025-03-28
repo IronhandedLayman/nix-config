@@ -47,6 +47,16 @@
       nsearch () {
         nix search nixpkgs $1 2>/dev/null
       }
+      # nix details of package
+      ndet () {
+        nix eval --json -f "<nixpkgs>" $1.meta | jq
+      }
     '';
+  };
+
+  programs.direnv = {
+    enable = true;
+    enableZshIntegration = true;
+    nix-direnv.enable = true;
   };
 }

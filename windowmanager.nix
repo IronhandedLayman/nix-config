@@ -2,6 +2,7 @@
 {
   home.packages = with pkgs; [
     waybar-mpris
+    grimblast
   ];
 
   programs.foot = {
