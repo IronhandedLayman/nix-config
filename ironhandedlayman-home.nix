@@ -20,7 +20,6 @@ in {
     username = "${username}";
     homeDirectory = "/home/${username}";
 
-
     packages = with pkgs; [
       nvd
       protonup
@@ -37,6 +36,19 @@ in {
       EDITOR = lib.mkForce "nvim";
       DEFAULT_BROWSER = "${pkgs.firefox}/bin/firefox"; # NOTE: think about other browsers given events around 27-Feb-25
     };
+  };
+
+  programs.obs-studio = {
+    enable = true;
+    plugins = with pkgs.obs-studio-plugins; [
+      wlrobs
+      obs-backgroundremoval
+      obs-pipewire-audio-capture
+      obs-source-switcher
+      advanced-scene-switcher
+      obs-advanced-masks
+      input-overlay
+    ];
   };
 
   programs.git = {
