@@ -166,7 +166,7 @@
           # vrr = 1
         };
 
-        windowrulev2 = "suppressevent maximize, class:.*"; # You'll probably like this.
+        windowrule = "suppressevent maximize, class:.*"; # You'll probably like this.
 
 
         "$mainMod" = "MOD4";
