@@ -27,9 +27,8 @@
     kernelParams = [
       "nvidia-drm.modeset=1"
       "nvidia-drm.fbdev=1"
-      "initcall_blacklist=simpledrm_platform_driver_init" # TODO: 2025-02-23 is this still needed?
+#      "initcall_blacklist=simpledrm_platform_driver_init" # NOTE: 2025-03-30 this was commented out. Safe to remove 2025-05-01
     ];
-  #  kernelPatches = vivepro2Driver.kernelPatches;
   loader = {
     systemd-boot.enable = true;
     efi.canTouchEfiVariables = true;
