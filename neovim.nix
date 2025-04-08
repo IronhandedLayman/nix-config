@@ -35,6 +35,7 @@
       neogit.enable = true;
       lualine.enable = true;
       gitsigns.enable = true;
+      luasnip.enable = true;
 
       telescope = {
         enable = true;
