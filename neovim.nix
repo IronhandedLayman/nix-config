@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 {
   programs.nixvim = {
     enable=true;
@@ -134,11 +134,12 @@
 	lsp = {
 	  enable = true;
 
+	  inlayHints = true;
+
 	  keymaps = {
-	    silent = true;
 	    diagnostic = {
-	      "<leader>k" = "goto_prev";
 	      "<leader>j" = "goto_next";
+	      "<leader>k" = "goto_prev";
 	    };
 
 	    lspBuf = {
@@ -147,11 +148,13 @@
 	      gT = "type_definition";
 	      gi = "implementation";
 	      K = "hover";
-	      "<F2>" = "rename";
+	      #"<F2>" = "rename";
 	    };
 	  };
 
 	  servers = {
+	    bashls.enable = true;
+	    clangd.enable = true;
 	    gopls.enable = true;
 	    nixd.enable = true;
 	    lua_ls.enable = true;

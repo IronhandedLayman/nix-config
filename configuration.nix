@@ -350,6 +350,7 @@ environment = {
       rofi-screenshot
       rofi-top
     ];})
+    qpwgraph
     SDL2
     SDL2_gfx
     SDL2_image

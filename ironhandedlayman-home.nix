@@ -27,6 +27,7 @@ in {
       pyradio
       vlc
       poppler_utils
+      sonic-pi
     ];
 
     file = {
