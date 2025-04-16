@@ -21,6 +21,9 @@ in {
     homeDirectory = "/home/${username}";
 
     packages = with pkgs; [
+      cmake
+      gcc
+      gnumake
       nvd
       protonup
       wlr-randr
@@ -28,6 +31,9 @@ in {
       vlc
       poppler_utils
       sonic-pi
+      just
+      opentofu
+      openstackclient
     ];
 
     file = {
