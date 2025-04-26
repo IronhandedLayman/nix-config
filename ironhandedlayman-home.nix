@@ -1,6 +1,7 @@
 { config, pkgs, lib, ... }:
 let 
   username="ironhandedlayman";
+  flakerepo="Projects/nix-config";
 in {
 
   imports = [
@@ -42,6 +43,8 @@ in {
     sessionVariables = {
       EDITOR = lib.mkForce "nvim";
       DEFAULT_BROWSER = "${pkgs.firefox}/bin/firefox"; # NOTE: think about other browsers given events around 27-Feb-25
+      FLAKE = "/home/${username}/${flakerepo}";
+      NH_FLAKE = "/home/${username}/${flakerepo}";
     };
   };
 

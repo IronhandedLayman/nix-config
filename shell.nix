@@ -39,8 +39,8 @@
       ];
       theme = "agnoster";
     };
-    initExtra = ''
-      source <(nh completions --shell zsh) 
+    initContent = ''
+      source <(nh completions zsh) 
       # routes to Neorg's journal system
       today () {
         nvim +Neorg\ journal\ today

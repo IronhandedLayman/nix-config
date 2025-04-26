@@ -380,6 +380,7 @@ environment = {
     canon-cups-ufr2
     openscad
     vim 
+    sonic-pi
   ]);
    # This section below also allows you to add packages from hyprland's package selection
    # ++
