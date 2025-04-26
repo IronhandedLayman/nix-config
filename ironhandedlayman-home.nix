@@ -30,7 +30,7 @@ in {
       pyradio
       vlc
       poppler_utils
-      sonic-pi
+      # sonic-pi
       just
       opentofu
       openstackclient

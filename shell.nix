@@ -9,7 +9,18 @@
     love
     lsix
     nvme-cli
-    python313
+    (python313.withPackages ( pythonPkgs: with pythonPkgs; [
+      numpy
+      pyarrow
+      torch
+      torchvision
+      torchaudio
+      pandas
+      parquet
+      pip
+      requests
+    ]))
+    parquet-tools
     ripgrep
     tmux
     xxd
