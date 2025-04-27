@@ -143,12 +143,12 @@
 	    };
 
 	    lspBuf = {
-	      gd = "definitions";
+	      gd = "definition";
 	      gD = "references";
 	      gT = "type_definition";
 	      gi = "implementation";
 	      K = "hover";
-	      #"<F2>" = "rename";
+	      "<F2>" = "rename";
 	    };
 	  };
 
