@@ -37,6 +37,11 @@
       gitsigns.enable = true;
       luasnip.enable = true;
 
+      ollama = {
+	enable = true;
+	model = "hf.co/unsloth/DeepSeek-R1-Distill-Llama-8B-GGUF:Q8_0";
+      };
+
       telescope = {
         enable = true;
 	keymaps = {
