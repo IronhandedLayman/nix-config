@@ -49,7 +49,12 @@ networking = {
   networkmanager.enable = true;
   firewall = {
     enable = true;
-    allowedTCPPorts = [ 80 443 5353 11434 ];
+    allowedTCPPorts = [ 
+      80 443  # https
+      5353    # mdns 
+      7100 7000 7001 # airplay
+      11434   # ollama 
+    ];
     allowedUDPPortRanges = [
       {from = 4000; to=12000;}
     ];
@@ -107,15 +112,21 @@ hardware = {
 
   avahi = {
     enable = true;
+    nssmdns = true;
     nssmdns4 = true;
+    nssmdns6 = true;
     ipv4 = true;
     ipv6 = true;
     openFirewall = true;
     publish = {
       enable = true;
+      userServices = true;
+      hinfo = true;
+      domain = true;
       addresses = true;
       workstation = true;
     };    
+    reflector=true;
   };
 
   # Enable Wayland (enabling xserver is a canard, does not actually enable X11)
@@ -135,9 +146,10 @@ hardware = {
   # Enable CUPS to print documents.
   printing = {
     enable = true;
+    logLevel = "debug";
     drivers = [
+      pkgs.canon-cups-ufr2
       pkgs.canon-capt
-      pkgs-stable.canon-cups-ufr2
     ];
   };
 
@@ -193,6 +205,7 @@ hardware = {
       XRT_COMPOSITOR_COMPUTE = "1";
       WMR_HANDTRACKING = "0";
     };
+    services.avahi-daemon.enable=true;
   };
 
   powerManagement.enable = false;
@@ -363,6 +376,7 @@ environment = {
     usbimager
     usbutils
     uv
+    uxplay
     vkmark
     vulkan-tools
     waybar

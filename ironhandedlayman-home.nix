@@ -53,11 +53,13 @@ in {
     plugins = with pkgs.obs-studio-plugins; [
       wlrobs
       obs-backgroundremoval
-      obs-pipewire-audio-capture
-      obs-source-switcher
-      advanced-scene-switcher
-      obs-advanced-masks
-      input-overlay
+      obs-color-monitor
+      obs-gstreamer
+      #obs-pipewire-audio-capture
+      #obs-source-switcher
+      #advanced-scene-switcher
+      #obs-advanced-masks
+      #input-overlay
     ];
   };
 
