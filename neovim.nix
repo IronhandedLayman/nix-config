@@ -28,14 +28,17 @@
     };
 
     plugins = {
+      # all the following with basic options
       bufferline.enable = true;
+      fugitive.enable = true;
+      gitsigns.enable = true;
+      lualine.enable = true;
+      luasnip.enable = true;
+      neogit.enable = true;
+      nix.enable = true;
       sleuth.enable = true;
       web-devicons.enable = true;
-      fugitive.enable = true;
-      neogit.enable = true;
-      lualine.enable = true;
-      gitsigns.enable = true;
-      luasnip.enable = true;
+      treesitter.enable = true;
 
       ollama = {
 	enable = true;
@@ -63,8 +66,12 @@
       neorg = {
       	enable = true;
 	settings.load = {
+	  # modules using default settings
 	  "core.defaults" = { __empty = null;};
 	  "core.concealer" = { __empty = null;};
+	  "core.integrations.image" = { __empty = null;};
+	  "core.latex.renderer" = { __empty = null;};
+
 	  "core.dirman" = {
 	    config = {
 	      workspaces = {
@@ -75,10 +82,9 @@
 	  };
 	};
       };
-      nix.enable = true;
-      treesitter = {
-        enable = true;
-      };
+
+      
+
       cmp = {
         enable = true;
 	autoEnableSources = true;
