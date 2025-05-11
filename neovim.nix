@@ -39,6 +39,7 @@
       sleuth.enable = true;
       web-devicons.enable = true;
       treesitter.enable = true;
+      image.enable=true;
 
       ollama = {
 	enable = true;
@@ -71,6 +72,9 @@
 	  "core.concealer" = { __empty = null;};
 	  "core.integrations.image" = { __empty = null;};
 	  "core.latex.renderer" = { __empty = null;};
+	  "core.esupports.metagen" = { 
+	    type = "auto";
+	  };
 
 	  "core.dirman" = {
 	    config = {
