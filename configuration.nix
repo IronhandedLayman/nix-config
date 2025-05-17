@@ -108,6 +108,7 @@ hardware = {
   # Extra rules for 8BitDo IDLE 2dc8:3109
   udev.extraRules = ''
       ACTION=="add", ATTRS{idVendor}=="2dc8", ATTRS{idProduct}=="3109", MODE="0666"
+      KERNEL=="uinput", MODE="0666"
   '';
 
   avahi = {

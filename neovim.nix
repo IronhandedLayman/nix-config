@@ -22,6 +22,16 @@
       foldlevel = 99;
     };
 
+    diagnostics = {
+      virtual_text = {
+	severity.min = "warn";
+	source = "if_many";
+      };
+      virtual_lines = {
+	current_line = true;
+      };
+    };
+
     colorschemes.base16 = {
       enable = true;
       colorscheme = "atelier-dune";
@@ -170,7 +180,17 @@
 	  servers = {
 	    bashls.enable = true;
 	    clangd.enable = true;
-	    gopls.enable = true;
+	    gopls = {
+	      enable = true;
+	      settings = {
+		hints = {
+		  enable = true;
+		  functionTypeParameters = true;
+		  parameterNames = true;
+		  rangeVariableTypes = true;
+		};
+	      };
+	    };
 	    nixd.enable = true;
 	    lua_ls.enable = true;
 	    texlab.enable = true;

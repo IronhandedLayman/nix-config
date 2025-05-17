@@ -76,9 +76,10 @@
       let 
         ls = toString (2*i+2); 
         rs = toString (2*i+1); 
+        defme = if i==0 then ", default:true" else "";
       in [
-        "${ls}, monitor:$leftMon"
-        "${rs}, monitor:$rightMon"
+        "${ls}, monitor:$leftMon${defme}"
+        "${rs}, monitor:$rightMon${defme}"
       ]) 5 );
 
       exec-once = [
@@ -90,6 +91,9 @@
       env = [
         "XCURSOR_SIZE,24"
         "QT_QPA_PLATFORMTHEME,qt5ct" # change to qt6ct if you have that
+        # for NVIDIA, not sure if necessary, will try it
+        "LIBVA_DRIVER_NAME,nvidia"
+        "__GLX_VENDOR_LIBRARY_NAME,nvidia"
       ];
 
       # For all categories, see https://wiki.hyprland.org/Configuring/Variables/
@@ -181,6 +185,7 @@
           "$mainMod, B, exec, $altmenu"
           "$mainMod, P, pseudo, " # dwindle
           "$mainMod, C, togglesplit, " # dwindle
+          "$mainMod, X, movewindow, mon:+1"
 
           "$mainMod, H, movefocus, l"
           "$mainMod, L, movefocus, r"
