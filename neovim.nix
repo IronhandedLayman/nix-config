@@ -205,6 +205,13 @@
 	    dockerls.enable = true;
 	  };
 	};
+      dap = {
+	enable=true;
+      };
+      dap-go.enable = true;
+      dap-python.enable = true;
+      dap-lldb.enable = true;
+
       };
     };
 }

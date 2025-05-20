@@ -22,7 +22,12 @@ in {
     homeDirectory = "/home/${username}";
 
     packages = with pkgs; [
+      bitwarden
+      bitwarden-cli
+      bitwarden-menu
+      bitwarden-desktop
       cmake
+      delve
       gcc
       gnumake
       nvd
