@@ -49,6 +49,8 @@ networking = {
   networkmanager.enable = true;
   firewall = {
     enable = true;
+    allowPing = true;
+    
     allowedTCPPorts = [ 
       80 443  # https
       5353    # mdns 
@@ -113,9 +115,8 @@ hardware = {
 
   avahi = {
     enable = true;
-    nssmdns = true;
     nssmdns4 = true;
-    nssmdns6 = true;
+  #  nssmdns6 = true;
     ipv4 = true;
     ipv6 = true;
     openFirewall = true;
