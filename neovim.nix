@@ -22,13 +22,16 @@
       foldlevel = 99;
     };
 
-    diagnostics = {
-      virtual_text = {
-	severity.min = "warn";
-	source = "if_many";
-      };
-      virtual_lines = {
-	current_line = true;
+    diagnostic = {
+      # enable = true;
+      settings = {
+	virtual_text = {
+	  severity.min = "warn";
+	  source = "if_many";
+	};
+	virtual_lines = {
+	  current_line = true;
+	};
       };
     };
 
@@ -89,8 +92,9 @@
 	  "core.dirman" = {
 	    config = {
 	      workspaces = {
-	        notes = "~/notes";
+		notes = "~/notes";
 	      };
+	      # index = "~/notes/index.norg";
 	      default_workspace = "notes";
 	    };
 	  };

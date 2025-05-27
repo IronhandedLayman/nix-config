@@ -30,6 +30,7 @@ in {
       delve
       gcc
       gnumake
+      k3s
       nvd
       protonup
       wlr-randr

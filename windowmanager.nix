@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   home.packages = with pkgs; [
     waybar-mpris
@@ -26,9 +26,9 @@
     enable = true;
     package = pkgs.rofi-wayland;
     cycle = true;
-    font = "Hack Nerd Font Mono:size=8";
+    font = "Hack Nerd Font 12";
     terminal = "${pkgs.foot}/bin/foot";
-    theme = "arthur";
+    theme = "Indego";
     plugins = with pkgs; [
       rofi-calc
       rofi-file-browser
@@ -36,14 +36,16 @@
       rofi-screenshot
       rofi-top
     ];
+    modes = [
+      "combi"
+      {name = "calc";path = "${pkgs.rofi-calc}/lib/rofi/calc.so";}
+    ];
     extraConfig = {
-      modes = [
-        "combi"
-      ];
       combi-modes = [
         "window"
         "drun"
         "run"
+        "calc"
       ];
     };
   };
