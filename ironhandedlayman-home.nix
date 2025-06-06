@@ -28,11 +28,15 @@ in {
       bitwarden-desktop
       cmake
       delve
+      duf
+      eza
+      fd
       gcc
       gnumake
       k3s
       kdePackages.kdenlive
       inkscape-with-extensions
+      ncdu
       nvd
       protonup
       wlr-randr

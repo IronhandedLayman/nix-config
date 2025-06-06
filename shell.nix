@@ -39,6 +39,9 @@
       ];
       theme = "agnoster";
     };
+    shellAliases = {
+      ll = "exa --icons -l";
+    };
     initContent = ''
       source <(nh completions zsh) 
       # routes to Neorg's journal system
