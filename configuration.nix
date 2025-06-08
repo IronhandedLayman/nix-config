@@ -131,14 +131,14 @@ hardware = {
     reflector=true;
   };
 
+    ## Enable the GNOME Desktop Environment.
+  displayManager.gdm.enable = true;
+  displayManager.gdm.wayland = true;
+  desktopManager.gnome.enable = true;
+
   # Enable Wayland (enabling xserver is a canard, does not actually enable X11)
   xserver = {
     enable = true;
-
-    ## Enable the GNOME Desktop Environment.
-    displayManager.gdm.enable = true;
-    displayManager.gdm.wayland = true;
-    desktopManager.gnome.enable = true;
 
     ## Configure keymap in X11
     xkb.layout = "us";

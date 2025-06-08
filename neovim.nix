@@ -42,6 +42,7 @@
 
     plugins = {
       # all the following with basic options
+      flash.enable = true;
       bufferline.enable = true;
       fugitive.enable = true;
       gitsigns.enable = true;
