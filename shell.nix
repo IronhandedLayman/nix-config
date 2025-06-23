@@ -2,6 +2,8 @@
 {
   home.packages = with pkgs; [
     bat
+    gnupg
+    pinentry
     fastfetch
     fzf
     hexedit
@@ -10,6 +12,7 @@
     lsix
     nvme-cli
     (python313.withPackages ( pythonPkgs: with pythonPkgs; [
+      django
       nltk
       nltk-data
       numpy
