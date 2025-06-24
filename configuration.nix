@@ -367,6 +367,8 @@ environment = {
       rofi-top
     ];})
     qpwgraph
+    rclone
+    rclone-browser
     SDL2
     SDL2_gfx
     SDL2_image
