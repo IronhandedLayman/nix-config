@@ -33,6 +33,7 @@ in {
       eza
       fd
       gcc
+      gh
       gnumake
       k3s
       kdePackages.kdenlive
