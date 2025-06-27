@@ -27,7 +27,6 @@
     kernelParams = [
       "nvidia-drm.modeset=1"
       "nvidia-drm.fbdev=1"
-#      "initcall_blacklist=simpledrm_platform_driver_init" # NOTE: 2025-03-30 this was commented out. Safe to remove 2025-05-01
     ];
   loader = {
     systemd-boot.enable = true;
@@ -264,14 +263,13 @@ hardware = {
     noto-fonts
     noto-fonts-cjk-sans
     noto-fonts-emoji
-    nerdfonts
     liberation_ttf
     fira-code
     fira-code-symbols
     mplus-outline-fonts.githubRelease
     dina-font
     proggyfonts 
-    ];
+    ] ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs-stable.nerd-fonts);
     fontDir.enable = true;
   };
 
@@ -327,7 +325,6 @@ environment = {
     btop
     cups
     dbus
-    devenv
     dive
     egl-wayland
     foot
@@ -396,6 +393,8 @@ environment = {
   ]) ++ 
   (with pkgs-stable; [
     canon-cups-ufr2
+    #devenv
+    # devenv
     openscad
     vim 
     sonic-pi
