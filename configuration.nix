@@ -366,6 +366,8 @@ environment = {
     qpwgraph
     rclone
     rclone-browser
+    screenkey
+    slop
     SDL2
     SDL2_gfx
     SDL2_image
@@ -380,9 +382,11 @@ environment = {
     uxplay
     vkmark
     vulkan-tools
+    wally-cli
     waybar
     wayland
     wayland-scanner
+    wshowkeys
     wget
     wl-clipboard
     wlr-randr
