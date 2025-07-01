@@ -43,6 +43,8 @@ in {
       protonup
       wlr-randr
       pyradio
+      ruff
+      taplo
       vlc
       poppler_utils
       # sonic-pi
