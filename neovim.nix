@@ -58,6 +58,7 @@
       gitsigns.enable = true;
       lualine.enable = true;
       luasnip.enable = true;
+      markdown-preview.enable = true;
       neogit.enable = true;
       nix.enable = true;
       sleuth.enable = true;
