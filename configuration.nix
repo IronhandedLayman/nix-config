@@ -410,6 +410,10 @@
   };
 
   environment = {
+    pathsToLink = [
+      "/share/zsh"
+      "/usr/lib"
+    ];
     shells = with pkgs; [
       bash
       zsh
@@ -504,6 +508,11 @@
         openscad
         vim
         sonic-pi
+      ]) ++
+      (with pkgs.nltk-data; [
+        words
+        wordnet
+        wordnet31
       ]);
     # This section below also allows you to add packages from hyprland's package selection
     # ++
@@ -514,12 +523,18 @@
       LIBVA_DRIVER_NAME = "nvidia";
       MOZ_ENABLE_WAYLAND = "1";
       #     WLR_DRM_DEVICES="/dev/dri/card1";
-      #      WLR_DRM_NO_MODIFIERS="1";
+      #     WLR_DRM_NO_MODIFIERS="1";
       WLR_NO_HARDWARE_CURSORS = "1";
       LD_LIBRARY_PATH = "/run/opengl-driver/lib:/run/opengl-driver-32/lib";
-      XDG_SESSION_TYPE = "wayland";
+      DG_SESSION_TYPE = "wayland";
       #      __GLX_VENDOR_LIBRARY_NAME = "nvidia";
       NIXOS_OZONE_WL = "1";
     };
   };
+  system.activationScripts.text = "
+    mkdir -p /usr/share/nltk_data/corpora
+    ln -sf ${pkgs.nltk-data.words}/corpora/words /usr/share/nltk_data/corpora/words
+    ln -sf ${pkgs.nltk-data.wordnet}/corpora/wordnet /usr/share/nltk_data/corpora/wordnet
+    ln -sf ${pkgs.nltk-data.wordnet31}/corpora/wordnet31 /usr/share/nltk_data/corpora/wordnet31
+  ";
 }
