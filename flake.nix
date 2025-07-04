@@ -46,7 +46,6 @@
           inherit system;
           modules = [
             ./configuration.nix
-            #          vivepro2Driver.driver-proxy-release
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
@@ -58,7 +57,6 @@
                 inherit username;
                 inherit hostname;
                 inherit pkgs-stable;
-                inherit hyprland;
               };
               home-manager.users.${username} = import ./ironhandedlayman-home.nix;
             }
@@ -67,7 +65,6 @@
             inherit username;
             inherit hostname;
             inherit pkgs-stable;
-            inherit hyprland;
           };
         };
       };
