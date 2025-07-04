@@ -3,6 +3,9 @@
   home.packages = with pkgs; [
     waybar-mpris
     grimblast
+    rofi-calc
+    rofi-file-browser
+    rofi-emoji
   ];
 
   programs.foot = {
@@ -32,20 +35,17 @@
     plugins = with pkgs; [
       rofi-calc
       rofi-file-browser
-      rofi-emoji-wayland
-      rofi-screenshot
-      rofi-top
+      rofi-emoji
     ];
     modes = [
       "combi"
-      { name = "calc"; path = "${pkgs.rofi-calc}/lib/rofi/calc.so"; }
     ];
     extraConfig = {
+      matching = "fuzzy";
       combi-modes = [
-        "window"
         "drun"
+        "window"
         "run"
-        "calc"
       ];
     };
   };

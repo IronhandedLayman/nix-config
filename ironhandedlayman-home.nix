@@ -27,6 +27,8 @@ rec {
       gcc
       gnumake
       k3s
+      kdePackages.kdenlive
+      inkscape-with-extensions
       nvd
       protonup
       wlr-randr
