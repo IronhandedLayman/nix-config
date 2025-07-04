@@ -28,10 +28,10 @@
     {
       darwinConfigurations =
         let
+          hostname = "kataribe";
           system = "aarch64-darwin";
           pkgs = nixpkgs.legacyPackages.${system};
           pkgs-stable = nixpkgs-stable.legacyPackages.${system};
-          hostname = "kataribe";
         in
         {
           ${hostname} = nix-darwin.lib.darwinSystem {
@@ -57,10 +57,10 @@
         };
       nixosConfigurations =
         let
+          hostname = "hokusai";
           system = "x86_64-linux";
           pkgs = nixpkgs.legacyPackages.${system};
           pkgs-stable = nixpkgs-stable.legacyPackages.${system};
-          hostname = "hokusai";
         in
         {
           ${hostname} = nixpkgs.lib.nixosSystem {
