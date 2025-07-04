@@ -49,6 +49,7 @@
     hexedit
     xxd
     tmux
+    nvme-cli
   ];
 
   home.file = {
