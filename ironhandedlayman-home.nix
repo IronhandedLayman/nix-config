@@ -22,6 +22,7 @@ rec {
       bitwarden-cli
       bitwarden-menu
       bitwarden-desktop
+      buf
       cmake
       delve
       duf
