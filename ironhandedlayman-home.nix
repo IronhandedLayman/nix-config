@@ -2,12 +2,44 @@
 rec {
   imports = [
     ./neovim.nix # imports nixvim settings
-  ]; 
+  ];
   home.username = "ironhandedlayman";
   home.homeDirectory = "/home/${home.username}";
 
   programs.zsh = {
     enable = true;
+    source = config.lib.file.mkOutOfStoreSymlink "/run/current-system/sw/share/X11/fonts";
+  };
+
+  home = {
+    stateVersion = "23.11";
+
+    username = "${username}";
+    homeDirectory = "/home/${username}";
+
+    packages = with pkgs; [
+      bitwarden
+      bitwarden-cli
+      bitwarden-menu
+      bitwarden-desktop
+      cmake
+      delve
+      gcc
+      gnumake
+      nvd
+      protonup
+      wlr-randr
+      pyradio
+      vlc
+      poppler_utils
+      # sonic-pi
+      just
+      opentofu
+      openstackclient
+    ];
+
+    file = { };
+
     sessionVariables = {
       EDITOR = "nvim";
     };
@@ -34,14 +66,14 @@ rec {
     '';
   };
 
-  home.stateVersion = "23.11"; 
+  home.stateVersion = "23.11";
 
   home.packages = with pkgs; [
     fastfetch
     protonup
     wlr-randr
     joplin
-    joplin-desktop 
+    joplin-desktop
     fzf
     lsix
     love
@@ -58,17 +90,15 @@ rec {
 
   # TODO: reenable when flakes are finally brought current
   # programs.nh = {
-    # enable = true;
-    # clean.enable = true;
-    # clean.extraArgs = "--keep-since 14d --keep 3";
-    # flake = "${home.homeDirectory}/Projects/nix-config#hokusai";
+  # enable = true;
+  # clean.enable = true;
+  # clean.extraArgs = "--keep-since 14d --keep 3";
+  # flake = "${home.homeDirectory}/Projects/nix-config#hokusai";
   # };
 
-  home.file = {
-  };
+  home.file = { };
 
-  home.sessionVariables = {
-  };
+  home.sessionVariables = { };
 
   programs.foot = {
     enable = true;
@@ -82,8 +112,8 @@ rec {
         hide-when-typing = "yes";
       };
       colors = {
-        alpha="0.8";
-      }; 
+        alpha = "0.8";
+      };
     };
   };
 
@@ -93,7 +123,7 @@ rec {
     userName = "ironhandedlayman";
     userEmail = "leadhyena@gmail.com";
     extraConfig = {
-      init.defaultBranch = "main"; 
+      init.defaultBranch = "main";
     };
   };
 
