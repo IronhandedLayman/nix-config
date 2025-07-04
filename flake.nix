@@ -17,36 +17,44 @@
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    vivepro2Driver = {
-      url = "github:CertainLach/VivePro2-Linux-Driver";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+    #vivepro2Driver = {
+    #url = "github:CertainLach/VivePro2-Linux-Driver";
+    #inputs.nixpkgs.follows = "nixpkgs";
+    #};
+    # hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
 
-    nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-24.05-darwin";
-    nix-darwin.url = "github:LnL7/nix-darwin";
-    nix-darwin.inputs.nixpkgs.follows = "nixpkgs-darwin";
+    nix-darwin.url = "github:nix-darwin/nix-darwin/master";
+    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = inputs@{ self, hyprland, nixpkgs, nixpkgs-stable, home-manager, nixvim, vivepro2Driver, nix-darwin, ... }:
+  outputs = inputs@{ self, nixpkgs, nixpkgs-stable, home-manager, nixvim, nix-darwin, ... }:
     let
-      system = "x86_64-linux";
-      lib = nixpkgs.lib;
-      pkgs = nixpkgs.legacyPackages.${system};
-      pkgs-stable = nixpkgs-stable.legacyPackages.${system};
       username = "ironhandedlayman";
     in
     {
-      darwinConfigurations."kataribe" = nix-darwin.lib.darwinSystem {
-        modules = [ ./kataribe-configuration.nix ];
-      };
+      darwinConfigurations =
+        let
+          system = "aarch64-darwin";
+          pkgs = nixpkgs.legacyPackages.${system};
+          pkgs-stable = nixpkgs-stable.legacyPackages.${system};
+          hostname = "kataribe";
+        in
+        {
+          ${hostname} = nix-darwin.lib.darwinSystem {
+            modules = [ ./kataribe-configuration.nix ];
+            specialArgs = { inherit inputs pkgs pkgs-stable hostname; };
+          };
+        };
       nixosConfigurations =
         let
+          system = "x86_64-linux";
+          pkgs = nixpkgs.legacyPackages.${system};
+          pkgs-stable = nixpkgs-stable.legacyPackages.${system};
           hostname = "hokusai";
         in
         {
           ${hostname} = nixpkgs.lib.nixosSystem {
-            inherit system;
+            inherit system pkgs pkgs-stable hostname;
             modules = [
               ./configuration.nix
               home-manager.nixosModules.home-manager
@@ -60,7 +68,6 @@
                   inherit username;
                   inherit hostname;
                   inherit pkgs-stable;
-                  #                  inherit hyprland;
                 };
                 home-manager.users.${username} = import ./ironhandedlayman-home.nix;
               }
@@ -69,7 +76,6 @@
               inherit username;
               inherit hostname;
               inherit pkgs-stable;
-              #            inherit hyprland;
             };
           };
         };
