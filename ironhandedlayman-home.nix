@@ -1,15 +1,9 @@
-{ config, pkgs, nixvim, ... }:
-rec {
+{ config, pkgs, username, system, ... }:
+{
   imports = [
     ./neovim.nix # imports nixvim settings
+    ./shell.nix
   ];
-  home.username = "ironhandedlayman";
-  home.homeDirectory = "/home/${home.username}";
-
-  programs.zsh = {
-    enable = true;
-    source = config.lib.file.mkOutOfStoreSymlink "/run/current-system/sw/share/X11/fonts";
-  };
 
   home = {
     stateVersion = "23.11";
@@ -18,36 +12,49 @@ rec {
     homeDirectory = "/home/${username}";
 
     packages = with pkgs; [
+      bat
       bitwarden
       bitwarden-cli
-      bitwarden-menu
       bitwarden-desktop
+      bitwarden-menu
       buf
       cmake
       delve
       duf
       eza
+      fastfetch
       fd
+      fzf
       gcc
       gh
       gnumake
-      k3s
-      kdePackages.kdenlive
+      hexedit
+      hexyl
+      imhex
       inkscape-with-extensions
+      just
+      k3s
+      love
+      lsix
       ncdu
+      nh
       nvd
-      protonup
-      wlr-randr
+      nvme-cli
+      openstackclient
+      opentofu
+      poppler_utils
       pyradio
       ruff
       taplo
+      tmux
       vlc
-      poppler_utils
-      # sonic-pi
-      just
-      opentofu
-      openstackclient
-    ];
+      xxd
+    ] ++ (if (system == "x86_64-linux") then
+      (with pkgs; [
+        kdePackages.kdenlive
+        protonup
+        wlr-randr
+      ]) else [ ]);
 
     file = { };
 
@@ -70,34 +77,16 @@ rec {
       wiki () {
         nvim +Neorg\ index
       }
-      wp () {
-        mon=`hyprctl monitors | awk '/^Monitor/{print $2}' | fzf --height=6`
-        echo "will change monitor $mon"
-      }
-    '';
+    '' ++ (if (system == "x86_64-linux") then
+      (
+        ''
+          wp () {
+            mon=`hyprctl monitors | awk '/^Monitor/{print $2}' | fzf --height=6`
+            echo "will change monitor $mon"
+          }
+        ''
+      ) else "");
   };
-
-  home.stateVersion = "23.11";
-
-  home.packages = with pkgs; [
-    fastfetch
-    protonup
-    wlr-randr
-    joplin
-    joplin-desktop
-    fzf
-    lsix
-    love
-    bat
-    imhex
-    hexyl
-    hexedit
-    xxd
-    tmux
-    nvme-cli
-    nh
-    nvd
-  ];
 
   # TODO: reenable when flakes are finally brought current
   # programs.nh = {
@@ -137,6 +126,12 @@ rec {
       init.defaultBranch = "main";
     };
   };
+
+  programs.zsh = {
+    enable = true;
+    source = config.lib.file.mkOutOfStoreSymlink "/run/current-system/sw/share/X11/fonts";
+  };
+
 
   programs.home-manager.enable = true;
 }

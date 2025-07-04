@@ -1,6 +1,5 @@
 {
-  description = "Initial nixos system flake based on Hokusai";
-
+  description = "Builds all ironhandedlayman systems the Nix way";
 
   inputs = {
     nixpkgs = {
@@ -17,11 +16,6 @@
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    #vivepro2Driver = {
-    #url = "github:CertainLach/VivePro2-Linux-Driver";
-    #inputs.nixpkgs.follows = "nixpkgs";
-    #};
-    # hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
 
     nix-darwin.url = "github:nix-darwin/nix-darwin/master";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
@@ -41,8 +35,24 @@
         in
         {
           ${hostname} = nix-darwin.lib.darwinSystem {
-            modules = [ ./kataribe-configuration.nix ];
-            specialArgs = { inherit inputs pkgs pkgs-stable hostname; };
+            modules = [
+              ./kataribe-configuration.nix
+              home-manager.darwinModules.home-manager
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.sharedModules = [
+                  nixvim.homeManagerModules.nixvim
+                ];
+                home-manager.extraSpecialArgs = {
+                  inherit username;
+                  inherit hostname;
+                  inherit pkgs-stable;
+                };
+                home-manager.users.${username} = import ./ironhandedlayman-home.nix;
+              }
+            ];
+            specialArgs = { inherit inputs pkgs pkgs-stable username hostname; };
           };
         };
       nixosConfigurations =

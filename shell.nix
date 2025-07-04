@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 {
   home.packages = with pkgs; [
     bat
@@ -11,7 +11,7 @@
     love
     lsix
     nvme-cli
-    (python313.withPackages ( pythonPkgs: with pythonPkgs; [
+    (python313.withPackages (pythonPkgs: with pythonPkgs; [
       django
       nltk
       nltk-data
