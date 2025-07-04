@@ -35,38 +35,43 @@
       pkgs = nixpkgs.legacyPackages.${system};
       pkgs-stable = nixpkgs-stable.legacyPackages.${system};
       username = "ironhandedlayman";
-      hostname = "hokusai";
     in
     {
       darwinConfigurations."kataribe" = nix-darwin.lib.darwinSystem {
         modules = [ ./kataribe-configuration.nix ];
       };
-      nixosConfigurations = {
-        ${hostname} = nixpkgs.lib.nixosSystem {
-          inherit system;
-          modules = [
-            ./configuration.nix
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.sharedModules = [
-                nixvim.homeManagerModules.nixvim
-              ];
-              home-manager.extraSpecialArgs = {
-                inherit username;
-                inherit hostname;
-                inherit pkgs-stable;
-              };
-              home-manager.users.${username} = import ./ironhandedlayman-home.nix;
-            }
-          ];
-          specialArgs = {
-            inherit username;
-            inherit hostname;
-            inherit pkgs-stable;
+      nixosConfigurations =
+        let
+          hostname = "hokusai";
+        in
+        {
+          ${hostname} = nixpkgs.lib.nixosSystem {
+            inherit system;
+            modules = [
+              ./configuration.nix
+              home-manager.nixosModules.home-manager
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.sharedModules = [
+                  nixvim.homeManagerModules.nixvim
+                ];
+                home-manager.extraSpecialArgs = {
+                  inherit username;
+                  inherit hostname;
+                  inherit pkgs-stable;
+                  #                  inherit hyprland;
+                };
+                home-manager.users.${username} = import ./ironhandedlayman-home.nix;
+              }
+            ];
+            specialArgs = {
+              inherit username;
+              inherit hostname;
+              inherit pkgs-stable;
+              #            inherit hyprland;
+            };
           };
         };
-      };
     };
 }
