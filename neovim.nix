@@ -14,8 +14,39 @@
 
   programs.nixvim = {
     enable = true;
+    globals = {
+      mapleader = " ";
+      maplocalleader = " ";
+      signcolumn = "yes";
+      fileencoding = "utf-8";
+    };
 
-    globals.mapleader = "\\";
+    opts = {
+      number = true;
+      tabstop = 4;
+      shiftwidth = 4;
+      softtabstop = 0;
+      expandtab = true;
+      smarttab = true;
+      termguicolors = true;
+      ignorecase = true;
+      smartcase = true;
+      foldlevel = 99;
+    };
+
+    diagnostic = {
+      # enable = true;
+      settings = {
+        virtual_text = {
+          severity.min = "warn";
+          source = "if_many";
+        };
+        virtual_lines = {
+          current_line = true;
+        };
+      };
+    };
+
     colorschemes.base16 = {
       enable = true;
       colorscheme = "atelier-dune";
@@ -30,72 +61,24 @@
       #      gitgutter.enable = true;
       neorg = {
         enable = true;
-        modules = {
+        settings.load = {
+          # modules using default settings
           "core.defaults" = { __empty = null; };
           "core.concealer" = { __empty = null; };
+          "core.integrations.image" = { __empty = null; };
+          "core.latex.renderer" = { __empty = null; };
+          "core.esupports.metagen" = {
+            type = "auto";
+          };
+
           "core.dirman" = {
             config = {
               workspaces = {
                 notes = "~/notes";
               };
+              # index = "~/notes/index.norg";
               default_workspace = "notes";
             };
-          };
-        };
-      };
-      treesitter = {
-        enable = true;
-        autoEnableSources = true;
-        settings = {
-          sources = [
-            { name = "nvim_lsp"; }
-            { name = "path"; }
-            { name = "buffer"; }
-            { name = "luasnip"; }
-            { name = "cmp-emoji"; }
-          ];
-          # mapping settings taken liberally from https://github.com/MikaelFangel/nixvim-config/blob/mian/config/cmp.nix
-          mapping = {
-            "<C-j>" = "cmp.mapping.select_next_item()";
-            "<C-k>" = "cmp.mapping.select_prev_item()";
-            "<C-d>" = "cmp.mapping.scroll_docs(4)";
-            "<C-f>" = "cmp.mapping.scroll_docs(-4)";
-            "<C-Space>" = "cmp.mapping.complete()";
-            "<S-Tab>" = "cmp.mapping.close()";
-            "<Tab>" = ''
-              		function(fallback)
-              		  local line = vim.api.nvim_get_current_line()
-              		  if line:match("^%s*$") then
-              		    fallback()
-              		  elseif cmp.visible() then
-              		    cmp.confirm({ behavior = cmp.ConfirmBehavior.Insert, select = true })
-              		  else
-              		    fallback()
-              		  end
-              		end
-              	      '';
-            "<Down>" = ''
-              		function(fallback)
-              		  if cmp.visible() then
-              		    cmp.select_next_item()
-              		  elseif require("luasnip").expand_or_jumpable() then
-              		    vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "") 
-              		  else
-              		    fallback()
-              		  end
-              		end
-              	      '';
-            "<Up>" = ''
-              		function(fallback)
-              		  if cmp.visible() then
-              		    cmp.select_next_item()
-              		  elseif require("luasnip").jumpable(-1) then
-              		    vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "") 
-              		  else
-              		    fallback()
-              		  end
-              		end
-              	      '';
           };
         };
       };
