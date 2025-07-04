@@ -109,9 +109,6 @@
     };
   };
 
-
-
-  networking.hostName = "hokusai"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -311,14 +308,14 @@
     noto-fonts
     noto-fonts-cjk
     noto-fonts-emoji
-    nerdfonts
     liberation_ttf
     fira-code
     fira-code-symbols
     mplus-outline-fonts.githubRelease
     dina-font
     proggyfonts
-  ];
+  ] ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs-stable.nerd-fonts);
+  fontDir.enable = true;
 
   environment = {
     systemPackages =
@@ -428,7 +425,6 @@
         btop
         cups
         dbus
-        devenv
         dive
         egl-wayland
         foot
@@ -499,6 +495,8 @@
       ]) ++
       (with pkgs-stable; [
         canon-cups-ufr2
+        #devenv
+        # devenv
         openscad
         vim
         sonic-pi
