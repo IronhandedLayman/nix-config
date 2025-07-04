@@ -53,6 +53,13 @@
     };
 
     plugins = {
+      # all the following with basic options
+      flash.enable = true;
+      gitsigns.enable = true;
+      lualine.enable = true;
+      luasnip.enable = true;
+      neogit.enable = true;
+      nix.enable = true;
       sleuth.enable = true;
       bufferline.enable = true;
       telescope.enable = true;

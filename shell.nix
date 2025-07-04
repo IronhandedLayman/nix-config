@@ -10,6 +10,8 @@
     lsix
     nvme-cli
     (python313.withPackages ( pythonPkgs: with pythonPkgs; [
+      nltk
+      nltk-data
       numpy
       pyarrow
       torch
