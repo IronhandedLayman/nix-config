@@ -33,15 +33,6 @@
 
   # Additional hokusai configurations TODO: move to separate file
 
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
-    extraPackages = with pkgs; [
-      vaapiVdpau
-      nvidia-vaapi-driver
-      #      vulkan-validation-layers
-    ];
-  };
 
   services.xserver.videoDrivers = [ "nvidia" ];
 
@@ -50,21 +41,6 @@
     powerOnBoot = true;
   };
 
-  hardware.nvidia = {
-    modesetting.enable = true;
-    powerManagement.enable = false;
-    powerManagement.finegrained = false;
-    open = false;
-    nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.latest;
-  };
-
-  # Extra rules for 8BitDo IDLE 2dc8:3109
-  services.udev.extraRules = ''
-    ACTION=="add", ATTRS{idVendor}=="2dc8", ATTRS{idProduct}=="3109", MODE="0666"
-  '';
-
-  # Bootloader.
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
     kernelParams = [
@@ -165,7 +141,7 @@
     reflector = true;
   };
 
-    ## Enable the GNOME Desktop Environment.
+  ## Enable the GNOME Desktop Environment.
   displayManager.gdm.enable = true;
   displayManager.gdm.wayland = true;
   desktopManager.gnome.enable = true;
@@ -416,12 +392,6 @@
   # networking.firewall.enable = false;
 
   # shells
-  environment.shells = with pkgs; [
-    bash
-    zsh
-    fish
-    oil
-  ];
 
   programs.zsh.enable = true;
 
@@ -437,4 +407,117 @@
 
   programs.gamemode.enable = true;
 
+  git = {
+    enable = true;
+    lfs.enable = true;
+  };
+
+  environment = {
+    shells = with pkgs; [
+      bash
+      zsh
+      fish
+      oils-for-unix
+      nushell
+    ];
+
+    systemPackages =
+      (with pkgs; [
+        avahi
+        brightnessctl
+        btop
+        cups
+        dbus
+        devenv
+        dive
+        egl-wayland
+        foot
+        freecad-wayland
+        gcc
+        glfw-wayland
+        glxinfo
+        godot_4
+        go
+        grim
+        gutenprint
+        gutenprintBin
+        hyprpaper
+        hyprpicker
+        inetutils
+        jq
+        kicad
+        lf
+        libreoffice
+        linux-firmware
+        lshw
+        mako
+        mesa
+        nemo-with-extensions
+        ngspice
+        nsncd
+        nvtopPackages.full
+        pavucontrol
+        pciutils
+        podman-tui
+        prusa-slicer
+        (rofi-wayland.override {
+          plugins = with pkgs; [
+            rofi-calc
+            rofi-file-browser
+            rofi-emoji-wayland
+            rofi-screenshot
+            rofi-top
+          ];
+        })
+        qpwgraph
+        rclone
+        rclone-browser
+        SDL2
+        SDL2_gfx
+        SDL2_image
+        SDL2_sound
+        slurp
+        socat
+        tree
+        unscd
+        usbimager
+        usbutils
+        uv
+        uxplay
+        vkmark
+        vulkan-tools
+        waybar
+        wayland
+        wayland-scanner
+        wget
+        wl-clipboard
+        wlr-randr
+        wofi
+        xclip
+        xorg.libX11
+        yq
+      ]) ++
+      (with pkgs-stable; [
+        canon-cups-ufr2
+        openscad
+        vim
+        sonic-pi
+      ]);
+    # This section below also allows you to add packages from hyprland's package selection
+    # ++
+    # (with hyprland.inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system}; [
+    # ]);
+    sessionVariables = {
+      GBM_BACKEND = "nvidia-drm";
+      LIBVA_DRIVER_NAME = "nvidia";
+      MOZ_ENABLE_WAYLAND = "1";
+      #     WLR_DRM_DEVICES="/dev/dri/card1";
+      #      WLR_DRM_NO_MODIFIERS="1";
+      WLR_NO_HARDWARE_CURSORS = "1";
+      LD_LIBRARY_PATH = "/run/opengl-driver/lib:/run/opengl-driver-32/lib";
+      XDG_SESSION_TYPE = "wayland";
+      #      __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+      NIXOS_OZONE_WL = "1";
+    };
+  };
 }
