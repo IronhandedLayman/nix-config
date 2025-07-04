@@ -9,9 +9,9 @@
   nix.gc.automatic = true;
 
   nix.settings = {
-    experimental-features = [ "nix-command" "flakes"];
+    experimental-features = [ "nix-command" "flakes" ];
     auto-optimise-store = true;
-  }; 
+  };
 
   # Allow unfree packages
   nixpkgs.config = {
@@ -28,9 +28,9 @@
 
   # Hardware configurations
   imports = [
-      ./hardware-configuration.nix
+    ./hardware-configuration.nix
   ];
-  
+
   # Additional hokusai configurations TODO: move to separate file
 
   hardware.graphics = {
@@ -39,11 +39,11 @@
     extraPackages = with pkgs; [
       vaapiVdpau
       nvidia-vaapi-driver
-#      vulkan-validation-layers
+      #      vulkan-validation-layers
     ];
   };
 
-  services.xserver.videoDrivers = ["nvidia"];
+  services.xserver.videoDrivers = [ "nvidia" ];
 
   hardware.bluetooth = {
     enable = true;
@@ -61,7 +61,7 @@
 
   # Extra rules for 8BitDo IDLE 2dc8:3109
   services.udev.extraRules = ''
-     ACTION=="add", ATTRS{idVendor}=="2dc8", ATTRS{idProduct}=="3109", MODE="0666"
+    ACTION=="add", ATTRS{idVendor}=="2dc8", ATTRS{idProduct}=="3109", MODE="0666"
   '';
 
   # Bootloader.
@@ -71,10 +71,65 @@
       "nvidia-drm.modeset=1"
       "nvidia-drm.fbdev=1"
     ];
-  #  kernelPatches = vivepro2Driver.kernelPatches;
+    #  kernelPatches = vivepro2Driver.kernelPatches;
     loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
+    };
+  };
+
+  virtualisation.containers.enable = true;
+  virtualisation = {
+    podman = {
+      enable = true;
+      dockerCompat = true;
+      defaultNetwork.settings.dns_enabled = true;
+    };
+  };
+
+  networking = {
+    hostName = "hokusai";
+    networkmanager.enable = true;
+    firewall = {
+      enable = true;
+      allowPing = true;
+
+      allowedTCPPorts = [
+        80
+        443 # https
+        5353 # mdns 
+        7100
+        7000
+        7001 # airplay
+        11434 # ollama 
+      ];
+      allowedUDPPortRanges = [
+        { from = 4000; to = 12000; }
+      ];
+    };
+  };
+
+  hardware = {
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+      extraPackages = with pkgs; [
+        vaapiVdpau
+        nvidia-vaapi-driver
+        #vulkan-validation-layers
+      ];
+    };
+    bluetooth = {
+      enable = true;
+      powerOnBoot = true;
+    };
+    nvidia = {
+      modesetting.enable = true;
+      powerManagement.enable = false;
+      powerManagement.finegrained = false;
+      open = false;
+      nvidiaSettings = true;
+      package = config.boot.kernelPackages.nvidiaPackages.beta;
     };
   };
 
@@ -87,8 +142,73 @@
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-  # Enable networking
-  networking.networkmanager.enable = true;
+  # Extra rules for 8BitDo IDLE 2dc8:3109
+  udev.extraRules = ''
+    ACTION=="add", ATTRS{idVendor}=="2dc8", ATTRS{idProduct}=="3109", MODE="0666"
+    KERNEL=="uinput", MODE="0666"
+  '';
+
+  avahi = {
+    enable = true;
+    nssmdns4 = true;
+    ipv4 = true;
+    ipv6 = true;
+    openFirewall = true;
+    publish = {
+      enable = true;
+      userServices = true;
+      hinfo = true;
+      domain = true;
+      addresses = true;
+      workstation = true;
+    };
+    reflector = true;
+  };
+
+  # Enable Wayland (enabling xserver is a canard, does not actually enable X11)
+  xserver = {
+    enable = true;
+
+    ## Enable the GNOME Desktop Environment.
+    displayManager.gdm.enable = true;
+    displayManager.gdm.wayland = true;
+    desktopManager.gnome.enable = true;
+
+    ## Configure keymap in X11
+    xkb.layout = "us";
+    xkb.variant = "";
+  };
+
+  # Enable CUPS to print documents.
+  printing = {
+    enable = true;
+    logLevel = "debug";
+    drivers = [
+      pkgs.canon-cups-ufr2
+      pkgs.canon-capt
+    ];
+  };
+
+  openssh = {
+    enable = true;
+    settings = {
+      PermitRootLogin = "no";
+      PasswordAuthentication = true;
+    };
+  };
+
+  pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    # If you want to use JACK applications, uncomment this
+    #jack.enable = true;
+
+    # use the example session manager (no others are packaged yet so this is enabled by default,
+    # no need to redefine it in your config for now)
+    #media-session.enable = true;
+  };
 
   # Set your time zone.
   time.timeZone = "America/New_York";
@@ -129,7 +249,7 @@
       enable = true;
       addresses = true;
       workstation = true;
-    };    
+    };
   };
 
   # Enable the X11 windowing system.
@@ -141,7 +261,7 @@
     displayManager.gdm.wayland = true;
     desktopManager.gnome.enable = true;
 
-  # Configure keymap in X11
+    # Configure keymap in X11
     xkb.layout = "us";
     xkb.variant = "";
   };
@@ -179,7 +299,7 @@
   users.users.ironhandedlayman = {
     isNormalUser = true;
     description = "Ironhandedlayman";
-    extraGroups = [ "networkmanager" "wheel" "video" "audio" "input" "kvm" "render" "polkituser"];
+    extraGroups = [ "networkmanager" "wheel" "video" "audio" "input" "kvm" "render" "polkituser" ];
     packages = with pkgs; [
       firefox
       yazi
@@ -188,22 +308,22 @@
   };
 
   # programs.sway = {
-    # enable = true;
-    # wrapperFeatures.gtk = true;
-    # extraOptions = [
-      # "--unsupported-gpu"
-    # ];
-    # extraPackages = with pkgs; [
-      # swaylock
-      # swayidle
-    # ];
-    # extraSessionCommands = ''
-      # export MOZ_ENABLE_WAYLAND=1;
-      # export WLR_DRM_NO_MODIFIERS=1;
-      # export WLR_DRM_DEVICES=/dev/dri/card1;
-   # '';
+  # enable = true;
+  # wrapperFeatures.gtk = true;
+  # extraOptions = [
+  # "--unsupported-gpu"
+  # ];
+  # extraPackages = with pkgs; [
+  # swaylock
+  # swayidle
+  # ];
+  # extraSessionCommands = ''
+  # export MOZ_ENABLE_WAYLAND=1;
+  # export WLR_DRM_NO_MODIFIERS=1;
+  # export WLR_DRM_DEVICES=/dev/dri/card1;
+  # '';
   # }; 
-  
+
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
@@ -221,58 +341,58 @@
     fira-code-symbols
     mplus-outline-fonts.githubRelease
     dina-font
-    proggyfonts 
+    proggyfonts
   ];
 
   environment = {
-    systemPackages = 
-    (with pkgs; [
-      avahi
-      brightnessctl
-      btop
-      foot
-      dbus
-      egl-wayland
-      glxinfo
-      grim
-      inetutils
-      lf
-      linux-firmware
-      lshw
-      mako
-      mesa
-      nemo-with-extensions
-      nvtopPackages.full
-      nsncd
-      pavucontrol
-      pciutils
-      slurp
-      socat
-      unscd
-      waybar
-      wayland
-      wayland-scanner
-      wget
-      wl-clipboard
-      wofi
-    ]) ++ 
-    (with pkgs-stable; [
-      vim 
-    ]) ++
-    (with hyprland.inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system}; [
-      hyprpaper
-      hyprpicker
-    ]);
+    systemPackages =
+      (with pkgs; [
+        avahi
+        brightnessctl
+        btop
+        foot
+        dbus
+        egl-wayland
+        glxinfo
+        grim
+        inetutils
+        lf
+        linux-firmware
+        lshw
+        mako
+        mesa
+        nemo-with-extensions
+        nvtopPackages.full
+        nsncd
+        pavucontrol
+        pciutils
+        slurp
+        socat
+        unscd
+        waybar
+        wayland
+        wayland-scanner
+        wget
+        wl-clipboard
+        wofi
+      ]) ++
+      (with pkgs-stable; [
+        vim
+      ]) ++
+      (with hyprland.inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system}; [
+        hyprpaper
+        hyprpicker
+      ]);
     sessionVariables = rec {
       GBM_BACKEND = "nvidia-drm";
       LIBVA_DRIVER_NAME = "nvidia";
-      MOZ_ENABLE_WAYLAND="1";
-#     WLR_DRM_DEVICES="/dev/dri/card1";
-#      WLR_DRM_NO_MODIFIERS="1";
+      MOZ_ENABLE_WAYLAND = "1";
+      #     WLR_DRM_DEVICES="/dev/dri/card1";
+      #      WLR_DRM_NO_MODIFIERS="1";
       WLR_NO_HARDWARE_CURSORS = "1";
-      LD_LIBRARY_PATH="/run/opengl-driver/lib:/run/opengl-driver-32/lib";          
+      LD_LIBRARY_PATH = "/run/opengl-driver/lib:/run/opengl-driver-32/lib";
       XDG_SESSION_TYPE = "wayland";
-#      __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+      #      __GLX_VENDOR_LIBRARY_NAME = "nvidia";
     };
   };
 
@@ -302,7 +422,7 @@
     fish
     oil
   ];
-  
+
   programs.zsh.enable = true;
 
   users.defaultUserShell = pkgs.zsh;
