@@ -5,12 +5,12 @@
   nixpkgs.config.allowBroken = true;
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
-  environment.systemPackages =
-    [
-      pkgs.alacritty
-      pkgs.wezterm
-      pkgs.vim
-      pkgs.neovim
+  environment.systemPackages = with pkgs; [
+      alacritty
+      wezterm
+      vim
+      neovim
+      btop
     ];
 
   nix = {
