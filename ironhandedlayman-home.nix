@@ -19,14 +19,12 @@ rec
 
     username = "${username}";
     # homeDirectory = if (system == "x86_64-linux") then /home/${username} else /Users/${username};
-    homeDirectory = /Users/${username};
+    homeDirectory = "/Users/${username}";
 
     packages = with pkgs; [
       bat
       bitwarden
-      bitwarden-cli
-      bitwarden-desktop
-      bitwarden-menu
+      # bitwarden-cli # TODO: marked as broken, remove on 2025-08-01
       buf
       cmake
       delve
@@ -41,15 +39,11 @@ rec
       hexedit
       hexyl
       imhex
-      inkscape-with-extensions
       just
-      k3s
-      love
       lsix
       ncdu
       nh
       nvd
-      nvme-cli
       openstackclient
       opentofu
       poppler_utils
@@ -57,13 +51,17 @@ rec
       ruff
       taplo
       tmux
-      vlc
       xxd
     ] ++ (if (system == "x86_64-linux") then
       (with pkgs; [
         kdePackages.kdenlive
+        k3s
+        nvme-cli
+        love
         protonup
         wlr-randr
+        inkscape-with-extensions
+        vlc
       ]) else [ ]);
 
     file = { };
@@ -82,7 +80,8 @@ rec
     EDITOR = lib.mkForce "nvim";
     # DEFAULT_BROWSER = "${pkgs.firefox}/bin/firefox"; # NOTE: think about other browsers given events around 27-Feb-25
     FLAKE = "${home.homeDirectory}/${username}/${flakerepo}";
-    NH_FLAKE = "${home.homeDirectory}/${username}/${flakerepo}";
+    # TODO: why is this defined in multiple places???
+    # NH_FLAKE = "${home.homeDirectory}/${username}/${flakerepo}";
   };
 
   programs.foot = lib.mkIf (system == "x86_64-linux") {
@@ -102,7 +101,7 @@ rec
     };
   };
 
-  programs.obs-studio = {
+  programs.obs-studio = lib.mkIf (system == "x86_64-linux") {
     enable = true;
     plugins = with pkgs.obs-studio-plugins; [
       wlrobs

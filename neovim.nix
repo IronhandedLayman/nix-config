@@ -47,10 +47,7 @@
       };
     };
 
-    colorschemes.base16 = {
-      enable = true;
-      colorscheme = "atelier-dune";
-    };
+    colorschemes.catppuccin.enable = true;
 
     plugins = {
       # all the following with basic options
@@ -64,8 +61,11 @@
       sleuth.enable = true;
       bufferline.enable = true;
       telescope.enable = true;
+      treesitter.enable = true;
       fugitive.enable = true;
       lightline.enable = true;
+      #tokyonight.enable = true;
+      web-devicons.enable = true;
       #      gitgutter.enable = true;
       neorg = {
         enable = true;

@@ -3,33 +3,30 @@
   home.packages = with pkgs; [
     bat
     gnupg
-    pinentry
     fastfetch
     fzf
     hexedit
     hexyl
-    love
     lsix
-    nvme-cli
     (python313.withPackages (pythonPkgs: with pythonPkgs; [
-      django
       nltk
       nltk-data
       numpy
       pyarrow
       torch
-      torchvision
-      torchaudio
       pandas
       parquet
-      pip
       requests
     ]))
     parquet-tools
     ripgrep
     tmux
     xxd
-  ];
+  ] ++ (if (system == "x86_64-linux") then [
+    love
+    pinentry
+    nvme-cli
+  ] else [ ]);
 
   programs.zsh = {
     enable = true;
@@ -65,7 +62,7 @@
       ndet () {
         nix eval --json -f "<nixpkgs>" $1.meta | jq
       }
-    '' ++ (if (system == "x86_64-linux") then
+    '' + (if (system == "x86_64-linux") then
       (
         ''
           wp () {

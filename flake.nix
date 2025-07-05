@@ -26,6 +26,7 @@
       username = "ironhandedlayman";
     in
     {
+      inherit username;
       darwinConfigurations =
         let
           hostname = "kataribe";
