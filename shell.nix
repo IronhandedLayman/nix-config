@@ -46,7 +46,6 @@
       ll = "exa --icons -l";
     };
     initContent = ''
-Please add `export FZF_BASE=/path/to/fzf/install/dir` to your .zshrc
       source <(nh completions zsh) 
       # routes to Neorg's journal system
       today () {
