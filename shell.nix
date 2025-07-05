@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, system, ... }:
 {
   home.packages = with pkgs; [
     bat
@@ -57,11 +57,6 @@
       wiki () {
         nvim +Neorg\ index
       }
-      # selecting monitor information in hyprland
-      wp () {
-        mon=`hyprctl monitors | awk '/^Monitor/{print $2}' | fzf --height=6`
-        echo "will change monitor $mon"
-      }
       # nix search
       nsearch () {
         nix search nixpkgs $1 2>/dev/null
@@ -70,7 +65,15 @@
       ndet () {
         nix eval --json -f "<nixpkgs>" $1.meta | jq
       }
-    '';
+    '' ++ (if (system == "x86_64-linux") then
+      (
+        ''
+          wp () {
+            mon=`hyprctl monitors | awk '/^Monitor/{print $2}' | fzf --height=6`
+            echo "will change monitor $mon"
+          }
+        ''
+      ) else "");
   };
 
   programs.direnv = {

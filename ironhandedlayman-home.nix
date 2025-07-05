@@ -1,4 +1,8 @@
-{ config, pkgs, lib, username, system, ... }:
+{ config, pkgs, lib, username, system, hostname, ... }:
+let
+  flakerepo = "projects/nix-config";
+in
+rec
 {
   imports = [
     ./neovim.nix # imports nixvim settings
@@ -14,7 +18,8 @@
     stateVersion = "23.11";
 
     username = "${username}";
-    homeDirectory = "/home/${username}";
+    # homeDirectory = if (system == "x86_64-linux") then /home/${username} else /Users/${username};
+    homeDirectory = /Users/${username};
 
     packages = with pkgs; [
       bat
@@ -62,52 +67,22 @@
       ]) else [ ]);
 
     file = { };
-
-    sessionVariables = {
-      EDITOR = "nvim";
-    };
-    oh-my-zsh = {
-      enable = true;
-      plugins = [
-        "git"
-        "fzf"
-      ];
-      theme = "agnoster";
-    };
-    initExtra = ''
-      source <(nh completions --shell zsh) 
-      today () {
-        nvim +Neorg\ journal\ today
-      }
-      wiki () {
-        nvim +Neorg\ index
-      }
-    '' ++ (if (system == "x86_64-linux") then
-      (
-        ''
-          wp () {
-            mon=`hyprctl monitors | awk '/^Monitor/{print $2}' | fzf --height=6`
-            echo "will change monitor $mon"
-          }
-        ''
-      ) else "");
   };
 
-  # TODO: reenable when flakes are finally brought current
-  # programs.nh = {
-  # enable = true;
-  # clean.enable = true;
-  # clean.extraArgs = "--keep-since 14d --keep 3";
-  # flake = "${home.homeDirectory}/Projects/nix-config#hokusai";
-  # };
+  programs.nh = {
+    enable = true;
+    clean.enable = true;
+    clean.extraArgs = "--keep-since 14d --keep 3";
+    flake = "${home.homeDirectory}/Projects/nix-config#${hostname}";
+  };
 
   home.file = { };
 
   home.sessionVariables = {
     EDITOR = lib.mkForce "nvim";
     # DEFAULT_BROWSER = "${pkgs.firefox}/bin/firefox"; # NOTE: think about other browsers given events around 27-Feb-25
-    FLAKE = "/home/${username}/${flakerepo}";
-    NH_FLAKE = "/home/${username}/${flakerepo}";
+    FLAKE = "${home.homeDirectory}/${username}/${flakerepo}";
+    NH_FLAKE = "${home.homeDirectory}/${username}/${flakerepo}";
   };
 
   programs.foot = lib.mkIf (system == "x86_64-linux") {

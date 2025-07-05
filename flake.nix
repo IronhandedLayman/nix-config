@@ -45,14 +45,12 @@
                   nixvim.homeManagerModules.nixvim
                 ];
                 home-manager.extraSpecialArgs = {
-                  inherit username;
-                  inherit hostname;
-                  inherit pkgs-stable;
+                  inherit username hostname pkgs-stable system;
                 };
                 home-manager.users.${username} = import ./ironhandedlayman-home.nix;
               }
             ];
-            specialArgs = { inherit inputs pkgs pkgs-stable username hostname; };
+            specialArgs = { inherit inputs pkgs pkgs-stable username hostname system; };
           };
         };
       nixosConfigurations =
