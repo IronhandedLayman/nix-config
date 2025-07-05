@@ -1,16 +1,16 @@
 { config, pkgs, ... }:
 {
-  home.packages = with pkgs; [
-    (lua5_1.withPackages (
-      ps: with ps; [
-        busted
-        luafilesystem
-        luarocks
-        lua-utils-nvim
-        pathlib-nvim
-      ]
-    ))
-  ];
+  #home.packages = with pkgs; [
+    #(lua5_1.withPackages (
+      ###ps: with ps; [
+        #busted
+        #luafilesystem
+        #luarocks
+        #lua-utils-nvim
+        #pathlib-nvim
+      #]
+    #))
+  #];
 
   programs.nixvim = {
     enable = true;
@@ -148,12 +148,12 @@
       dap-lldb.enable = true;
 
     };
-    extraLuaPackages = pkgs: with pkgs.luaPackages; [
-      busted
-      luarocks
-      lua-utils-nvim
-      nvim-nio
-      pathlib-nvim
-    ];
+    #extraLuaPackages = pkgs: with pkgs.luaPackages; [
+      #busted
+      #luarocks
+      #lua-utils-nvim
+      #nvim-nio
+      #pathlib-nvim
+    #];
   };
 }
