@@ -53,7 +53,10 @@
       nix.enable = true;
       sleuth.enable = true;
       web-devicons.enable = true;
-      treesitter.enable = true;
+      treesitter= {
+	enable = true;
+      };
+      treesitter-context.enable = true;
       image.enable=true;
 
       ollama = {

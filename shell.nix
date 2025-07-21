@@ -33,6 +33,7 @@
 
   programs.zsh = {
     enable = true;
+    enableCompletion = true;
     sessionVariables = {
       EDITOR = "nvim";
     };
@@ -41,6 +42,7 @@
       plugins = [
         "git"
         "fzf"
+        "kubectl"
       ];
       theme = "agnoster";
     };
