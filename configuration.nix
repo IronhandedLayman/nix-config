@@ -63,6 +63,7 @@ networking = {
 };
 
 hardware = {
+  steam-hardware.enable = true;
   graphics = {
     enable = true;
     enable32Bit = true;
@@ -287,6 +288,10 @@ hardware = {
     # if you want to pull from another hyprland version (like from the dev version)
     # package = hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
     # portalPackage = hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+  };
+  envision = {
+    enable = true;
+    openFirewall = true;
   };
 
   zsh.enable = true;

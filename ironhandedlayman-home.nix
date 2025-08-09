@@ -35,8 +35,11 @@ in {
       gcc
       gh
       gnumake
+      kubernetes-helm
       k3s
+      k9s
       kdePackages.kdenlive
+      kiwix
       inkscape-with-extensions
       ncdu
       nvd
