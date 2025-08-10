@@ -11,6 +11,8 @@
       vim
       neovim
       btop
+      docker
+      colima
     ];
 
   nix = {

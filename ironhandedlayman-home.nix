@@ -35,6 +35,7 @@ rec
       fzf
       gcc
       gh
+      go
       gnumake
       hexedit
       hexyl
