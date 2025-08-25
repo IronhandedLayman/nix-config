@@ -41,6 +41,7 @@ in {
       kdePackages.kdenlive
       kiwix
       inkscape-with-extensions
+      manim
       ncdu
       nvd
       protonup
