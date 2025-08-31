@@ -41,7 +41,7 @@ in {
       kdePackages.kdenlive
       kiwix
       inkscape-with-extensions
-      manim
+      # manim  # Note: including in python deployment since I want detection of modules in nvim
       ncdu
       nvd
       protonup

@@ -210,6 +210,7 @@
 		pylsp_mypy.enable = true;
 	      };
 	    };
+	    pyright.enable = true;
 	    ruff.enable = true;
 	    dockerls.enable = true;
 	  };

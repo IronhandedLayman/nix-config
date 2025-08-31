@@ -15,6 +15,8 @@
       django
       nltk
       nltk-data
+      manim
+      manim-slides
       numpy
       pyarrow
       torch
