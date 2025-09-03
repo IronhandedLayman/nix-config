@@ -90,8 +90,9 @@ hardware = {
   };
 
   services = {
-    pulseaudio.enable = false;
+    pulseaudio.enable = false; # TODO: remind me why I disabled this?
     playerctld.enable = true;
+    pcscd.enable = true;
     xserver = {
       videoDrivers = ["nvidia"];
     };
@@ -109,11 +110,16 @@ hardware = {
       defaultRuntime = true;
     };
 
+  udev = {
+    packages = with pkgs; [
+      yubikey-personalization
+    ];
   # Extra rules for 8BitDo IDLE 2dc8:3109
-  udev.extraRules = ''
+    extraRules = ''
       ACTION=="add", ATTRS{idVendor}=="2dc8", ATTRS{idProduct}=="3109", MODE="0666"
       KERNEL=="uinput", MODE="0666"
-  '';
+    '';
+  };
 
   avahi = {
     enable = true;
@@ -214,9 +220,25 @@ hardware = {
 
   powerManagement.enable = false;
 
-  security.polkit = {
-    enable = true;
-    extraConfig ='' 
+  security = {
+    pam = {
+      services = {
+        login.u2fAuth = true;
+        sudo.u2fAuth = true;
+      };
+      yubico = {
+        enable = true;
+        debug = true;
+        mode = "challenge-response";
+        id = [
+          "17951116"
+          "17951319"
+        ];
+      };
+    };
+    polkit = {
+      enable = true;
+      extraConfig ='' 
     polkit.addRule(function (action, subject) {
     const setcapBinary = "/usr/bin/setcap";
     const allowedCapability = "CAP_SYS_NICE=eip";
@@ -244,9 +266,10 @@ hardware = {
         }
     }
     });
-    '';
+      '';
+    };
+    rtkit.enable = true;
   };
-  security.rtkit.enable = true;
 
   users.defaultUserShell = pkgs.zsh;
   users.users.ironhandedlayman = {
@@ -277,6 +300,10 @@ hardware = {
   };
 
   programs = {
+    gnupg.agent = {
+      enable = true;
+      enableSSHSupport = true;
+    };
     nh = {
       enable = true;
       clean.enable = true;
@@ -286,6 +313,7 @@ hardware = {
 
     hyprland = {
       enable = true;
+      withUWSM = true;
       xwayland.enable = true;
     # if you want to pull from another hyprland version (like from the dev version)
     # package = hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
@@ -350,6 +378,9 @@ environment = {
     gutenprintBin
     hyprpaper
     hyprpicker
+    hyprlock
+    hypridle
+    hyprpolkitagent
     inetutils
     jq
     lf
@@ -404,6 +435,7 @@ environment = {
     xclip
     xorg.libX11
     yq
+    yubioath-flutter
   ]) ++ 
   (with pkgs-stable; [
     canon-cups-ufr2
@@ -437,7 +469,9 @@ environment = {
     };
   };
   system.activationScripts.text = "
-    mkdir -p /usr/share/nltk_data/corpora
+    if [ ! -d /usr/share/nltk_data/corpora ]; then
+      mkdir -p /usr/share/nltk_data/corpora
+    fi
     ln -sf ${pkgs.nltk-data.words}/corpora/words /usr/share/nltk_data/corpora/words
     ln -sf ${pkgs.nltk-data.wordnet}/corpora/wordnet /usr/share/nltk_data/corpora/wordnet
     ln -sf ${pkgs.nltk-data.wordnet31}/corpora/wordnet31 /usr/share/nltk_data/corpora/wordnet31
