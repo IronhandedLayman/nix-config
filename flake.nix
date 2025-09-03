@@ -35,7 +35,7 @@
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.sharedModules = [
-                  nixvim.homeManagerModules.nixvim
+                  nixvim.homeModules.nixvim
                 ];
                 home-manager.extraSpecialArgs = {
                   inherit username;

@@ -12,20 +12,22 @@
     lsix
     nvme-cli
     (python313.withPackages ( pythonPkgs: with pythonPkgs; [
-      django
       nltk
       nltk-data
-      manim
-      manim-slides
+      #pyglm #pyglm broken as of 2 Sept 2025
+      #manim #depends on pyglm
+      #manim-slides #depends on pyglm
       numpy
       pyarrow
       torch
       torchvision
       torchaudio
       pandas
-      parquet
+      #parquet # missing toml package? broken as of 2 Sept 2025
       pip
+      pygame
       requests
+      ultralytics
     ]))
     parquet-tools
     ripgrep

@@ -9,6 +9,8 @@
 
   # Allow unfree packages
   nixpkgs.config = {
+    # I guess I need this because of my fonts??? need to investigate further
+    permittedInsecurePackages = [ "qtwebengine-5.15.19" ];
     allowUnfree = true;
   };
 
@@ -350,7 +352,6 @@ environment = {
     hyprpicker
     inetutils
     jq
-    kicad
     lf
     libreoffice
     linux-firmware
@@ -408,6 +409,7 @@ environment = {
     canon-cups-ufr2
     #devenv
     # devenv
+    kicad
     openscad
     vim 
     sonic-pi
