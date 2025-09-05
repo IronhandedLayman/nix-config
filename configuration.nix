@@ -30,48 +30,48 @@
       "nvidia-drm.modeset=1"
       "nvidia-drm.fbdev=1"
     ];
-  loader = {
-    systemd-boot.enable = true;
-    efi.canTouchEfiVariables = true;
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    };
   };
-};
 
-virtualisation.containers.enable = true;
-virtualisation = {
-  podman = {
-    enable = true;
-    dockerCompat = true;
-    defaultNetwork.settings.dns_enabled = true;
+  virtualisation.containers.enable = true;
+  virtualisation = {
+    podman = {
+      enable = true;
+      dockerCompat = true;
+      defaultNetwork.settings.dns_enabled = true;
+    };
   };
-};
 
-networking = {
-  hostName = "hokusai"; 
-  networkmanager.enable = true;
-  firewall = {
-    enable = true;
-    allowPing = true;
-    
-    allowedTCPPorts = [ 
-      80 443  # https
-      5353    # mdns 
-      7100 7000 7001 # airplay
-      11434   # ollama 
-    ];
-    allowedUDPPortRanges = [
-      {from = 4000; to=12000;}
-    ];
+  networking = {
+    hostName = "hokusai"; 
+    networkmanager.enable = true;
+    firewall = {
+      enable = true;
+      allowPing = true;
+
+      allowedTCPPorts = [ 
+        80 443  # https
+        5353    # mdns 
+        7100 7000 7001 # airplay
+        11434   # ollama 
+      ];
+      allowedUDPPortRanges = [
+        {from = 4000; to=12000;}
+      ];
+    };
   };
-};
 
-hardware = {
-  steam-hardware.enable = true;
-  graphics = {
-    enable = true;
-    enable32Bit = true;
-    extraPackages = with pkgs; [
-      vaapiVdpau
-      nvidia-vaapi-driver
+  hardware = {
+    steam-hardware.enable = true;
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+      extraPackages = with pkgs; [
+        vaapiVdpau
+        nvidia-vaapi-driver
         #vulkan-validation-layers
       ];
     };
@@ -93,6 +93,11 @@ hardware = {
     pulseaudio.enable = false; # TODO: remind me why I disabled this?
     playerctld.enable = true;
     pcscd.enable = true;
+    monado = {
+      enable = true;
+      defaultRuntime = true;
+      forceDefaultRuntime = true;
+    };
     xserver = {
       videoDrivers = ["nvidia"];
     };
@@ -105,44 +110,49 @@ hardware = {
       host = "0.0.0.0";
     };
 
-    monado = {
-      enable = true;
-      defaultRuntime = true;
+    udev = {
+      packages = with pkgs; [
+        yubikey-personalization
+      ];
+
+    # Extra rules for 8BitDo IDLE 2dc8:3109
+    extraRules = ''
+        ACTION=="add", ATTRS{idVendor}=="2dc8", ATTRS{idProduct}=="3109", MODE="0666"
+        KERNEL=="uinput", MODE="0666"
+    '';
     };
 
-  udev = {
-    packages = with pkgs; [
-      yubikey-personalization
-    ];
-  # Extra rules for 8BitDo IDLE 2dc8:3109
-    extraRules = ''
-      ACTION=="add", ATTRS{idVendor}=="2dc8", ATTRS{idProduct}=="3109", MODE="0666"
-      KERNEL=="uinput", MODE="0666"
-    '';
-  };
-
-  avahi = {
-    enable = true;
-    nssmdns4 = true;
-  #  nssmdns6 = true;
-    ipv4 = true;
-    ipv6 = true;
-    openFirewall = true;
-    publish = {
+    avahi = {
       enable = true;
-      userServices = true;
-      hinfo = true;
-      domain = true;
-      addresses = true;
-      workstation = true;
-    };    
-    reflector=true;
-  };
-
+      nssmdns4 = true;
+      ipv4 = true;
+      ipv6 = true;
+      openFirewall = true;
+      publish = {
+        enable = true;
+        userServices = true;
+        hinfo = true;
+        domain = true;
+        addresses = true;
+        workstation = true;
+      };    
+      reflector=true;
+    };
+  
     ## Enable the GNOME Desktop Environment.
-  displayManager.gdm.enable = true;
-  displayManager.gdm.wayland = true;
-  desktopManager.gnome.enable = true;
+    displayManager = {
+      gdm = {
+        enable = true;
+        wayland = true;
+        banner = '' 
+          Live well and live broadly.
+          You are alive and living now.
+          Now is the envy of all the dead.
+        '';
+      };
+    };
+
+    desktopManager.gnome.enable = true;
 
   # Enable Wayland (enabling xserver is a canard, does not actually enable X11)
   xserver = {
@@ -170,6 +180,7 @@ hardware = {
       PasswordAuthentication = true;
     };
   };
+
 
   pipewire = {
     enable = true;
@@ -210,11 +221,6 @@ hardware = {
       AllowHybridSleep=no
       AllowSuspendThenHibernate=no
     '';
-    user.services.monado.environment = {
-      STEAMVR_LH_ENABLE = "1";
-      XRT_COMPOSITOR_COMPUTE = "1";
-      WMR_HANDTRACKING = "0";
-    };
     services.avahi-daemon.enable=true;
   };
 
@@ -225,6 +231,7 @@ hardware = {
       services = {
         login.u2fAuth = true;
         sudo.u2fAuth = true;
+        hyprlock.u2fAuth = true;
       };
       yubico = {
         enable = true;
@@ -239,14 +246,14 @@ hardware = {
     polkit = {
       enable = true;
       extraConfig ='' 
-    polkit.addRule(function (action, subject) {
-    const setcapBinary = "/usr/bin/setcap";
-    const allowedCapability = "CAP_SYS_NICE=eip";
-    const steamVrCompositorLauncherBinary = "/home/" + subject.user + "/.local/share/Steam/steamapps/common/SteamVR/bin/linux64/vrcompositor-launcher";
-    const steamVrCompositorLauncherBinaryAlt = "/home/" + subject.user + "/.steam/steam/steamapps/common/SteamVR/bin/linux64/vrcompositor-launcher";
-    const monadoServiceBinary = "/run/wrappers/bin/monado-service";
+        polkit.addRule(function (action, subject) {
+        const setcapBinary = "/usr/bin/setcap";
+        const allowedCapability = "CAP_SYS_NICE=eip";
+        const steamVrCompositorLauncherBinary = "/home/" + subject.user + "/.local/share/Steam/steamapps/common/SteamVR/bin/linux64/vrcompositor-launcher";
+        const steamVrCompositorLauncherBinaryAlt = "/home/" + subject.user + "/.steam/steam/steamapps/common/SteamVR/bin/linux64/vrcompositor-launcher";
+        const monadoServiceBinary = "/run/wrappers/bin/monado-service";
 
-    if (action.id == "org.freedesktop.policykit.exec" &&
+        if (action.id == "org.freedesktop.policykit.exec" &&
         action.lookup("program") == setcapBinary) {
         // Check if action has "command_line" key
         if (action.lookup("command_line")) {
@@ -264,8 +271,8 @@ hardware = {
             polkit.log("Allowed setcap CAP_SYS_NICE=eip for Monado Service as requested by user '" + subject.user + "'");
             return polkit.Result.YES;
         }
-    }
-    });
+        }
+        });
       '';
     };
     rtkit.enable = true;
@@ -286,15 +293,15 @@ hardware = {
 
   fonts = {
     packages = with pkgs-stable; [
-    noto-fonts
-    noto-fonts-cjk-sans
-    noto-fonts-emoji
-    liberation_ttf
-    fira-code
-    fira-code-symbols
-    mplus-outline-fonts.githubRelease
-    dina-font
-    proggyfonts 
+      noto-fonts
+      noto-fonts-cjk-sans
+      noto-fonts-emoji
+      liberation_ttf
+      fira-code
+      fira-code-symbols
+      mplus-outline-fonts.githubRelease
+      dina-font
+      proggyfonts 
     ] ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs-stable.nerd-fonts);
     fontDir.enable = true;
   };
@@ -318,7 +325,9 @@ hardware = {
     # if you want to pull from another hyprland version (like from the dev version)
     # package = hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
     # portalPackage = hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+
   };
+
   envision = {
     enable = true;
     openFirewall = true;
@@ -326,119 +335,120 @@ hardware = {
 
   zsh.enable = true;
 
-  # Gaming settings
-  steam = {
-    enable = true;
-    gamescopeSession.enable = true;
-    remotePlay.openFirewall = true;
-    dedicatedServer.openFirewall = true;
-    extraCompatPackages=with pkgs; [proton-ge-bin];
+    # Gaming settings
+
+    steam = {
+      enable = true;
+      gamescopeSession.enable = true;
+      remotePlay.openFirewall = true;
+      dedicatedServer.openFirewall = true;
+      extraCompatPackages=with pkgs; [proton-ge-bin];
+    };
+
+    gamemode.enable = true;
+    nix-ld.enable = true;
+
+    git = {
+      enable = true;
+      lfs.enable = true;
+    };
   };
 
-  gamemode.enable = true;
-  nix-ld.enable = true;
+  environment = {
+    pathsToLink = [
+      "/share/zsh"
+      "/usr/lib"
+    ];
+    shells = with pkgs; [
+      bash
+      zsh
+      fish
+      oils-for-unix
+      nushell
+    ];
 
-  git = {
-    enable = true;
-    lfs.enable = true;
-  };
-};
-
-environment = {
-  pathsToLink = [
-    "/share/zsh"
-    "/usr/lib"
-  ];
-  shells = with pkgs; [
-    bash
-    zsh
-    fish
-    oils-for-unix
-    nushell
-  ];
-
-  systemPackages = 
-  (with pkgs; [
-    avahi
-    brightnessctl
-    btop
-    cups
-    dbus
-    dive
-    egl-wayland
-    foot
-    freecad-wayland
-    gcc
-    glfw-wayland
-    glxinfo
-    godot_4
-    go
-    grim
-    gutenprint
-    gutenprintBin
-    hyprpaper
-    hyprpicker
-    hyprlock
-    hypridle
-    hyprpolkitagent
-    inetutils
-    jq
-    lf
-    libreoffice
-    linux-firmware
-    lshw
-    mako
-    mesa
-    nemo-with-extensions
-    ngspice
-    nsncd
-    nvtopPackages.full
-    pavucontrol
-    pciutils
-    podman-tui
-    prusa-slicer
-    (rofi-wayland.override { plugins = with pkgs; [
-      rofi-calc
-      rofi-file-browser
-      rofi-emoji-wayland
-      rofi-screenshot
-      rofi-top
-    ];})
-    qpwgraph
-    rclone
-    rclone-browser
-    screenkey
-    slop
-    SDL2
-    SDL2_gfx
-    SDL2_image
-    SDL2_sound
-    slurp
-    socat
-    tree
-    unscd
-    usbimager
-    usbutils
-    uv
-    uxplay
-    vkmark
-    vulkan-tools
-    wally-cli
-    waybar
-    wayland
-    wayland-scanner
-    wshowkeys
-    wget
-    wl-clipboard
-    wlr-randr
-    wofi
-    xclip
-    xorg.libX11
-    yq
-    yubioath-flutter
-  ]) ++ 
-  (with pkgs-stable; [
-    canon-cups-ufr2
+    systemPackages = 
+    (with pkgs; [
+      avahi
+      brightnessctl
+      btop
+      cups
+      dbus
+      dive
+      egl-wayland
+      foot
+      freecad-wayland
+      gcc
+      glfw-wayland
+      glxinfo
+      godot_4
+      go
+      grim
+      gutenprint
+      gutenprintBin
+      hyprpaper
+      hyprpicker
+      hyprlock
+      hypridle
+      hyprpolkitagent
+      inetutils
+      jq
+      lf
+      libreoffice
+      linux-firmware
+      lshw
+      mako
+      mesa
+      nemo-with-extensions
+      ngspice
+      nsncd
+      nvtopPackages.full
+      pavucontrol
+      pciutils
+      podman-tui
+      prusa-slicer
+      (rofi-wayland.override { plugins = with pkgs; [
+        rofi-calc
+        rofi-file-browser
+        rofi-emoji-wayland
+        rofi-screenshot
+        rofi-top
+      ];})
+      qpwgraph
+      rclone
+      rclone-browser
+      screenkey
+      slop
+      SDL2
+      SDL2_gfx
+      SDL2_image
+      SDL2_sound
+      slurp
+      socat
+      tree
+      unscd
+      usbimager
+      usbutils
+      uv
+      uxplay
+      vkmark
+      vulkan-tools
+      wally-cli
+      waybar
+      wayland
+      wayland-scanner
+      wshowkeys
+      wget
+      wl-clipboard
+      wlr-randr
+      wofi
+      xclip
+      xorg.libX11
+      yq
+      yubioath-flutter
+    ]) ++ 
+    (with pkgs-stable; [
+      canon-cups-ufr2
     #devenv
     # devenv
     kicad
@@ -461,19 +471,19 @@ environment = {
      MOZ_ENABLE_WAYLAND="1";
 #     WLR_DRM_DEVICES="/dev/dri/card1";
 #     WLR_DRM_NO_MODIFIERS="1";
-     WLR_NO_HARDWARE_CURSORS = "1";
-     LD_LIBRARY_PATH="/run/opengl-driver/lib:/run/opengl-driver-32/lib";          
-     DG_SESSION_TYPE = "wayland";
+WLR_NO_HARDWARE_CURSORS = "1";
+LD_LIBRARY_PATH="/run/opengl-driver/lib:/run/opengl-driver-32/lib";          
+DG_SESSION_TYPE = "wayland";
 #      __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-     NIXOS_OZONE_WL = "1";
+NIXOS_OZONE_WL = "1";
     };
   };
   system.activationScripts.text = "
-    if [ ! -d /usr/share/nltk_data/corpora ]; then
-      mkdir -p /usr/share/nltk_data/corpora
-    fi
-    ln -sf ${pkgs.nltk-data.words}/corpora/words /usr/share/nltk_data/corpora/words
-    ln -sf ${pkgs.nltk-data.wordnet}/corpora/wordnet /usr/share/nltk_data/corpora/wordnet
-    ln -sf ${pkgs.nltk-data.wordnet31}/corpora/wordnet31 /usr/share/nltk_data/corpora/wordnet31
+  if [ ! -d /usr/share/nltk_data/corpora ]; then
+  mkdir -p /usr/share/nltk_data/corpora
+  fi
+  ln -sf ${pkgs.nltk-data.words}/corpora/words /usr/share/nltk_data/corpora/words
+  ln -sf ${pkgs.nltk-data.wordnet}/corpora/wordnet /usr/share/nltk_data/corpora/wordnet
+  ln -sf ${pkgs.nltk-data.wordnet31}/corpora/wordnet31 /usr/share/nltk_data/corpora/wordnet31
   ";
 }

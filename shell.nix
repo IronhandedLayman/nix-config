@@ -13,18 +13,21 @@
     nvme-cli
     (python313.withPackages ( pythonPkgs: with pythonPkgs; [
       nltk
+      fastapi
+      flask
       nltk-data
-      #pyglm #pyglm broken as of 2 Sept 2025
-      #manim #depends on pyglm
-      #manim-slides #depends on pyglm
+      pyglm
+      manim
+      manim-slides
       numpy
       pyarrow
       torch
       torchvision
       torchaudio
       pandas
-      #parquet # missing toml package? broken as of 2 Sept 2025
+      # parquet # missing toml package? broken as of 2 Sept 2025
       pip
+      polars
       pygame
       requests
       ultralytics

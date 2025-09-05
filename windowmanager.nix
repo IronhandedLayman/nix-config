@@ -8,6 +8,13 @@
     rofi-emoji
   ];
 
+  home.pointerCursor = {
+    gtk.enable = true;
+    package = pkgs.bibata-cursors;
+    name = "Bibata-Modern-Classic";
+    size = 16;
+  };
+
   programs.foot = {
     enable = true;
     settings = {
@@ -52,6 +59,7 @@
 
   wayland.windowManager.hyprland = {
     enable = true;
+    xwayland.enable = true;
 
     # set the Hyprland and XDPH packages to null to use the ones from the NixOS module
     # as per Hyprland Wiki https://wiki.hyprland.org/Nix/Hyprland-on-Home-Manager/
@@ -209,6 +217,10 @@
           "$mainMod, mouse:273, resizewindow"
         ];
 
+      };
+      systemd = {
+        enable = true;
+        variables = ["--all"];
       };
     };
 
