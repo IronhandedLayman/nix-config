@@ -29,6 +29,7 @@
       pip
       polars
       pygame
+      ray
       requests
       ultralytics
     ]))
