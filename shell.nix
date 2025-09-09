@@ -35,6 +35,10 @@
     ]))
     parquet-tools
     ripgrep
+    (ruby.withPackages (ps: with ps; [
+      racc
+      rbs
+    ]))
     tmux
     xxd
   ];
