@@ -7,17 +7,15 @@
     fzf
     hexedit
     hexyl
-    love
     lsix
-    nvme-cli
     (python313.withPackages ( pythonPkgs: with pythonPkgs; [
       nltk
       fastapi
       flask
       nltk-data
-      pyglm
-      manim
-      manim-slides
+      # pyglm
+      # manim
+      # manim-slides
       numpy
       pyarrow
       torch
@@ -30,7 +28,6 @@
       pygame
       ray
       requests
-      ultralytics
     ]))
     parquet-tools
     ripgrep

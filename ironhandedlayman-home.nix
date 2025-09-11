@@ -19,14 +19,13 @@ rec
   home = {
     # homeDirectory = if (system == "x86_64-linux") then /home/${username} else /Users/${username};
     homeDirectory = "/Users/${username}";
+    stateVersion = "23.11";
 
     packages = with pkgs; [
       bat
       bitwarden
-      bitwarden-cli
-      bitwarden-menu
       bitwarden-desktop
-      buf
+      # buf
       cmake
       delve
       duf
