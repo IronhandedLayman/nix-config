@@ -54,11 +54,14 @@
       nix.enable = true;
       sleuth.enable = true;
       web-devicons.enable = true;
-      treesitter.enable = true;
+      treesitter= {
+	enable = true;
+      };
+      treesitter-context.enable = true;
       image.enable=true;
 
       ollama = {
-	enable = true;
+	enable = false;
 	model = "hf.co/unsloth/DeepSeek-R1-Distill-Llama-8B-GGUF:Q8_0";
       };
 
@@ -208,6 +211,7 @@
 		pylsp_mypy.enable = true;
 	      };
 	    };
+	    pyright.enable = true;
 	    ruff.enable = true;
 	    dockerls.enable = true;
 	  };

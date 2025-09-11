@@ -1,4 +1,4 @@
-{ pkgs, system, ... }:
+{ system, config, pkgs, ... }:
 {
   home.packages = with pkgs; [
     bat
@@ -7,16 +7,30 @@
     fzf
     hexedit
     hexyl
+    love
     lsix
-    (python313.withPackages (pythonPkgs: with pythonPkgs; [
+    nvme-cli
+    (python313.withPackages ( pythonPkgs: with pythonPkgs; [
       nltk
+      fastapi
+      flask
       nltk-data
+      pyglm
+      manim
+      manim-slides
       numpy
       pyarrow
       torch
+      torchvision
+      torchaudio
       pandas
-      parquet
+      # parquet # missing toml package? broken as of 2 Sept 2025
+      pip
+      polars
+      pygame
+      ray
       requests
+      ultralytics
     ]))
     parquet-tools
     ripgrep
@@ -39,6 +53,7 @@
       plugins = [
         "git"
         "fzf"
+        "kubectl"
       ];
       theme = "agnoster";
     };

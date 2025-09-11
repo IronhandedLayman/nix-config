@@ -22,38 +22,38 @@
   };
 
   outputs = inputs@{ self, nixpkgs, nixpkgs-stable, home-manager, nixvim, nix-darwin, ... }:
-    let
-      username = "ironhandedlayman";
-    in
-    {
-      inherit username;
-      darwinConfigurations =
-        let
-          hostname = "kataribe";
-          system = "aarch64-darwin";
-          pkgs = nixpkgs.legacyPackages.${system};
-          pkgs-stable = nixpkgs-stable.legacyPackages.${system};
-        in
-        {
-          ${hostname} = nix-darwin.lib.darwinSystem {
-            modules = [
-              ./kataribe-configuration.nix
-              home-manager.darwinModules.home-manager
-              {
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
-                home-manager.sharedModules = [
-                  nixvim.homeModules.nixvim
-                ];
-                home-manager.extraSpecialArgs = {
-                  inherit username hostname pkgs-stable system;
-                };
-                home-manager.users.${username} = import ./ironhandedlayman-home.nix;
-              }
-            ];
-            specialArgs = { inherit inputs pkgs pkgs-stable username hostname system; };
-          };
+  let
+    username = "ironhandedlayman";
+  in
+  {
+    inherit username;
+    darwinConfigurations =
+      let
+        hostname = "kataribe";
+        system = "aarch64-darwin";
+        pkgs = nixpkgs.legacyPackages.${system};
+        pkgs-stable = nixpkgs-stable.legacyPackages.${system};
+      in
+      {
+        ${hostname} = nix-darwin.lib.darwinSystem {
+          modules = [
+            ./kataribe-configuration.nix
+            home-manager.darwinModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.sharedModules = [
+                nixvim.homeModules.nixvim
+              ];
+              home-manager.extraSpecialArgs = {
+                inherit username hostname pkgs-stable system;
+              };
+              home-manager.users.${username} = import ./ironhandedlayman-home.nix;
+            }
+          ];
+          specialArgs = { inherit inputs pkgs pkgs-stable username hostname system; };
         };
+      };
       nixosConfigurations =
         let
           hostname = "hokusai";
@@ -88,5 +88,5 @@
             };
           };
         };
-    };
-}
+      };
+    }

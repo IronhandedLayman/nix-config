@@ -9,22 +9,23 @@ rec
     ./shell.nix
   ];
 
+    # ./windowmanager.nix   # preferred window manager settings, terminal, and keyboard bindings
+
   xdg.dataFile."fonts" = lib.mkIf (system == "x86_64-linux") {
     enable = true;
     source = config.lib.file.mkOutOfStoreSymlink "/run/current-system/sw/share/X11/fonts";
   };
 
   home = {
-    stateVersion = "23.11";
-
-    username = "${username}";
     # homeDirectory = if (system == "x86_64-linux") then /home/${username} else /Users/${username};
     homeDirectory = "/Users/${username}";
 
     packages = with pkgs; [
       bat
       bitwarden
-      # bitwarden-cli # TODO: marked as broken, remove on 2025-08-01
+      bitwarden-cli
+      bitwarden-menu
+      bitwarden-desktop
       buf
       cmake
       delve
@@ -149,5 +150,7 @@ rec
     };
   };
 
-  programs.home-manager.enable = true;
+  programs.home-manager = {
+    enable = true;
+  };
 }
