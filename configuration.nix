@@ -512,7 +512,6 @@
         unscd
         usbimager
         usbutils
-        uv
         uxplay
         vkmark
         vulkan-tools

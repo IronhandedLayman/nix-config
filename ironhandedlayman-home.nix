@@ -52,6 +52,7 @@ rec
       ruff
       taplo
       tmux
+      uv
       xxd
     ] ++ (if (system == "x86_64-linux") then
       (with pkgs; [
