@@ -446,6 +446,7 @@
       xorg.libX11
       yq
       yubioath-flutter
+      zoom-us
     ]) ++ 
     (with pkgs-stable; [
       canon-cups-ufr2
