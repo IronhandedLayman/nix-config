@@ -407,10 +407,10 @@
       pciutils
       podman-tui
       prusa-slicer
-      (rofi-wayland.override { plugins = with pkgs; [
+      (rofi.override { plugins = with pkgs; [
         rofi-calc
         rofi-file-browser
-        rofi-emoji-wayland
+        rofi-emoji
         rofi-screenshot
         rofi-top
       ];})
@@ -483,8 +483,8 @@ NIXOS_OZONE_WL = "1";
   if [ ! -d /usr/share/nltk_data/corpora ]; then
   mkdir -p /usr/share/nltk_data/corpora
   fi
-  ln -sf ${pkgs.nltk-data.words}/corpora/words /usr/share/nltk_data/corpora/words
-  ln -sf ${pkgs.nltk-data.wordnet}/corpora/wordnet /usr/share/nltk_data/corpora/wordnet
-  ln -sf ${pkgs.nltk-data.wordnet31}/corpora/wordnet31 /usr/share/nltk_data/corpora/wordnet31
+  # ln -sf ${pkgs.nltk-data.words}/corpora/words /usr/share/nltk_data/corpora/words
+  # ln -sf ${pkgs.nltk-data.wordnet}/corpora/wordnet /usr/share/nltk_data/corpora/wordnet
+  # ln -sf ${pkgs.nltk-data.wordnet31}/corpora/wordnet31 /usr/share/nltk_data/corpora/wordnet31
   ";
 }

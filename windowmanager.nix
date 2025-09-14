@@ -34,7 +34,6 @@
 
   programs.rofi = {
     enable = true;
-    package = pkgs.rofi-wayland;
     cycle = true;
     font = "Hack Nerd Font 12";
     terminal = "${pkgs.foot}/bin/foot";
@@ -70,8 +69,8 @@
       # internal Hyprland vars
       "$fileManager" = "${pkgs.yazi}/bin/yazi";
       # "$menu" = "${pkgs.wofi}/bin/wofi --show drun";
-      "$menu" = "${pkgs.rofi-wayland}/bin/rofi -show combi";
-      "$altmenu" = "${pkgs.rofi-wayland}/bin/rofi -plugin-path ${pkgs.rofi-wayland}/lib/rofi -mode calc -show calc";
+      "$menu" = "${pkgs.rofi}/bin/rofi -show combi";
+      "$altmenu" = "${pkgs.rofi}/bin/rofi -plugin-path ${pkgs.rofi}/lib/rofi -mode calc -show calc";
       "$terminal" = "${pkgs.foot}/bin/foot";
       "$mod" = "MOD4";
       "$rightMon" = "HDMI-A-1";
@@ -167,11 +166,6 @@
           # See https://wiki.hyprland.org/Configuring/Dwindle-Layout/ for more
           pseudotile = true; # master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds section below
           "preserve_split" = true; # you probably want this;
-        };
-
-        gestures = {
-          # See https://wiki.hyprland.org/Configuring/Variables/ for more
-          workspace_swipe = "off";
         };
 
         misc = {
