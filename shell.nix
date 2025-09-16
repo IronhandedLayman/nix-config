@@ -11,7 +11,11 @@
     love
     lsix
     nvme-cli
+    llama
+    llama-cpp
     (python313.withPackages ( pythonPkgs: with pythonPkgs; [
+      gguf
+      llm-gguf
       nltk
       fastapi
       flask
