@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, pkgs-stable, lib, ... }:
 {
   home.packages = with pkgs; [
     waybar-mpris
@@ -38,7 +38,8 @@
     font = "Hack Nerd Font 12";
     terminal = "${pkgs.foot}/bin/foot";
     theme = "Indego";
-    plugins = with pkgs; [
+    package = pkgs-stable.rofi;
+    plugins = with pkgs-stable; [
       rofi-calc
       rofi-file-browser
       rofi-emoji

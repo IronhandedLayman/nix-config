@@ -169,7 +169,6 @@
     logLevel = "debug";
     drivers = [
       pkgs.canon-cups-ufr2
-      pkgs.canon-capt
     ];
   };
 
@@ -194,7 +193,13 @@
     # no need to redefine it in your config for now)
     #media-session.enable = true;
   };
-};
+
+  #syncthing = {
+  #enable = true;
+  #openDefaultPorts = true;
+  #extraFlags = ["--no-default-folder"];
+  #};
+  };
 
   # Set your time zone.
   time.timeZone = "America/New_York";
@@ -407,13 +412,6 @@
       pciutils
       podman-tui
       prusa-slicer
-      (rofi.override { plugins = with pkgs; [
-        rofi-calc
-        rofi-file-browser
-        rofi-emoji
-        rofi-screenshot
-        rofi-top
-      ];})
       qpwgraph
       rclone
       rclone-browser
@@ -454,6 +452,13 @@
     # devenv
     kicad
     openscad
+    (rofi.override { plugins = with pkgs-stable; [
+      rofi-calc
+      rofi-file-browser
+      rofi-emoji
+      rofi-screenshot
+      rofi-top
+    ];})
     vim 
     sonic-pi
   ])++ 
