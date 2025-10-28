@@ -21,8 +21,8 @@
       flask
       nltk-data
       pyglm
-      manim
-      manim-slides
+      # manim
+      # manim-slides
       numpy
       pyarrow
       torch

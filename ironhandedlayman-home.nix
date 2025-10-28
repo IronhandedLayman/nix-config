@@ -73,7 +73,7 @@ in {
     plugins = with pkgs.obs-studio-plugins; [
       wlrobs
       obs-backgroundremoval
-      obs-color-monitor
+      # obs-color-monitor
       obs-gstreamer
       #obs-pipewire-audio-capture
       #obs-source-switcher
