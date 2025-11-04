@@ -3,7 +3,7 @@
   home.packages = with pkgs; [
     bat
     gnupg
-    pinentry
+    pinentry-gnome3
     fastfetch
     fzf
     hexedit
@@ -11,8 +11,6 @@
     love
     lsix
     nvme-cli
-    llama
-    llama-cpp
     (python313.withPackages ( pythonPkgs: with pythonPkgs; [
       gguf
       llm-gguf

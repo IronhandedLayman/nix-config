@@ -12,6 +12,7 @@
     # I guess I need this because of my fonts??? need to investigate further
     permittedInsecurePackages = [ "qtwebengine-5.15.19" ];
     allowUnfree = true;
+    cudaSupport = false;
   };
 
   system.stateVersion = "23.11";
@@ -70,7 +71,7 @@
       enable = true;
       enable32Bit = true;
       extraPackages = with pkgs; [
-        vaapiVdpau
+        libva-vdpau-driver
         nvidia-vaapi-driver
         #vulkan-validation-layers
       ];
@@ -105,7 +106,7 @@
     blueman.enable = true;
 
     ollama = {
-      enable = true;
+      enable = false;
       acceleration = "cuda";
       host = "0.0.0.0";
     };
@@ -382,10 +383,10 @@
       dive
       egl-wayland
       foot
-      freecad-wayland
+      # freecad-wayland # NOTE: crashes build as of 4 Nov 2025, need to revisit when it doesn't crash the build
       gcc
-      glfw-wayland
-      glxinfo
+      glfw
+      mesa-demos
       godot_4
       go
       grim

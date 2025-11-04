@@ -22,7 +22,6 @@ in {
     homeDirectory = "/home/${username}";
 
     packages = with pkgs; [
-      bitwarden
       bitwarden-cli
       bitwarden-menu
       bitwarden-desktop
@@ -44,13 +43,13 @@ in {
       # manim  # Note: including in python deployment since I want detection of modules in nvim
       ncdu
       nvd
-      protonup
+      protonup-ng
       wlr-randr
       pyradio
       ruff
       taplo
       vlc
-      poppler_utils
+      poppler-utils
       # sonic-pi
       just
       opentofu
