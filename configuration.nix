@@ -12,7 +12,7 @@
     # I guess I need this because of my fonts??? need to investigate further
     permittedInsecurePackages = [ "qtwebengine-5.15.19" ];
     allowUnfree = true;
-    cudaSupport = false;
+    cudaSupport = false; # CUDA Support does NOT work as of 4 Nov 2025
   };
 
   system.stateVersion = "23.11";
@@ -106,7 +106,7 @@
     blueman.enable = true;
 
     ollama = {
-      enable = false;
+      enable = true;
       acceleration = "cuda";
       host = "0.0.0.0";
     };
