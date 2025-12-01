@@ -44,6 +44,7 @@ in {
       ncdu
       nvd
       protonup-ng
+      qucs-s
       wlr-randr
       pyradio
       ruff
