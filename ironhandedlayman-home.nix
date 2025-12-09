@@ -85,13 +85,13 @@ in {
 
   programs.git = {
     enable = true;
-    userName = "ironhandedlayman";
-    userEmail = "leadhyena@gmail.com";
-    aliases = {
-      c = "commit --no-verify -a";
-      adog = "log --all --decorate --oneline --graph";
-    };
-    extraConfig = {
+    settings = {
+      aliases = {
+        c = "commit --no-verify -a";
+        adog = "log --all --decorate --oneline --graph";
+      };
+      user.name = "ironhandedlayman";
+      user.email = "leadhyena@gmail.com";
       branch.sort = "committerdate";
       tag.sort = "version:refname";
       column.ui="auto";

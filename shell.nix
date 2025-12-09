@@ -86,6 +86,7 @@
       ndet () {
         nix eval --json -f "<nixpkgs>" $1.meta | jq
       }
+      export PATH=/home/ironhandedlayman/bin:$PATH
     '';
   };
 

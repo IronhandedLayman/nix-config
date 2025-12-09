@@ -107,7 +107,7 @@
 
     ollama = {
       enable = true;
-      acceleration = "cuda";
+      package = pkgs.ollama-cuda;
       host = "0.0.0.0";
     };
 
@@ -352,7 +352,31 @@
     };
 
     gamemode.enable = true;
-    nix-ld.enable = true;
+    nix-ld = {
+      enable = true;
+      libraries = with pkgs; [
+        glibc
+        clang-tools
+        zlib
+        libGL 
+        libGLU
+        ncurses
+        glfw
+        SDL2
+        SDL2_gfx
+        SDL2_sound
+        SDL2_mixer
+        SDL2_image
+        SDL2_Pango
+        SDL2_ttf
+        xorg.libX11
+        xorg.libXrandr
+        xorg.libXcursor
+        xorg.libXinerama
+        xorg.libXi
+        xorg.libXxf86vm
+      ];
+    };
 
     git = {
       enable = true;
@@ -375,6 +399,9 @@
 
     systemPackages = 
     (with pkgs; [
+      binutils
+      patchelf
+      auto-patchelf
       avahi
       brightnessctl
       btop
@@ -406,6 +433,7 @@
       mako
       mesa
       nemo-with-extensions
+      nix-index
       ngspice
       nsncd
       nvtopPackages.full
@@ -426,6 +454,7 @@
       socat
       tree
       unscd
+      unzip
       usbimager
       usbutils
       uv

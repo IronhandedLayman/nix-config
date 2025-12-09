@@ -61,7 +61,9 @@
 
       ollama = {
 	enable = false;
-	model = "hf.co/unsloth/DeepSeek-R1-Distill-Llama-8B-GGUF:Q8_0";
+	settings = {
+	  model = "hf.co/unsloth/DeepSeek-R1-Distill-Llama-8B-GGUF:Q8_0";
+	};
       };
 
       telescope = {
