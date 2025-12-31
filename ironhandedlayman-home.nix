@@ -28,6 +28,7 @@ in {
       buf
       cmake
       delve
+      devenv
       duf
       eza
       fd
@@ -41,6 +42,7 @@ in {
       kiwix
       inkscape-with-extensions
       # manim  # Note: including in python deployment since I want detection of modules in nvim
+      opentofu
       ncdu
       nvd
       protonup-ng
