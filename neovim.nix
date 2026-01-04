@@ -55,6 +55,7 @@
       web-devicons.enable = true;
       treesitter= {
 	enable = true;
+	nixvimInjections = true;
       };
       treesitter-context.enable = true;
       image.enable=true;
@@ -85,7 +86,7 @@
       };
 
       neorg = {
-      	enable = true;
+      	enable = false;
 	settings.load = {
 	  # modules using default settings
 	  "core.defaults" = { __empty = null;};

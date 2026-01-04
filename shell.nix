@@ -13,7 +13,7 @@
     nvme-cli
     (python313.withPackages ( pythonPkgs: with pythonPkgs; [
       gguf
-      llm-gguf
+      # llm-gguf # TODO: revisit 18 Jan 2025 does not pass tests
       nltk
       fastapi
       flask

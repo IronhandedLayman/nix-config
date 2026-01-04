@@ -460,7 +460,7 @@
       usbutils
       uv
       uxplay
-      vkmark
+      # vkmark -- TODO: Revisit on 18 Jan 2025, does not compile 4 Jan 2025
       vulkan-tools
       wally-cli
       waybar
