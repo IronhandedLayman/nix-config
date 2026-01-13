@@ -361,6 +361,7 @@
         zlib
         libGL 
         libGLU
+        libudev-zero
         ncurses
         glfw
         SDL2
@@ -370,6 +371,8 @@
         SDL2_image
         SDL2_Pango
         SDL2_ttf
+        systemdLibs
+        udev
         xorg.libX11
         xorg.libXrandr
         xorg.libXcursor

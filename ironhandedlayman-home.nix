@@ -10,9 +10,21 @@ in {
     ./windowmanager.nix   # preferred window manager settings, terminal, and keyboard bindings
   ]; 
 
-  xdg.dataFile."fonts" = {
-    enable = true;
-    source = config.lib.file.mkOutOfStoreSymlink "/run/current-system/sw/share/X11/fonts";
+  xdg = {
+    mime.enable = true;
+    mimeApps = {
+      enable = true;
+      defaultApplications = {
+        "x-scheme-handler/http" = "firefox.desktop";
+        "x-scheme-handler/https" = "firefox.desktop";
+        "x-scheme-handler/about" = "firefox.desktop";
+        "x-scheme-handler/unknown" = "firefox.desktop";
+      };
+    };
+    dataFile."fonts" = {
+      enable = true;
+      source = config.lib.file.mkOutOfStoreSymlink "/run/current-system/sw/share/X11/fonts";
+    };
   };
 
   home = {
@@ -22,9 +34,11 @@ in {
     homeDirectory = "/home/${username}";
 
     packages = with pkgs; [
+      # manim  # Note: including in python deployment since I want detection of modules in nvim
+      # sonic-pi
       bitwarden-cli
-      bitwarden-menu
       bitwarden-desktop
+      bitwarden-menu
       buf
       cmake
       delve
@@ -35,28 +49,28 @@ in {
       gcc
       gh
       gnumake
-      kubernetes-helm
+      inkscape-with-extensions
+      just
       k3s
       k9s
       kdePackages.kdenlive
       kiwix
-      inkscape-with-extensions
-      # manim  # Note: including in python deployment since I want detection of modules in nvim
-      opentofu
+      kubernetes-helm
       ncdu
       nvd
+      openstackclient
+      opentofu
+      opentofu
+      poppler-utils
+      prismlauncher
       protonup-ng
-      qucs-s
-      wlr-randr
       pyradio
+      qucs-s
       ruff
       taplo
+      viddy
       vlc
-      poppler-utils
-      # sonic-pi
-      just
-      opentofu
-      openstackclient
+      wlr-randr
     ];
 
     file = {
