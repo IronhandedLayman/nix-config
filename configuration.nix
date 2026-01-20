@@ -13,6 +13,7 @@
     # I guess I need this because of my fonts??? need to investigate further
     permittedInsecurePackages = [ "qtwebengine-5.15.19" ];
     allowUnfree = true;
+    # allowBroken = true;
     cudaSupport = false; # CUDA Support does NOT work as of 4 Nov 2025
   };
 
@@ -302,7 +303,7 @@
     packages = with pkgs-stable; [
       noto-fonts
       noto-fonts-cjk-sans
-      noto-fonts-emoji
+      noto-fonts-color-emoji
       liberation_ttf
       fira-code
       fira-code-symbols
@@ -357,6 +358,7 @@
       enable = true;
       libraries = with pkgs; [
         glibc
+        cairo
         clang-tools
         zlib
         libGL 
@@ -397,7 +399,6 @@
       bash
       zsh
       fish
-      oils-for-unix
       nushell
     ];
 
@@ -443,6 +444,7 @@
       nvtopPackages.full
       pavucontrol
       pciutils
+      pkg-config
       podman-tui
       prusa-slicer
       qpwgraph

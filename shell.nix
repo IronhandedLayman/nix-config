@@ -11,7 +11,7 @@
     love
     lsix
     nvme-cli
-    (python313.withPackages ( pythonPkgs: with pythonPkgs; [
+    (python314.withPackages ( pythonPkgs: with pythonPkgs; [
       gguf
       # llm-gguf # TODO: revisit 18 Jan 2025 does not pass tests
       nltk
@@ -31,7 +31,7 @@
       pip
       polars
       pygame
-      ray
+      # ray
       requests
       ultralytics
     ]))

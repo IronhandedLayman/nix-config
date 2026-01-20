@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 {
   programs.nixvim = {
     enable=true;
@@ -34,6 +34,11 @@
 	};
       };
     };
+
+    extraConfigLuaPost=''
+      local strudel = require("strudel")
+      strudel.setup()  
+    '';
 
     colorschemes.base16 = {
       enable = true;
@@ -226,5 +231,16 @@
       dap-lldb.enable = true;
 
       };
+      extraPlugins = [
+	(pkgs.vimUtils.buildVimPlugin {
+	  name = "strudel.nvim";
+	  src = pkgs.fetchFromGitHub {
+	    owner = "gruvw";
+	    repo = "strudel.nvim";
+	    rev = "a6b9752b0084a20c37786b54eef2095bb31daff7";
+	    hash = "sha256-LhS41aKsYJpKqoF2S3ZzeDLYGBKA4iMN2o34k8YOWHs=";
+	  };
+        })
+      ];
     };
 }

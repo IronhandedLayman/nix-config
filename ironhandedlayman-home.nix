@@ -34,12 +34,13 @@ in {
     homeDirectory = "/home/${username}";
 
     packages = with pkgs; [
-      # manim  # Note: including in python deployment since I want detection of modules in nvim
+      manim  # using it here because python manim is broken
       # sonic-pi
       bitwarden-cli
       bitwarden-desktop
       bitwarden-menu
       buf
+      ckan
       cmake
       delve
       devenv
