@@ -47,6 +47,7 @@
 
     plugins = {
       # all the following with basic options
+      avante.enable = true;
       flash.enable = true;
       bufferline.enable = true;
       fugitive.enable = true;
