@@ -1,10 +1,11 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, pkgs-stable, lib, ... }:
 let 
   username="ironhandedlayman";
   flakerepo="Projects/nix-config";
 in {
 
   imports = [
+    ./packages/nebius-cli.nix # nebius-cli binary static implementation
     ./neovim.nix          # imports nixvim settings
     ./shell.nix           # general shell preferences
     ./windowmanager.nix   # preferred window manager settings, terminal, and keyboard bindings
@@ -33,7 +34,7 @@ in {
     username = "${username}";
     homeDirectory = "/home/${username}";
 
-    packages = with pkgs; [
+    packages = (with pkgs; [
       claude-code
       manim  # using it here because python manim is broken
       # sonic-pi
@@ -55,7 +56,6 @@ in {
       just
       k3s
       k9s
-      kdePackages.kdenlive
       kiwix
       kubernetes-helm
       ncdu
@@ -73,7 +73,9 @@ in {
       viddy
       vlc
       wlr-randr
-    ];
+    ]) ++ (with pkgs-stable;[
+      kdePackages.kdenlive
+    ]);
 
     file = {
     };
@@ -85,6 +87,8 @@ in {
       NH_FLAKE = "/home/${username}/${flakerepo}";
     };
   };
+
+  programs.nebius-cli.enable = true;
 
   programs.obs-studio = {
     enable = true;
