@@ -70,6 +70,7 @@ in {
       qucs-s
       ruff
       taplo
+      terraform
       viddy
       vlc
       wlr-randr

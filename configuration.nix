@@ -357,7 +357,13 @@
     nix-ld = {
       enable = true;
       libraries = with pkgs; [
+        wayland
+        xcb-util-cursor
+        dbus
+        dbus-glib
+        glib
         glibc
+        freetype
         cairo
         clang-tools
         zlib
@@ -365,7 +371,9 @@
         libGLU
         libudev-zero
         ncurses
+        fontconfig
         glfw
+        SDL
         SDL2
         SDL2_gfx
         SDL2_sound
@@ -374,13 +382,19 @@
         SDL2_Pango
         SDL2_ttf
         systemdLibs
+        ffmpeg
         udev
-        xorg.libX11
-        xorg.libXrandr
-        xorg.libXcursor
-        xorg.libXinerama
-        xorg.libXi
-        xorg.libXxf86vm
+        libX11
+        libXrandr
+        libXcursor
+        libXinerama
+        libXi
+        libXxf86vm
+        libxkbcommon
+        stdenv.cc.cc.lib
+        stdenv.cc.cc.libc_dev
+        stdenv.cc.cc.libgcc
+        gccNGPackages_15.libstdcxx
       ];
     };
 
@@ -415,6 +429,7 @@
       dive
       egl-wayland
       foot
+      freetype
       # freecad-wayland # NOTE: crashes build as of 4 Nov 2025, need to revisit when it doesn't crash the build
       gcc
       glfw
@@ -453,6 +468,8 @@
       screenkey
       slop
       SDL2
+      SDL2_ttf
+      SDL2_mixer
       SDL2_gfx
       SDL2_image
       SDL2_sound
@@ -477,7 +494,6 @@
       wlr-randr
       wofi
       xclip
-      xorg.libX11
       yq
       yubioath-flutter
       zoom-us
