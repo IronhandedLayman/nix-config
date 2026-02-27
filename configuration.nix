@@ -513,6 +513,7 @@
     ];})
     vim 
     sonic-pi
+    bottles
   ])++ 
   (with pkgs.nltk-data; [
     words
