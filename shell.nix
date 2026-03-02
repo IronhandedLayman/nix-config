@@ -12,7 +12,7 @@
     lsix
     nvme-cli
     (python314.withPackages ( pythonPkgs: with pythonPkgs; [
-      gguf
+      # gguf # TODO: does not build 27 Feb 2026
       # llm-gguf # TODO: revisit 18 Jan 2025 does not pass tests
       nltk
       fastapi
@@ -25,7 +25,7 @@
       pyarrow
       torch
       torchvision
-      torchaudio
+      #torchaudio
       pandas
       # parquet # missing toml package? broken as of 2 Sept 2025
       pip
