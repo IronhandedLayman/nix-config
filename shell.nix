@@ -64,7 +64,9 @@
       ll = "exa --icons -l";
     };
     initContent = ''
-      source <(nh completions zsh) 
+      # took out completions for nh, since they aren't supported the same way as before? 3 mar 2026
+      # source <(nh completions zsh) 
+
       # routes to Neorg's journal system
       today () {
         nvim +Neorg\ journal\ today
