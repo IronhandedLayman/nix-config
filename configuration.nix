@@ -223,12 +223,16 @@
   };
 
   systemd = {
-    sleep.extraConfig = ''
-      AllowSuspend=no
-      AllowHibernation=no
-      AllowHybridSleep=no
-      AllowSuspendThenHibernate=no
-    '';
+    sleep.settings.Sleep = {
+      allowSuspend = false;
+      allowHibernation = false;
+      allowHybridSleep = false;
+      allowSuspendThenHibernate = false;
+    };
+      #AllowSuspend=no
+      #AllowHibernation=no
+      #AllowHybridSleep=no
+      #AllowSuspendThenHibernate=no
     services.avahi-daemon.enable=true;
   };
 
