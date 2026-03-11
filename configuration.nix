@@ -93,6 +93,12 @@
   };
 
   services = {
+    minecraft-server = {
+      enable = true;
+      eula = true;
+      openFirewall = true;
+      jvmOpts = "-Xms4096m -Xmx4096m";
+    };
     pulseaudio.enable = false; # TODO: remind me why I disabled this?
     playerctld.enable = true;
     pcscd.enable = true;
@@ -463,6 +469,7 @@
       nvtopPackages.full
       pavucontrol
       pciutils
+      pikopixel
       pkg-config
       podman-tui
       prusa-slicer

@@ -26,7 +26,7 @@
       mouse = {
         hide-when-typing = "yes";
       };
-      colors = {
+      colors-dark = {
         alpha="0.8";
       }; 
     };
