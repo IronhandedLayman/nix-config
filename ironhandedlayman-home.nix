@@ -74,6 +74,10 @@ in {
       viddy
       vlc
       wlr-randr
+      (sbcl.withPackages (ps: with ps; [
+        alexandria
+      ]))
+      cl-launch
     ]) ++ (with pkgs-stable;[
       kdePackages.kdenlive
     ]);

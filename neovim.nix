@@ -48,6 +48,10 @@
     plugins = {
       # all the following with basic options
       avante.enable = true;
+
+      conjure.enable = true; # for lisp
+      paredit.enable = true; # for lisp
+      
       flash.enable = true;
       bufferline.enable = true;
       fugitive.enable = true;
@@ -232,6 +236,37 @@
       dap-lldb.enable = true;
 
       };
+      keymaps = [
+	# Telescope
+	  {
+	    mode = "n";
+	    key = "<leader>ff";
+	    action = "<cmd>Telescope find_files<cr>";
+	    options.desc = "Find files";
+	    }
+	    {
+	    mode = "n";
+	    key = "<leader>fg";
+	    action = "<cmd>Telescope live_grep<cr>";
+	    options.desc = "Live grep";
+	    }
+
+      # Conjure — eval current form
+      {
+	mode = "n";
+	key = "<localleader>ee";
+	action = "<cmd>ConjureEval<cr>";
+	options.desc = "Eval form";
+	}
+
+      # Conjure — eval whole buffer
+      {
+	mode = "n";
+	key = "<localleader>eb";
+	action = "<cmd>ConjureEvalBuf<cr>";
+	options.desc = "Eval buffer";
+	}
+      ];
       extraPlugins = [
 	(pkgs.vimUtils.buildVimPlugin {
 	  name = "strudel.nvim";

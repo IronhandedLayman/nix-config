@@ -75,13 +75,20 @@
       extraPackages = with pkgs; [
         libva-vdpau-driver
         nvidia-vaapi-driver
+        libGL
+        mesa
         #vulkan-validation-layers
+        glfw
+        wayland
+        libxkbcommon
       ];
     };
+
     bluetooth = {
       enable = true;
       powerOnBoot = true;
     };
+
     nvidia = {
       modesetting.enable = true;
       powerManagement.enable = false;
@@ -367,6 +374,7 @@
     nix-ld = {
       enable = true;
       libraries = with pkgs; [
+
         wayland
         xcb-util-cursor
         dbus
@@ -404,7 +412,9 @@
         stdenv.cc.cc.lib
         stdenv.cc.cc.libc_dev
         stdenv.cc.cc.libgcc
+        stdenv.cc
         gccNGPackages_15.libstdcxx
+        libglvnd
       ];
     };
 
