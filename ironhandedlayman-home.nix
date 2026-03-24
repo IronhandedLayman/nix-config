@@ -6,6 +6,7 @@ in {
 
   imports = [
     ./packages/nebius-cli.nix # nebius-cli binary static implementation
+    ./packages/sonar.nix # installing cli application for local port investigation
     ./neovim.nix          # imports nixvim settings
     ./shell.nix           # general shell preferences
     ./windowmanager.nix   # preferred window manager settings, terminal, and keyboard bindings
@@ -94,6 +95,7 @@ in {
   };
 
   programs.nebius-cli.enable = true;
+  programs.sonar-raskrebs.enable = true;
 
   programs.obs-studio = {
     enable = true;
