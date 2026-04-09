@@ -16,10 +16,14 @@
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 #    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
   };
 
-  outputs = inputs@{ nixpkgs, nixpkgs-stable, home-manager, nixvim, ...}: 
+  outputs = inputs@{ nixpkgs, nixpkgs-stable, home-manager, nixvim, sops-nix, ...}: 
     let 
       system = "x86_64-linux";
       pkgs-stable = import nixpkgs-stable { inherit system; config.allowUnfree = true; };
@@ -31,6 +35,7 @@
           inherit system;
           modules = [
             ./configuration.nix
+            sops-nix.nixosModules.sops
               home-manager.nixosModules.home-manager {
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;

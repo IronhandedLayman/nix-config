@@ -36,7 +36,7 @@ in {
     homeDirectory = "/home/${username}";
 
     packages = (with pkgs; [
-      claude-code
+      # claude-code
       manim  # using it here because python manim is broken
       # sonic-pi
       bitwarden-cli

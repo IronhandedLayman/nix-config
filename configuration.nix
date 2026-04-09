@@ -19,6 +19,13 @@
 
   system.stateVersion = "23.11";
 
+  sops = {
+    age.sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
+    defaultSopsFile = ./secrets/hokusai.yaml;
+    secrets.minecraft-server-rcon = {};
+  };
+
+
   # TODO: move additional hokusai configurations to separate file
 
   # Hardware configurations
@@ -104,7 +111,8 @@
       enable = true;
       eula = true;
       openFirewall = true;
-      jvmOpts = "-Xms4096m -Xmx4096m";
+      package = pkgs.minecraftServers.vanilla-1-21;
+      jvmOpts = "-Xms4096m -Xmx4096m -Djava.net.preferIPv4Stack=true";
     };
     pulseaudio.enable = false; # TODO: remind me why I disabled this?
     playerctld.enable = true;
@@ -518,11 +526,11 @@
       yq
       yubioath-flutter
       zoom-us
+      sops
+      age
     ]) ++ 
     (with pkgs-stable; [
       canon-cups-ufr2
-    #devenv
-    # devenv
     kicad
     openscad
     (rofi.override { plugins = with pkgs-stable; [
