@@ -44,6 +44,7 @@ in {
       bitwarden-menu
       buf
       ckan
+      claude-code
       cmake
       delve
       devenv
@@ -63,7 +64,8 @@ in {
       nvd
       openstackclient
       opentofu
-      opentofu
+      opencode
+      opencode-claude-auth
       poppler-utils
       prismlauncher
       protonup-ng
