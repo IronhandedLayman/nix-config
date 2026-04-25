@@ -45,15 +45,15 @@
       rofi-emoji
     ];
     modes = [
-      "combi"
+      "drun"
     ];
     extraConfig = {
       matching = "fuzzy";
-      combi-modes = [
-        "drun"
-        "window"
-        "run"
-      ];
+#      combi-modes = [
+#        "drun"
+#        "window"
+#        "run"
+#      ];
     };
   };
 
