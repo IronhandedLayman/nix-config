@@ -30,7 +30,7 @@
       # parquet # missing toml package? broken as of 2 Sept 2025
       pip
       polars
-      pygame
+      # pygame
       # ray
       requests
       ultralytics

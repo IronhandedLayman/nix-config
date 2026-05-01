@@ -67,7 +67,7 @@
 	enable = true;
 	nixvimInjections = true;
       };
-      treesitter-context.enable = true;
+      # treesitter-context.enable = true;
       image.enable=true;
 
       ollama = {
@@ -270,6 +270,7 @@
       extraPlugins = [
 	(pkgs.vimUtils.buildVimPlugin {
 	  name = "strudel.nvim";
+	  pname = "strudel.nvim";
 	  src = pkgs.fetchFromGitHub {
 	    owner = "gruvw";
 	    repo = "strudel.nvim";

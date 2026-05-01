@@ -118,7 +118,7 @@
     playerctld.enable = true;
     pcscd.enable = true;
     monado = {
-      enable = true;
+      enable = false;
       defaultRuntime = true;
       forceDefaultRuntime = true;
     };
@@ -276,8 +276,9 @@
         ];
       };
     };
+      /*
     polkit = {
-      enable = true;
+      enable = false;
       extraConfig ='' 
         polkit.addRule(function (action, subject) {
         const setcapBinary = "/usr/bin/setcap";
@@ -308,6 +309,7 @@
         });
       '';
     };
+      */
     rtkit.enable = true;
   };
 

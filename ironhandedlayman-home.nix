@@ -116,6 +116,7 @@ in {
 
   programs.git = {
     enable = true;
+    signing.format = null;
     settings = {
       aliases = {
         c = "commit --no-verify -a";
