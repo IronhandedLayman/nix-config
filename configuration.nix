@@ -395,6 +395,7 @@
         cairo
         clang-tools
         zlib
+        libusb1
         libGL 
         libGLU
         libudev-zero
