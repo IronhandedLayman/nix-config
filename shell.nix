@@ -23,9 +23,9 @@
       # manim-slides
       numpy
       pyarrow
-      torch
-      torchvision
-      #torchaudio
+      # torch
+      # torchvision
+      # torchaudio
       pandas
       # parquet # missing toml package? broken as of 2 Sept 2025
       pip
@@ -33,7 +33,7 @@
       # pygame
       # ray
       requests
-      ultralytics
+      # ultralytics
     ]))
     parquet-tools
     ripgrep

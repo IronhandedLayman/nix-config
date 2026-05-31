@@ -36,6 +36,7 @@ in {
     homeDirectory = "/home/${username}";
 
     packages = (with pkgs; [
+      television
       # claude-code
       manim  # using it here because python manim is broken
       # sonic-pi

@@ -6,7 +6,7 @@
       url = "github:NixOS/nixpkgs/nixos-unstable";
     };
     nixpkgs-stable = {
-      url = "github:NixOS/nixpkgs/nixos-25.11";
+      url = "github:NixOS/nixpkgs/nixos-26.05";
     };
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -14,7 +14,7 @@
     };
     nixvim = {
       url = "github:nix-community/nixvim";
-      inputs.nixpkgs.follows = "nixpkgs";
+#      inputs.nixpkgs.follows = "nixpkgs";
     };
     sops-nix = {
       url = "github:Mic92/sops-nix";
@@ -26,7 +26,7 @@
   outputs = inputs@{ nixpkgs, nixpkgs-stable, home-manager, nixvim, sops-nix, ...}: 
     let 
       system = "x86_64-linux";
-      pkgs-stable = import nixpkgs-stable { inherit system; config.allowUnfree = true; };
+      pkgs-stable = import nixpkgs-stable { inherit system; config.allowUnfree = true; config.cudaSupport = true; };
       username = "ironhandedlayman";
       hostname = "hokusai";
     in {

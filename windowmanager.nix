@@ -1,4 +1,4 @@
-{ pkgs, pkgs-stable, lib, ... }:
+{ pkgs, pkgs-stable, ... }:
 {
   home.packages = with pkgs; [
     waybar-mpris
@@ -59,6 +59,7 @@
 
   wayland.windowManager.hyprland = {
     enable = true;
+    configType="hyprlang"; # NOTE: revisit after 26.05 release
     xwayland.enable = true;
 
     # set the Hyprland and XDPH packages to null to use the ones from the NixOS module
@@ -165,7 +166,7 @@
 
         dwindle = {
           # See https://wiki.hyprland.org/Configuring/Dwindle-Layout/ for more
-          pseudotile = true; # master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds section below
+          # pseudotile = true; # master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds section below
           "preserve_split" = true; # you probably want this;
         };
 
@@ -188,8 +189,8 @@
           "$mainMod, V, togglefloating, "
           "$mainMod, D, exec, $menu"
           "$mainMod, B, exec, $altmenu"
-          "$mainMod, P, pseudo, " # dwindle
-          "$mainMod, C, togglesplit, " # dwindle
+          #"$mainMod, P, pseudo, " # dwindle
+          #"$mainMod, C, togglesplit, " # dwindle
           "$mainMod, X, movewindow, mon:+1"
 
           "$mainMod, H, movefocus, l"

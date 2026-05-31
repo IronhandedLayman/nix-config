@@ -1,12 +1,31 @@
 { config, pkgs, pkgs-stable, ... }:
 {
+
+  ## Temporarily until I get real memory installed
+  swapDevices = [{
+    device = "/var/lib/swapfile";
+    size = 64*1024; 
+  }];
+
   ## Nix global settings
 
   nix.settings = {
     experimental-features = [ "nix-command" "flakes"];
     trusted-users = ["root" "ironhandedlayman"];
     auto-optimise-store = true;
-  }; 
+    substituters = [
+      "https://nix-community.cachix.org"
+      "https://cache.nixos.org"
+      "https://cuda-maintainers.cachix.org"
+      "https://cache.flox.dev"
+    ];
+    trusted-public-keys = [
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
+      "flox-cache-public-1:7F4OyH7ZCnFhcze3fJdfyXYLQw/aV7GEed86nQ7IsOs="
+    ];
+  };
 
   # Allow unfree packages
   nixpkgs.config = {
@@ -14,7 +33,7 @@
     permittedInsecurePackages = [ "qtwebengine-5.15.19" ];
     allowUnfree = true;
     # allowBroken = true;
-    cudaSupport = false; # CUDA Support does NOT work as of 4 Nov 2025
+    cudaSupport = true;
   };
 
   system.stateVersion = "23.11";
@@ -40,7 +59,9 @@
       waylandFrontend=true;
       ignoreUserConfig=true;
       addons = with pkgs; [
-        fcitx5-mozc
+        # fcitx5-mozc
+        fcitx5-mozc-ut
+        fcitx5-gtk
         catppuccin-fcitx5
         qt6Packages.fcitx5-configtool
       ];
@@ -92,6 +113,7 @@
         5353    # mdns 
         7100 7000 7001 # airplay
         11434   # ollama 
+        10200 10300 # wyoming
       ];
       allowedUDPPortRanges = [
         {from = 4000; to=12000;}
@@ -132,6 +154,35 @@
   };
 
   services = {
+    wyoming = {
+      # piper.package = pkgs-stable.wyoming-piper;
+      piper.servers."hokusai-assist" = {
+        enable = true;
+        uri = "tcp://0.0.0.0:10200";
+        voice = "en_US-hfc_female-medium";
+        # zeroconf = {
+         #  enable = true;
+          # name = "piper-hokusai-assist";
+        #} ;
+        
+        useCUDA = true;
+      };
+      faster-whisper = {
+        # package = pkgs-stable.wyoming-faster-whisper;
+        servers."hokusai-assist" = {
+          enable = true;
+          uri = "tcp://0.0.0.0:10300";
+          sttLibrary = "faster-whisper";
+          model = "medium";
+          language = "en";
+          zeroconf = {
+            enable = true;
+            name = "whisper-hokusai-assist";
+          };
+          device = "cuda";
+        };
+      };
+    };
     minecraft-server = {
       enable = true;
       eula = true;
@@ -192,7 +243,6 @@
     displayManager = {
       gdm = {
         enable = true;
-        wayland = true;
         banner = '' 
           Live well and live broadly.
           You are alive and living now.
@@ -270,15 +320,11 @@
 
   systemd = {
     sleep.settings.Sleep = {
-      allowSuspend = false;
-      allowHibernation = false;
-      allowHybridSleep = false;
-      allowSuspendThenHibernate = false;
+      AllowSuspend = "no";
+      AllowHibernation = "no";
+      AllowHybridSleep = "no";
+      AllowSuspendThenHibernate = "no";
     };
-      #AllowSuspend=no
-      #AllowHibernation=no
-      #AllowHybridSleep=no
-      #AllowSuspendThenHibernate=no
     services.avahi-daemon.enable=true;
   };
 
@@ -389,7 +435,7 @@
   };
 
   envision = {
-    enable = true;
+    enable = false;
     openFirewall = true;
   };
 
@@ -556,6 +602,8 @@
       zoom-us
       sops
       age
+      tldr
+      #sonic-pi
     ]) ++ 
     (with pkgs-stable; [
       canon-cups-ufr2
@@ -569,7 +617,6 @@
       rofi-top
     ];})
     vim 
-    sonic-pi
     bottles
   ])++ 
   (with pkgs.nltk-data; [
