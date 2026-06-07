@@ -199,7 +199,7 @@
       forceDefaultRuntime = true;
     };
     xserver = {
-      videoDrivers = ["nvidia"];
+      videoDrivers = ["nvidia" "displaylink" "modesetting"];
     };
 
     blueman.enable = true;
@@ -326,6 +326,7 @@
       AllowSuspendThenHibernate = "no";
     };
     services.avahi-daemon.enable=true;
+    services.dlm.wantedBy = ["multi-user.target"];
   };
 
   powerManagement.enable = false;
@@ -520,6 +521,7 @@
 
     systemPackages = 
     (with pkgs; [
+      displaylink
       binutils
       patchelf
       auto-patchelf

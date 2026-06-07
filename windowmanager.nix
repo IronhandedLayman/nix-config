@@ -77,10 +77,12 @@
       "$mod" = "MOD4";
       "$rightMon" = "HDMI-A-1";
       "$leftMon" = "HDMI-A-2";
+      "$elgProm" = "DVI-I-1";
 
       monitor = [
         "$rightMon, 3840x2160@120, 0x0, 1,vrr,1"
         "$leftMon, 3840x2160, -3840x0, 1"
+        "$elgProm, 1024x600, 0x-600, 1"
       ];
 
       workspace = builtins.concatLists (builtins.genList (i:
@@ -229,7 +231,8 @@
           height = 30;
           spacing = 4;
           output = [
-            "*"
+            "HDMI-A-1"
+            "HDMI-A-2"
           ];
           modules-left = [
             "hyprland/workspaces"
