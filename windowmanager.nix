@@ -79,10 +79,14 @@
       "$leftMon" = "HDMI-A-2";
       "$elgProm" = "DVI-I-1";
 
+      cursor = {
+        no_hardware_cursors = true;
+      };
+
       monitor = [
         "$rightMon, 3840x2160@120, 0x0, 1,vrr,1"
         "$leftMon, 3840x2160, -3840x0, 1"
-        "$elgProm, 1024x600, 0x-600, 1"
+        "$elgProm, 1024x600@60, 0x-600, 1"
       ];
 
       workspace = builtins.concatLists (builtins.genList (i:
@@ -93,7 +97,9 @@
       in [
         "${ls}, monitor:$leftMon${defme}"
         "${rs}, monitor:$rightMon${defme}"
-      ]) 5 );
+      ]) 4 ) ++ [
+        "9, monitor:$elgProm, default:true"
+      ];
 
       exec-once = [
         #"${pkgs.waybar}/bin/waybar &" # evidently this loads automatically? let's find out.
@@ -103,10 +109,13 @@
 
       env = [
         "XCURSOR_SIZE,24"
-        "QT_QPA_PLATFORMTHEME,qt5ct" # change to qt6ct if you have that
+        "QT_QPA_PLATFORMTHEME,qt6ct" # change to qt6ct if you have that
         # for NVIDIA, not sure if necessary, will try it
         "LIBVA_DRIVER_NAME,nvidia"
         "__GLX_VENDOR_LIBRARY_NAME,nvidia"
+        "WLR_NO_HARDWARE_CURSORS,1" 
+        "NVD_BACKEND,direct"
+        "GBM_BACKEND,nvidia-drm"
       ];
 
       # For all categories, see https://wiki.hyprland.org/Configuring/Variables/

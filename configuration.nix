@@ -83,8 +83,8 @@
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
     kernelParams = [
-      "nvidia-drm.modeset=1"
-      "nvidia-drm.fbdev=1"
+      "nvidia_drm.modeset=1"
+      "nvidia_drm.fbdev=1"
     ];
     loader = {
       systemd-boot.enable = true;
