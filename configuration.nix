@@ -127,6 +127,7 @@
       enable = true;
       enable32Bit = true;
       extraPackages = with pkgs; [
+        displaylink
         libva-vdpau-driver
         nvidia-vaapi-driver
         libGL
@@ -198,6 +199,7 @@
       defaultRuntime = true;
       forceDefaultRuntime = true;
     };
+    # displaylink.enable = true;
     xserver = {
       videoDrivers = ["nvidia" "displaylink" "modesetting"];
     };
@@ -543,6 +545,8 @@
       grim
       gutenprint
       gutenprintBin
+      cage
+      wl-mirror
       hyprpaper
       hyprpicker
       hyprlock

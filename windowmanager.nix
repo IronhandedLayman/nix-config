@@ -86,7 +86,7 @@
       monitor = [
         "$rightMon, 3840x2160@120, 0x0, 1,vrr,1"
         "$leftMon, 3840x2160, -3840x0, 1"
-        "$elgProm, 1024x600@60, 0x-600, 1"
+#        "$elgProm, 1024x600@60, 0x-600, 1"
       ];
 
       workspace = builtins.concatLists (builtins.genList (i:
