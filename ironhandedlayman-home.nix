@@ -41,7 +41,7 @@ in {
       manim  # using it here because python manim is broken
       # sonic-pi
       bitwarden-cli
-      bitwarden-desktop
+      # bitwarden-desktop
       bitwarden-menu
       buf
       ckan

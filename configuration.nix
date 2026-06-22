@@ -474,7 +474,7 @@
         libGLU
         libudev-zero
         ncurses
-        fontconfig
+        # fontconfig
         glfw
         SDL
         SDL2

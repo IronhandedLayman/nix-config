@@ -50,7 +50,7 @@
       avante.enable = true;
 
       conjure.enable = true; # for lisp
-      paredit.enable = true; # for lisp
+      #paredit.enable = true; # for lisp
       
       flash.enable = true;
       bufferline.enable = true;
@@ -96,7 +96,7 @@
       };
 
       neorg = {
-      	enable = false;
+      	enable = true;
 	settings.load = {
 	  # modules using default settings
 	  "core.defaults" = { __empty = null;};
