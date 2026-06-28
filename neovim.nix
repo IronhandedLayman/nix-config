@@ -96,7 +96,7 @@
       };
 
       neorg = {
-      	enable = true;
+      	enable = false;
 	settings.load = {
 	  # modules using default settings
 	  "core.defaults" = { __empty = null;};
