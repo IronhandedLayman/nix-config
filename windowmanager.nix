@@ -80,7 +80,7 @@
       "$elgProm" = "DVI-I-1";
 
       cursor = {
-        no_hardware_cursors = true;
+        no_hardware_cursors = 0;
       };
 
       monitor = [

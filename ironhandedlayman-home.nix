@@ -35,10 +35,11 @@ in {
     username = "${username}";
     homeDirectory = "/home/${username}";
 
+    pointerCursor.enable=true;
+
     packages = (with pkgs; [
       television
-      # claude-code
-      manim  # using it here because python manim is broken
+      # manim  # using it here because python manim is broken
       # sonic-pi
       bitwarden-cli
       # bitwarden-desktop
@@ -91,7 +92,7 @@ in {
   
     sessionVariables = {
       EDITOR = lib.mkForce "nvim";
-      DEFAULT_BROWSER = "${pkgs.firefox}/bin/firefox"; # NOTE: think about other browsers given events around 27-Feb-25
+      DEFAULT_BROWSER = "${pkgs.firefox-bin}/bin/firefox"; # NOTE: think about other browsers given events around 27-Feb-25
       FLAKE = "/home/${username}/${flakerepo}";
       NH_FLAKE = "/home/${username}/${flakerepo}";
     };

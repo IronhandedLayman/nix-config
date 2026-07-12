@@ -2,6 +2,7 @@
 {
   programs.nixvim = {
     enable=true;
+    enableMan=false;
     globals = {
       mapleader = " ";
       maplocalleader = " ";

@@ -29,13 +29,13 @@
       pandas
       # parquet # missing toml package? broken as of 2 Sept 2025
       pip
-      polars
+      # polars
       # pygame
       # ray
       requests
       # ultralytics
     ]))
-    parquet-tools
+    # parquet-tools
     ripgrep
     (ruby.withPackages (ps: with ps; [
       racc

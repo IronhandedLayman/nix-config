@@ -139,6 +139,8 @@
       ];
     };
 
+    # sane.enable = true; # TODO: as of 12 July 2026 this conflicts with setting in OpenGL, and I need to merge the two setups.
+
     bluetooth = {
       enable = true;
       powerOnBoot = true;
@@ -391,9 +393,9 @@
   users.users.ironhandedlayman = {
     isNormalUser = true;
     description = "Ironhandedlayman";
-    extraGroups = [ "networkmanager" "wheel" "video" "audio" "dialout" "input" "kvm" "render" "polkituser"];
+    extraGroups = [ "scanner" "networkmanager" "wheel" "video" "audio" "dialout" "input" "kvm" "render" "polkituser"];
     packages = (with pkgs; [
-      firefox
+      firefox-bin
       libnotify
     ]) ++ (with pkgs-stable; [
       yazi
