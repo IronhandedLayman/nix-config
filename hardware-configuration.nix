@@ -32,16 +32,16 @@
       options = [ "fmask=0022" "dmask=0022" ];
     };
 
-  fileSystems."/data" =
-    { device = "/dev/disk/by-uuid/7fb8b9da-be25-4e6d-ab24-785fa713bbd1";
-      fsType = "btrfs";
-    };
+  # fileSystems."/data" =
+    #{ device = "/dev/disk/by-uuid/7fb8b9da-be25-4e6d-ab24-785fa713bbd1";
+    #  fsType = "btrfs";
+    #};
 
-  fileSystems."/windata" =
-    { device = "/dev/disk/by-uuid/5DF0CC8525D8C3DF";
-      fsType = "ntfs";
-    };
-
+  #fileSystems."/windata" =
+  #  { device = "/dev/disk/by-uuid/5DF0CC8525D8C3DF";
+  #    fsType = "ntfs";
+  #  };
+#
   swapDevices = [ ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
