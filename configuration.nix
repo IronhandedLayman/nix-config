@@ -36,6 +36,44 @@
     cudaSupport = true;
   };
 
+  # The GDM greeter ignores org/gnome/desktop/background — its backdrop is the
+  # #lockDialogGroup color compiled into gnome-shell-theme.gresource — and
+  # shell extensions (e.g. user-theme) never load in the gdm session mode, so
+  # dconf/extension approaches can't touch the login screen. The only reliable
+  # hook is recompiling that gresource with the wallpaper embedded and our CSS
+  # (assets/gdm-greeter.css) appended. Costs a from-source gnome-shell rebuild.
+  nixpkgs.overlays = [
+    (final: prev: {
+      gnome-shell = prev.gnome-shell.overrideAttrs (old: {
+        nativeBuildInputs = old.nativeBuildInputs ++ [ final.glib.dev ];
+        postFixup = (old.postFixup or "") + ''
+          theme=$out/share/gnome-shell/gnome-shell-theme.gresource
+          workdir=$(mktemp -d)
+          cd $workdir
+          for r in $(gresource list $theme); do
+            mkdir -p $(dirname .$r)
+            gresource extract $theme $r > .$r
+          done
+          cp ${./assets/wallpapers/forrest-cavale-jwIk4Z3Msi4-unsplash.jpg} \
+            org/gnome/shell/theme/gdm-background.jpg
+          for css in gnome-shell-dark.css gnome-shell-light.css; do
+            cat ${./assets/gdm-greeter.css} >> org/gnome/shell/theme/$css
+          done
+          {
+            echo '<?xml version="1.0" encoding="UTF-8"?>'
+            echo '<gresources><gresource prefix="/org/gnome/shell/theme">'
+            for f in org/gnome/shell/theme/*; do
+              echo "<file>$(basename $f)</file>"
+            done
+            echo '</gresource></gresources>'
+          } > gnome-shell-theme.gresource.xml
+          glib-compile-resources --sourcedir=org/gnome/shell/theme \
+            --target=$theme gnome-shell-theme.gresource.xml
+        '';
+      });
+    })
+  ];
+
   system.stateVersion = "23.11";
 
   sops = {
@@ -257,7 +295,7 @@
     displayManager = {
       gdm = {
         enable = true;
-        banner = '' 
+        banner=''
           Live well and live broadly.
           You are alive and living now.
           Now is the envy of all the dead.

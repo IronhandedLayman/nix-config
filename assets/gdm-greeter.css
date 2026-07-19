@@ -1,0 +1,17 @@
+/* Appended to gnome-shell's built-in stylesheets for the GDM greeter.
+   The wallpaper is embedded into gnome-shell-theme.gresource as
+   gdm-background.jpg by the overlay in configuration.nix. */
+
+#lockDialogGroup {
+  background: #222226 url("resource:///org/gnome/shell/theme/gdm-background.jpg");
+  background-size: cover;
+}
+
+.login-dialog-banner-view {
+  max-width: 35em;
+}
+
+.login-dialog-banner-view .login-dialog-banner {
+  font-size: 1.8em;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
