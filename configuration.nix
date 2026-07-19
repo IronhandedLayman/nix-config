@@ -44,7 +44,6 @@
     secrets.minecraft-server-rcon = {};
   };
 
-
   # TODO: move additional hokusai configurations to separate file
 
   # Hardware configurations
