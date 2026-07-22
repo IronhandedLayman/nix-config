@@ -27,14 +27,14 @@
       "rd.systemd.show_status=auto"
     ];
 
-    kernelModules = [ "kvm-amd" "nvidia_uvm"];
+    kernelModules = [ "kvm-amd" "nvidia_uvm" "nvidia" "nvidia_modeset" "nvidia_drm"];
     extraModulePackages = [ ];
 
     plymouth = {
-      enable=true;
-      theme = "solar";
-      font="${pkgs.hack-font}/share/fonts/truetype/Hack-Regular.ttf";
-      logo="${pkgs.nixos-icons}/share/icons/hicolor/128x128/apps/nix-snowflake.png";
+      enable=false;
+      #theme = "solar";
+      #font="${pkgs.hack-font}/share/fonts/truetype/Hack-Regular.ttf";
+      #logo="${pkgs.nixos-icons}/share/icons/hicolor/128x128/apps/nix-snowflake.png";
     };
 
   };

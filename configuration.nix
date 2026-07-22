@@ -123,20 +123,13 @@
       "nvidia_drm.modeset=1"
       "nvidia_drm.fbdev=1"
     ];
-    # Load Nvidia KMS modules in the initrd (early KMS) so Plymouth binds to the
-    # real Nvidia DRM device from boot instead of the generic simpledrm framebuffer.
-    # Without this, plymouth starts fine on simpledrm but gets its framebuffer
-    # yanked out from under it a few seconds later when nvidia-drm loads in
-    # userspace, causing a flicker/drop to text instead of the themed splash.
-    initrd.kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_drm" ];
+    # initrd.kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_drm" ];
+
+    # Note: due to miniscule /boot partition, I have to reverse this move.
     loader = {
       efi.canTouchEfiVariables = true;
-      grub = {
-        enable = true;
-        efiSupport = true;
-        device = "nodev";
-        theme = pkgs.catppuccin-grub.override { flavor = "mocha"; };
-      };
+      systemd-boot.enable=true;
+      systemd-boot.configurationLimit=8;
     };
   };
 
