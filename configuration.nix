@@ -43,6 +43,7 @@
   # hook is recompiling that gresource with the wallpaper embedded and our CSS
   # (assets/gdm-greeter.css) appended. Costs a from-source gnome-shell rebuild.
   nixpkgs.overlays = [
+    # gnome shell overlay for custom login screen
     (final: prev: {
       gnome-shell = prev.gnome-shell.overrideAttrs (old: {
         nativeBuildInputs = old.nativeBuildInputs ++ [ final.glib.dev ];
@@ -72,6 +73,44 @@
         '';
       });
     })
+    # Workaround for nixpkgs #544701: CUDA CMake builds can't find nvcc.
+    # find_package(CUDAToolkit) only searches CUDAToolkit_ROOT, which is
+    # assembled from buildInputs; enable_language(CUDA) searches PATH, which
+    # comes from nativeBuildInputs — so addNvcc covers both. Add packages here
+    # as they fail; drop this whole overlay once the issue closes.
+    (final: prev:
+      let
+        addNvcc = pkg: pkg.overrideAttrs (old: {
+          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ final.cudaPackages.cuda_nvcc ];
+          buildInputs = (old.buildInputs or [ ]) ++ [ final.cudaPackages.cuda_nvcc ];
+        });
+      in
+      {
+        # nativeBuildInputs only — already built and working; keep the drv unchanged
+        ctranslate2 = (prev.ctranslate2.override {
+          withCUDA=true;
+          withCuDNN=true;
+        }).overrideAttrs (old: {
+          nativeBuildInputs = (old.nativeBuildInputs or []) ++ [
+            final.cudaPackages.cuda_nvcc
+          ];
+        });
+
+        ollama-cuda = addNvcc prev.ollama-cuda;
+        # obs-backgroundremoval fails via its onnxruntime dependency, so
+        # fixing onnxruntime at top level fixes the plugin too.
+        # ncclSupport = false: 1.27.1's NCCL-only collective ops still include
+        # the ft_moe headers upstream deleted, so that path can't compile
+        onnxruntime = addNvcc (prev.onnxruntime.override { ncclSupport = false; });
+
+        cudaPackages = prev.cudaPackages.overrideScope (cudaFinal: cudaPrev: {
+          # buildInputs only — already built and working; keep the drv unchanged
+          cudnn-frontend = cudaPrev.cudnn-frontend.overrideAttrs (old: {
+            buildInputs = (old.buildInputs or [ ]) ++ [ cudaFinal.cuda_nvcc ];
+          });
+        });
+      })
+
   ];
 
   system.stateVersion = "23.11";
@@ -615,6 +654,7 @@
       podman-tui
       prusa-slicer
       qpwgraph
+      cudaPackages.cudatoolkit
       rclone
       rclone-browser
       screenkey
@@ -652,6 +692,7 @@
       sops
       age
       tldr
+      efibootmgr
       #sonic-pi
     ]) ++ 
     (with pkgs-stable; [
