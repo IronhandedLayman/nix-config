@@ -5,8 +5,7 @@ let
 in {
 
   imports = [
-    ./packages/nebius-cli.nix # nebius-cli binary static implementation
-    ./packages/sonar.nix # installing cli application for local port investigation
+    ./packages/module.nix # bespoke packages from ./packages, toggled via bespoke.<name>.enable
     ./neovim.nix          # imports nixvim settings
     ./shell.nix           # general shell preferences
     ./windowmanager.nix   # preferred window manager settings, terminal, and keyboard bindings
@@ -48,6 +47,7 @@ in {
       ckan
       claude-code
       cmake
+      gdb
       delve
       devenv
       duf
@@ -98,8 +98,9 @@ in {
     };
   };
 
-  programs.nebius-cli.enable = true;
-  programs.sonar-raskrebs.enable = true;
+  bespoke.nebius-cli.enable = true;
+  bespoke.sonar.enable = true;
+  bespoke.usagi.enable = true;
 
   programs.obs-studio = {
     enable = true;

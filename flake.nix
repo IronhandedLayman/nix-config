@@ -30,6 +30,12 @@
       username = "ironhandedlayman";
       hostname = "hokusai";
     in {
+      # Bespoke packages from ./packages, exposed so `nix build .#sonar` works
+      # and nix-update can bump them (see update-packages.sh).
+      packages.${system} = import ./packages {
+        pkgs = import nixpkgs { inherit system; config.allowUnfree = true; };
+      };
+
       nixosConfigurations = {
         ${hostname} = nixpkgs.lib.nixosSystem {
           inherit system;
