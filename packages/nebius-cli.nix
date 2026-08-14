@@ -16,11 +16,11 @@
 in
   stdenv.mkDerivation rec {
     pname = "nebius-cli";
-    version = "0.12.252";
+    version = "0.12.256";
 
     src = fetchurl {
       url = "https://storage.eu-north1.nebius.cloud/cli/release/${version}/${os}/${arch}/nebius";
-      hash = "sha256-2CSIBxUVfwMR+DZDwQWHnVbZqgZbq78+NhAWgVYPriU=";
+      hash = "sha256-5T+vRwhy1ZnzUhmLTaxk+VUE+7/jvK9I/c+YSxOtcYM=";
     };
 
     nativeBuildInputs = [

@@ -27,6 +27,8 @@
     ];
   };
 
+  hardware.rtl-sdr.enable = true;
+
   # Allow unfree packages
   nixpkgs.config = {
     # I guess I need this because of my fonts??? need to investigate further
@@ -473,7 +475,7 @@
   users.users.ironhandedlayman = {
     isNormalUser = true;
     description = "Ironhandedlayman";
-    extraGroups = [ "scanner" "networkmanager" "wheel" "video" "audio" "dialout" "input" "kvm" "render" "polkituser"];
+    extraGroups = [ "scanner" "networkmanager" "wheel" "video" "audio" "dialout" "input" "kvm" "render" "polkituser" "plugdev"];
     packages = (with pkgs; [
       firefox-bin
       libnotify
@@ -691,6 +693,7 @@
       zoom-us
       sops
       age
+      sdrpp
       tldr
       efibootmgr
       #sonic-pi
