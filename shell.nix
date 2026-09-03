@@ -34,6 +34,7 @@
       # ray
       requests
       # ultralytics
+      pyyaml
     ]))
     # parquet-tools
     ripgrep

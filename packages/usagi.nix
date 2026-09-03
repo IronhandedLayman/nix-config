@@ -17,17 +17,17 @@
 }:
 rustPlatform.buildRustPackage rec {
   pname = "usagi";
-  version = "1.2.0";
+  version = "1.3.1";
 
   src = fetchFromGitea {
     domain = "codeberg.org";
     owner = "brettchalupa";
     repo = "usagi";
     rev = "v${version}";
-    hash = "sha256-hwQOxm0z/mIDIUFanPLn4aWP+xk4CD+ua09+XGqO4Xc=";
+    hash = "sha256-9kDliZJ/SGV7aSJgxQfebSAEAOGPo/32MSL5xQuskPc=";
   };
 
-  cargoHash = "sha256-kAylH6c/LrDu9yEGwIcVRoyGYA4cX34vCk5SZ1TtCG0=";
+  cargoHash = "sha256-QD2D+zYcH/jpJ8uu71/MEyTUqgnw7/ScSucCQQkc+KE=";
 
   nativeBuildInputs = [
     pkg-config

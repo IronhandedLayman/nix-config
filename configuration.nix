@@ -13,21 +13,37 @@
     experimental-features = [ "nix-command" "flakes"];
     trusted-users = ["root" "ironhandedlayman"];
     auto-optimise-store = true;
+    # CUDA builds (torch, onnxruntime) spawn one ~10G cicc per core; 32 cores
+    # OOM'd the whole machine on 2026-08-27. 16 cores x few concurrent jobs
+    # stays inside the nix-daemon memory cap below.
+    cores = 16;
+    max-jobs = 8;
     substituters = [
       "https://nix-community.cachix.org"
       "https://cache.nixos.org"
-      "https://cuda-maintainers.cachix.org"
+      # CUDA cache moved here from cuda-maintainers.cachix.org in Nov 2025;
+      # the old cachix is no longer populated for current unstable.
+      "https://cache.nixos-cuda.org"
       "https://cache.flox.dev"
     ];
     trusted-public-keys = [
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-      "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
+      "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
       "flox-cache-public-1:7F4OyH7ZCnFhcze3fJdfyXYLQw/aV7GEed86nQ7IsOs="
     ];
   };
 
+  # Keep runaway builds from OOM-killing the desktop session: cap the build
+  # cgroup so the kernel OOM killer picks victims inside it, with a modest
+  # swap allowance before builds start failing.
+  systemd.services.nix-daemon.serviceConfig = {
+    MemoryMax = "50G";
+    MemorySwapMax = "16G";
+  };
+
   hardware.rtl-sdr.enable = true;
+  hardware.hackrf.enable = true;
 
   # Allow unfree packages
   nixpkgs.config = {
@@ -75,43 +91,16 @@
         '';
       });
     })
-    # Workaround for nixpkgs #544701: CUDA CMake builds can't find nvcc.
-    # find_package(CUDAToolkit) only searches CUDAToolkit_ROOT, which is
-    # assembled from buildInputs; enable_language(CUDA) searches PATH, which
-    # comes from nativeBuildInputs — so addNvcc covers both. Add packages here
-    # as they fail; drop this whole overlay once the issue closes.
-    (final: prev:
-      let
-        addNvcc = pkg: pkg.overrideAttrs (old: {
-          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ final.cudaPackages.cuda_nvcc ];
-          buildInputs = (old.buildInputs or [ ]) ++ [ final.cudaPackages.cuda_nvcc ];
-        });
-      in
-      {
-        # nativeBuildInputs only — already built and working; keep the drv unchanged
-        ctranslate2 = (prev.ctranslate2.override {
-          withCUDA=true;
-          withCuDNN=true;
-        }).overrideAttrs (old: {
-          nativeBuildInputs = (old.nativeBuildInputs or []) ++ [
-            final.cudaPackages.cuda_nvcc
-          ];
-        });
-
-        ollama-cuda = addNvcc prev.ollama-cuda;
-        # obs-backgroundremoval fails via its onnxruntime dependency, so
-        # fixing onnxruntime at top level fixes the plugin too.
-        # ncclSupport = false: 1.27.1's NCCL-only collective ops still include
-        # the ft_moe headers upstream deleted, so that path can't compile
-        onnxruntime = addNvcc (prev.onnxruntime.override { ncclSupport = false; });
-
-        cudaPackages = prev.cudaPackages.overrideScope (cudaFinal: cudaPrev: {
-          # buildInputs only — already built and working; keep the drv unchanged
-          cudnn-frontend = cudaPrev.cudnn-frontend.overrideAttrs (old: {
-            buildInputs = (old.buildInputs or [ ]) ++ [ cudaFinal.cuda_nvcc ];
-          });
-        });
-      })
+    # The #544701 addNvcc workaround was removed 2026-08-28: fixed upstream by
+    # PR #545542 (setupCudaHook includes nvcc in CUDAToolkit_ROOT), which is in
+    # our pin. The ctranslate2 withCUDA override was redundant too (it defaults
+    # to config.cudaSupport) and only forced a cache miss.
+    (final: prev: {
+      # ncclSupport = false: 1.27.1's NCCL-only collective ops still include
+      # the ft_moe headers upstream deleted, so that path can't compile.
+      # obs-backgroundremoval picks this up through its onnxruntime dependency.
+      onnxruntime = prev.onnxruntime.override { ncclSupport = false; };
+    })
 
   ];
 
@@ -159,7 +148,29 @@
 
   # Bootloader.
   boot = {
-    kernelPackages = pkgs.linuxPackages_latest;
+    # evdi 1.14.15 (still current even on nixpkgs master as of 2026-08-28)
+    # doesn't compile against kernel 7.2's DRM atomic API changes; v1.15.0
+    # adds 7.2 support. Drop this once nixpkgs catches up.
+    kernelPackages = pkgs.linuxPackages_latest.extend (kfinal: kprev: {
+      evdi = kprev.evdi.overrideAttrs (old: rec {
+        version = "1.15.0";
+        src = pkgs.fetchFromGitHub {
+          owner = "DisplayLink";
+          repo = "evdi";
+          tag = "v${version}";
+          hash = "sha256-CXF7PvmrPjjNoWXbWxEkFE/Sw4bO6YqDplPwF/OxhB0=";
+        };
+        # 1.14.15's prePatch rewrites an /etc/os-release reference that no
+        # longer exists in 1.15.0's module/Makefile
+        prePatch = "";
+        # kernel 7.2's linux/acpi.h gained its own kzalloc_obj macro; evdi's
+        # same-named helper in evdi_debug.h shadows it and breaks the kernel
+        # header. Rename evdi's copy (still unfixed on upstream main).
+        postPatch = (old.postPatch or "") + ''
+          sed -i 's/\bkzalloc_obj\b/evdi_kzalloc_obj/g' module/*.c module/*.h
+        '';
+      });
+    });
     kernelParams = [
       "nvidia_drm.modeset=1"
       "nvidia_drm.fbdev=1"
@@ -208,8 +219,7 @@
     graphics = {
       enable = true;
       enable32Bit = true;
-      extraPackages = with pkgs; [
-        displaylink
+      extraPackages = (with pkgs; [
         libva-vdpau-driver
         nvidia-vaapi-driver
         libGL
@@ -218,7 +228,9 @@
         glfw
         wayland
         libxkbcommon
-      ];
+      ]) ++ (with pkgs-stable; [
+        # displaylink
+      ]);
     };
 
     # sane.enable = true; # TODO: as of 12 July 2026 this conflicts with setting in OpenGL, and I need to merge the two setups.
@@ -283,7 +295,6 @@
       defaultRuntime = true;
       forceDefaultRuntime = true;
     };
-    # displaylink.enable = true;
     xserver = {
       videoDrivers = ["nvidia" "displaylink" "modesetting"];
     };
@@ -623,6 +634,7 @@
       # freecad-wayland # NOTE: crashes build as of 4 Nov 2025, need to revisit when it doesn't crash the build
       gcc
       glfw
+      gcc-arm-embedded
       mesa-demos
       godot_4
       go
@@ -642,6 +654,8 @@
       libreoffice
       linux-firmware
       lshw
+      libusb1
+      hidapi
       mako
       mesa
       nemo-with-extensions
@@ -697,6 +711,8 @@
       tldr
       efibootmgr
       #sonic-pi
+      xz
+      hackrf
     ]) ++ 
     (with pkgs-stable; [
       canon-cups-ufr2

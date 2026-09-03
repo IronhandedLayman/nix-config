@@ -14,5 +14,5 @@ nix run nixpkgs#nix-update -- --flake usagi
 
 # nebius-cli: published to Nebius' storage bucket rather than GitHub, so
 # resolve the latest stable version ourselves and hand it to nix-update.
-latest=$(curl -fsS --retry 5 "https://storage.eu-north1.nebius.cloud/cli/release/stable")
-nix run nixpkgs#nix-update -- --flake nebius-cli --version "$latest"
+#latest=$(curl -fsS --retry 5 "https://storage.eu-north1.nebius.cloud/cli/release/stable")
+#nix run nixpkgs#nix-update -- --flake nebius-cli --version "$latest"
